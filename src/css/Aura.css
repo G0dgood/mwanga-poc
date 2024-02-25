@@ -1,0 +1,110 @@
+ 
+
+#content  {
+    position: relative;
+    overflow: hidden;
+    background: lightblue;
+    width: 0px;
+    height: 100px;
+    /* border: 1px solid gray; */
+    border-width: 0px;
+    left: 100%;
+     left: 0;
+  transition: 2s;
+}
+
+.no-suggestions {
+  color: #999;
+  padding: 0.5rem;
+}
+.suggestions {
+  border: 1px solid #999;
+  border-top-width: 0;
+  list-style: none;
+  margin-top: 0;
+  max-height: 143px;
+  overflow-y: auto;
+  padding-left: 0;
+  /* width: calc(300px + 1rem); */
+}
+.suggestions li {
+  padding: 0.5rem;
+}
+.suggestion-active,
+.suggestions li:hover {
+  background-color: whitesmoke;
+  color: #000;
+  cursor: pointer;
+  font-weight: 700;
+}
+.suggestions li:not(:last-of-type) {
+  border-bottom: 1px solid #999;
+}
+ 
+.comment-input{
+  width: 100% !important;
+}
+ 
+
+
+
+:root {
+  --background: hsl(0 0% 0% / 0%);
+  --surface: hsl(0 0% 0% / 0%);
+  --block: hsl(0 0% 0% / 12%);
+  --loader: hsl(0 0% 100% / 40%);
+  --space: 1rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: hsla(222, 46%, 11%, 0.091);
+    --surface: hsla(217, 33%, 17%, 0);
+    --block: hsla(215, 25%, 27%, 0.108);
+    --loader: hsla(0, 0%, 100%, 0.927);
+  }
+}
+/* body {
+  display: grid;
+  gap: var(--space);
+  place-items: center;
+  align-content: center;
+  min-height: 100vh;
+  margin: 0;
+  background-color: var(--background);
+} */
+
+.skeleton {
+  display: grid;
+  grid-template: 1fr 1fr/25% 1fr;
+  gap: calc(var(--space) * 0.5); 
+  width: 90%;
+  padding: var(--space);
+  border: 1px solid rgba(37, 38, 39, 0.1);
+  border-radius: calc(var(--space) * 0.5);
+  background-color: var(--surface);
+  margin: 1rem;
+}
+
+.skeleton__block {
+  background: linear-gradient(-75deg, transparent 40%, var(--loader), transparent 60%) 0 0/200% 100%, var(--block);
+  border-radius: calc(var(--space) * 10);
+  animation: load 2s infinite linear;
+  background-attachment: fixed;
+}
+.skeleton__block1 {
+  background: linear-gradient(-75deg, transparent 40%, var(--loader), transparent 60%) 0 0/200% 100%, var(--block);
+  border-radius: calc(var(--space) * 10);
+  animation: load 2s infinite linear;
+  background-attachment: fixed;
+}
+
+@keyframes load {
+  to {
+    background-position: 200% 0;
+  }
+}
+.skeleton__block:first-of-type {
+  grid-row: 1/-1;
+  aspect-ratio: 1;
+}

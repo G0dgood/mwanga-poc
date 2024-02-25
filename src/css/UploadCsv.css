@@ -1,0 +1,41 @@
+.container {
+  text-align: center;
+  padding: 15px;
+  margin: 10px auto;
+}
+
+.csv-input {
+  padding: 10px;
+  display: block;
+  margin: 15px auto;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.container p {
+  padding-top: 10px;
+  color: #666;
+}
+
+
+.upload-toast{
+    width: 100%;
+}
+
+
+.logic-modal .toast-body.upload-toast {
+  color: #e2522e;
+  display: grid;
+  grid-template-columns: .03fr 1fr .03fr;
+  padding-left: 20px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  border: 2px solid #e2522e;
+}
+ 
+.logic-modal .toast-body .upload-toast  p {
+  color: #e2522e;
+  font-weight: bold;
+  margin: 0;
+  width: 100%;
+} 

@@ -1,0 +1,291 @@
+.user-settings {
+  display: grid;
+  grid-template-columns: 0.6fr 1fr;
+  column-gap: 40px;
+}
+
+.user-settings-display,
+.user-settings-edit {
+  background-color: #fff !important;
+  padding: 25px 0;
+  box-shadow: 0 0 2px #aaa !important;
+}
+
+.user-display-first {
+  text-align: center;
+}
+.user-settings i {
+  background-color: #f0f0f0 !important;
+  color: #ffffff !important;
+  display: flex;
+  justify-content: center;
+  padding: 2rem 2rem;
+  border-radius: 50%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 20px;
+  width: 10rem;
+  height: 10rem;
+  box-shadow: 0 0 2px #aaa !important;
+}
+.user-display-first div {
+  margin-top: 20px;
+}
+.user-display-first p {
+  margin: 0 !important;
+}
+.user-display-first p:nth-child(1) {
+  font-weight: 800;
+}
+
+.user-display-second {
+  width: 100%;
+  display: grid;
+  grid-template-columns: .7fr 1fr;
+  padding-left: 60px;
+  margin-top: 40px;
+}
+.user-display-second p:nth-child(odd) {
+  font-weight: bold;
+}
+.user-display-second p:nth-child(even) {
+  text-transform: capitalize;
+}
+
+/* --- User Settings Tab --- */
+.user-settings-tab,
+.user-settings-tab .nav-item {
+  color: #00000080 !important;
+  border: 0;
+  font-weight: bold;
+  transition: all 0.15s ease-out;
+  -webkit-transition: all 0.15s ease-out;
+}
+.user-settings-tab {
+  border-bottom: 1px solid #e2e2e2 !important;
+}
+.user-settings-tab .active-tab {
+  padding-bottom: 11px;
+}
+.user-settings-tab .active-tab:hover {
+  font-weight: bold !important;
+  border-bottom: 1px solid #c5c5c5 !important;
+  transition: all 0.15s ease-out;
+  -webkit-transition: all 0.15s ease-out;
+}
+.user-settings-tab .active-tab.active {
+  border-bottom: 3px solid #e2522e !important;
+}
+
+
+/* --- Tab Form --- */
+.user-settings-edit form {
+  padding: 0 35px;
+}
+.user-settings-edit form label.required::after {
+  content: "*";
+  color: #E2522E;
+  font-weight: bold;
+}
+.user-settings-edit .change-avatar {
+  text-align: center;
+}
+  
+.user-settings-edit  button {
+  background-color: #e2522e;
+  color: #ffff !important;
+  border-radius: 3px; 
+	padding: 10px;
+  float: right;
+  width: 100px;
+	margin-top: 3rem;
+  font-weight: bold;
+  border: none;
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.15), 0 0 2px rgba(0, 0, 0, 0.15),
+    0 0 16px rgba(218, 209, 209, 0.15);
+  transition: all 0.3s ease-out;
+  -webkit-transition: all 0.3s ease-out;
+}
+.password  button:hover {
+  background-color: #cf4c2b;
+}
+.password button:disabled {
+	cursor: not-allowed;
+  background-color: rgba(226, 82, 46, .9);
+}
+
+
+/* --- Admin USer Settings --- */
+.admin-setuser-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 50px;
+}
+
+.form-ctrl .user-status {
+  display: flex;
+  margin-top: 10px;
+}
+.form-ctrl .user-status p {
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin: auto 0;
+  margin-right: 20px;
+}
+
+/* The toggle-switch - the box around the slider */
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+/* Hide default HTML checkbox */
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.toggle-switch .slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #b8b8b8;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.toggle-switch .slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: #fff;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.toggle-switch input:checked + .slider {
+  background-color: #E2522E;
+}
+
+.toggle-switch input:focus + .slider {
+  box-shadow: 0 0 1px #E2522E;
+}
+
+.toggle-switch input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.toggle-switch .slider.round {
+  border-radius: 34px;
+}
+
+.toggle-switch .slider.round:before {
+  border-radius: 50%;
+}
+
+
+ 
+.preview {
+		display: block;
+		width: 100px;
+		height: 100px;
+		margin: 20px auto;
+		box-shadow: 0px 0px 0px 2px #f0f0f0;
+		border-radius: 50%;
+		overflow: hidden;
+    background:none;
+}
+
+ 
+.photoinput{
+  border: 1px solid #f0f0f0;
+  margin-top: 50px;
+  padding: 8px;
+  width: 350px;
+  border-radius:5px;
+  margin-left: 120px;
+   
+}
+
+.img-container {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  justify-content: center;
+  width: 7rem;
+  height: 7rem;
+}
+
+.dark-img-loading {
+  animation: animatename 2s ease-in-out infinite;
+}
+@keyframes animatename {
+  0% {
+    filter: brightness(50%);
+  }
+  50% {
+    filter: brightness(90%);
+  }
+  100% {
+    filter: brightness(50%) grayscale(1);
+  }
+}
+
+.file-input-wrap {
+  display: flex;
+  justify-content: center;
+  padding-left: 11rem;
+}
+
+.custom-file-input {
+  color: transparent;
+}
+.custom-file-input::-webkit-file-upload-button {
+  visibility: hidden;
+}
+.custom-file-input::before {
+  content: 'Browse Image';
+  color: #5c5c5c;
+  display: inline-block;
+  border: 1px solid #999;
+  border-radius: 3px;
+  padding: 5px 8px;
+  outline: none;
+  white-space: nowrap;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: .8rem;
+}
+.custom-file-input:disabled {
+  color: #fff;
+}
+.custom-file-input:active {
+  outline: 0;
+}
+.custom-file-input:active::before {
+  background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9); 
+}
+
+
+@media only screen and (max-width: 1000px) {
+ .user-settings  {
+  margin: auto;
+  grid-template-columns: 1fr;
+  gap: 40px; 
+  
+ }
+} 

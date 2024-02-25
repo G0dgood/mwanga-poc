@@ -1,0 +1,18 @@
+.create-user-container {
+  background: #fff;
+  border: 1px solid #e8e8e8;
+  padding: 0 45px;
+  padding-bottom: 35px;
+}
+
+.create-user-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 70px;
+}
+
+.create-user-container form label::after {
+  content: "*";
+  color: #e2522e;
+  font-weight: bold;
+}

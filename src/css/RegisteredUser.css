@@ -1,0 +1,27 @@
+table .green {
+  background-color: rgba(0, 128, 0, .2);
+  color: green;
+  font-weight: bold;
+}
+table .red {
+  background-color: rgba(255, 0, 0, 0.274);
+  color: red;
+  font-weight: bold;
+}
+
+.registered-users input[type="button"] {
+  background-color: #e2522e;
+  color: #ffff;
+  border-radius: 3px;
+  font-weight: bold;
+  padding: 5px 20px;
+  border: none;
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.15), 0 0 2px rgba(0, 0, 0, 0.15),
+    0 0 16px rgba(218, 209, 209, 0.15);
+  transition: all 0.3s ease-out;
+  -webkit-transition: all 0.3s ease-out;
+}
+.registered-users input[type="button"]:hover {
+  background-color: #cf4c2b;
+}
+

@@ -1,0 +1,27 @@
+  
+table {
+  background-color: var(--white);
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--border) !important;
+     font-size: 12px !important;
+}
+ 
+ 
+table th,
+table td {
+  text-align: left;
+  padding: .75rem 1rem;
+  font-size: 12px;
+}
+table th {
+  background-color: var(--white);
+  color:  var(--text);
+  font-weight: 500;
+  white-space: nowrap !important;
+  font-weight: bold;
+}
+
+ 
+ 

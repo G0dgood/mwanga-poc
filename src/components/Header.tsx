@@ -1,0 +1,178 @@
+import { useEffect, useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+import { Nav } from "react-bootstrap";
+import { FaBars, FaChevronDown, FaUser } from "react-icons/fa";
+import { baseUrl } from "../shared/baseUrl";
+import axios from "axios";
+import logo from "../assets/img/outcess-logo.png";
+import NetworkConnetion from "./NetworkConnetion";
+import { useAppDispatch, useAppSelector } from "../store/useStore";
+import { toggleSideNav } from "../features/SideNav/navSlice";
+import { logout, reset, userprofile } from "../features/Auth/authSlice";
+import { ToastContainer, toast } from "react-toastify";
+import { customId } from "./TableOptions";
+import { logoutUserAction } from "../features/Auth/authService";
+import { getUserPrivileges } from "../hooks/auth";
+import { useSelector } from "react-redux";
+import { setLob } from "../features/Lob/LobSlice";
+import { RootState } from "../store/store";
+interface HeaderProps {
+  toggleSideNav: string;
+  setResetLOB: string;
+  state: string;
+}
+
+const Header = () => {
+  const { isSuperAdmin, isSupervisor, isMis } = getUserPrivileges();
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const [dropDown, setDropDown] = useState(false);
+
+  const newLob = useSelector((state: RootState) => state.lob.currentLob);
+
+  const handleChange = (e: { target: { value: string; }; }) => {
+    const selectedLob = JSON.parse(e.target.value);
+    dispatch(setLob(selectedLob));
+  };
+
+  // @ts-ignore
+  const userInfo = JSON.parse(localStorage.getItem("mwanga"));
+  const { isLoadinglogout, isErrorlogout, messagelogout, isSuccesslogout } = useAppSelector((state: { auth: any; }) => state.auth)
+  const { userprofiledata } = useAppSelector((state: any) => state.auth);
+
+
+
+  useEffect(() => {
+    dispatch(userprofile());
+  }, [dispatch])
+
+
+
+  const handleToggle = () => {
+    dispatch(toggleSideNav());
+  };
+
+
+  const handleLogout = () => {
+    dispatch(logout());
+  };
+
+  useEffect(() => {
+    if (isErrorlogout) {
+      localStorage.removeItem('mwanga');
+      toast.error(messagelogout, { toastId: customId });
+      dispatch(reset());
+      dispatch(logoutUserAction());
+    }
+  }, [dispatch, isErrorlogout, messagelogout]);
+
+  useEffect(() => {
+    if (isSuccesslogout) {
+      navigate("/");
+      dispatch(reset());
+      dispatch(logoutUserAction());
+      localStorage.removeItem('mwanga');
+    }
+  }, [dispatch, isSuccesslogout, navigate]);
+
+
+
+  useEffect(() => {
+    if (!userInfo || userInfo == null) {
+      localStorage.removeItem('mwanga');
+      dispatch(reset());
+      dispatch(logoutUserAction());
+      navigate("/");
+    }
+  }, [dispatch, navigate, userInfo]);
+
+
+
+  const handleLogoutUser = () => {
+    const loginFlag = async () => {
+      await axios.get(baseUrl + "/api/v1/auth", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      });
+    };
+    dispatch(logoutUserAction());
+    loginFlag();
+  };
+
+
+
+  return (
+    <div id="header" onMouseLeave={() => setDropDown(false)}>
+      <NetworkConnetion />
+      <ToastContainer position="top-right" />
+      <div className="header-container">
+        <div className="header-left">
+          <i onClick={handleToggle}><FaBars /></i>
+          <div>
+            <h1 className="people2 ">
+              <span className="letter2">Peopl</span>
+              <span className="rotate letter6">e</span>
+            </h1>
+          </div>
+        </div>
+        {(isSuperAdmin ||
+          isMis ||
+          isSupervisor) && (
+            <div className="lob">
+              <label htmlFor="lob">LOB:</label>
+
+              <select className="select" value={JSON.stringify(newLob)} onChange={handleChange}>
+                {[
+                  { name: "Branch", value: "branch" },
+                ].map((item) => (
+                  <option key={item.value} value={JSON.stringify(item)}>
+                    {item.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+        <div
+          className="d-flex header-user-details"
+          onClick={() => setDropDown(!dropDown)}
+          onMouseEnter={() => setDropDown(true)}>
+          <div className="preview-header img-container-header">
+            {!userprofiledata?.user?.profilePic ? (
+              <  FaUser />
+            ) : (
+              <img
+                src={baseUrl + "/" + userprofiledata?.user?.profilePic}
+                alt="Profile Pic"
+              />
+            )}
+          </div>
+          <span>{userprofiledata?.firstname || userInfo?.firstname}</span>
+          <FaChevronDown />
+          {dropDown && (
+            <div className="dropdown">
+              <Nav className="flex-column">
+                <NavLink to="/user/settings" className="drop-user-settings">
+                  <i className="fas fa-tools" />
+                  Profile
+                </NavLink>
+
+                <NavLink
+                  to=" "
+                  className="drop-logout"
+                  onClick={handleLogout}
+                >
+                  <i className="fas fa-power-off" />
+                  Logout
+                </NavLink>
+              </Nav>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Header;

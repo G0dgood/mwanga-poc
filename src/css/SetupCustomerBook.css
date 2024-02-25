@@ -1,0 +1,19 @@
+.createNU-grid {
+  display: grid;
+  grid-template-columns: 3fr 1fr 2fr;
+}
+
+.uploadbtn {
+  background-color: #fff;
+  color: #3f3f3f;
+  border-radius: 3px;
+  font-weight: bold;
+  padding: 8px 10px;
+  border: 1px solid #e8e8e8;
+  transition: all 0.3s ease-out;
+  -webkit-transition: all 0.3s ease-out;
+}
+.uploadbtn i {
+  color: #e2522e !important;
+  margin-left: 7px;
+}

@@ -1,0 +1,45 @@
+.csv-input {
+  padding: 10px;
+  display: block;
+  margin: 15px auto;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.upload-form {
+  padding: 0 1.5rem;
+}
+
+.upload-icon,
+.upload-icon-active {
+  text-align: center;
+}
+.upload-icon i {
+  color: #f6f6f6;
+}
+.upload-icon-active i {
+  color: #e2522e;
+}
+.upload-icon p {
+  color: #5c5c5c;
+  margin: 0;
+}
+.upload-icon-active p {
+  color: #5c5c5c;
+  margin-top: .4rem;
+}
+
+.csv-input {
+  border: 1px solid #c5c5c5;
+}
+
+.upload-progress-bar {
+  background-color: #f6f6f6;
+  border-radius: .1rem;
+}
+.upload-progress-bar .progress-bar {
+  background-color: #e2522e;
+  font-weight: bold;
+}
+
+ 

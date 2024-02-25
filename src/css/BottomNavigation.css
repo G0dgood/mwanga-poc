@@ -1,0 +1,97 @@
+ 
+.footer {
+	grid-area: footer !important;
+  display: flex;
+  /* position: fixed; 
+  bottom: 0;   */
+  justify-content: center;
+  width: 100%;
+  background-color: var(--white);
+  z-index: 995;
+  border-top: 0.1px solid rgba(211, 211, 211, 0.5);
+  box-shadow: rgba(0, 0, 0, 0.45) 0px -25px 20px -15px;
+}
+.footer_container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  z-index: 999;
+  align-items: center;
+  margin: 0 10px;
+    background-color: var(--white) !important;
+}
+
+/* icon button */
+.footerOption {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 10px;
+  color: var(--text);
+  cursor: pointer;
+  transition: 500ms ease;
+}
+/* icon button */
+.footerOption-active { 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 10px;
+  color: var(--accent-orange);
+  border-top:1px solid var(--accent-orange);
+  cursor: pointer;
+  transition: 500ms ease;
+  padding-top: 0.5rem;
+
+}
+
+/* icon button */
+.footerOption-top .active {
+  border-top: 1px solid var(--accent-orange);
+    background-color: var(--white) !important;
+}
+
+.footerOption:hover {
+  color: var(--black);
+}
+
+.footerOption_title {
+  font-size: 8px !important;
+  font-weight: 300;
+  text-align: center;
+}
+.footerOption_title-active  {
+  font-size: 8px !important;
+  font-weight: 300;
+  text-align: center;
+  color: var(--accent-orange);
+ background-color: var(--white) !important;
+}
+.footerOption_icon {
+  object-fit: contain;
+  height: 20px !important;
+  width: 20px !important;
+  background-color: var(--white) !important;
+}
+
+/* .nav-link   {
+  color: var(--accent-orange) !important;
+} */
+
+.footer .nav-link .active {
+  border-bottom: 2px solid var(--accent-orange) !important;
+   background-color: var(--white) !important;
+}
+
+.footer .nav-link .active svg,
+.nav-link nav a.active span {
+  color: var(--accent-orange) !important;
+   background-color: var(--white) !important;
+}
+
+
+@media only screen and (min-width: 1201px) {
+  .footer {
+    display: none;
+  }
+}
