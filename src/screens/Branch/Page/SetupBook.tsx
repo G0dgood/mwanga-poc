@@ -12,9 +12,11 @@ import { toast } from "react-toastify";
 import { useAppDispatch, useAppSelector } from "../../../store/useStore";
 import { getSetupBook } from "../../../features/Customer/customerSlice";
 import TableLoader from '../../../components/TableLoader';
+import { getUserPrivileges } from "../../../hooks/auth";
 
 
 const SetupBook = () => {
+  const { isAgent } = getUserPrivileges();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { getSetupBookdata, getSetupBookisError, getSetupBookmessage, getSetupBookisLoading } = useAppSelector((state: any) => state.customer);
@@ -22,21 +24,64 @@ const SetupBook = () => {
   const [data, setData] = useState([]);
   const [filtered, setFilterd] = useState([]);
   const [result, setResult] = useState("");
+  const [limit, setLimit] = useState<any>(10);
+  const endDates = new Date();
+  const formattedEndDate = endDates.toISOString().split('T')[0]; // Extracting date part and removing time
 
+  console.log('getSetupBookdata', getSetupBookdata)
+
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [startDate1] = useState(formattedEndDate);
+  const [endDate1] = useState(formattedEndDate);
 
   const [entriesPerPage, setEntriesPerPage] = useState(() => {
     return localStorage.getItem("rowsPerPage") || "10";
   });
 
-
+  const pagination = getSetupBookdata?.pagination
 
 
   useEffect(() => {
-    dispatch(getSetupBook());
+    const datas = { startDate: startDate1, endDate: endDate1 };
+    // @ts-ignore
+    dispatch(getSetupBook(datas));
     if (isSuccess) {
-      dispatch(getSetupBook());
+      // @ts-ignore
+      dispatch(getSetupBook(datas));
     }
-  }, [dispatch, getSetupBookisError, getSetupBookmessage, isSuccess]);
+
+  }, [dispatch, endDate1, isSuccess, startDate1]);
+  const handlePrev = () => {
+    const datas = { page: pagination.page - 1 }
+    // @ts-ignore
+    dispatch(getSetupBook(datas))
+  }
+
+  const handleNext = () => {
+    const datas = { page: pagination.page + 1 }
+    // @ts-ignore
+    dispatch(getSetupBook(datas))
+  }
+
+  const handleLmit = (e: { target: { value: any; }; }) => {
+    const newLimit = e.target.value;
+    setLimit(newLimit); // Update the limit state
+
+    const datas = { limit: newLimit };
+    // @ts-ignore
+    dispatch(getSetupBook(datas));
+
+  }
+
+
+
+  // useEffect(() => {
+  //   dispatch(getSetupBook());
+  //   if (isSuccess) {
+  //     dispatch(getSetupBook());
+  //   }
+  // }, [dispatch, getSetupBookisError, getSetupBookmessage, isSuccess]);
 
   // Error Handling Effect
   useEffect(() => {
@@ -93,11 +138,23 @@ const SetupBook = () => {
             placeHolder={"Search Loan ID"}
             value={searchQuery} onChange={handleSearchInputChange}
           />
-          <EntriesPerPage
-            data={data}
-            entriesPerPage={entriesPerPage}
-            setEntriesPerPage={setEntriesPerPage}
-          />
+          <div className="entries-perpage">
+            {displayUsers?.length > 1 && (
+              <>
+                <select
+                  value={limit}
+                  onChange={handleLmit}  >
+                  <option value="5">5</option>
+                  <option value="8">8</option>
+                  <option value="10">10</option>
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                  <option value="100">100</option>
+                </select>
+              </>
+            )}
+          </div>
+
           <UploadCustomerBase />
         </div>
         {getSetupBookisLoading ? <TableLoader isLoading={getSetupBookisLoading} /> : ""}
@@ -121,10 +178,10 @@ const SetupBook = () => {
             <tbody>
               {getSetupBookisLoading ? (
                 <TableFetch colSpan={"10"} />
-              ) : filteredCustomers?.length === 0 || filteredCustomers == null ? (
+              ) : displayUsers?.length === 0 || displayUsers == null ? (
                 <NoRecordFound colSpan={"10"} />
               ) : (
-                filteredCustomers?.map((user: any) => (
+                displayUsers?.map((user: any) => (
                   <tr key={user._id}>
                     <td>{!user?.loanId ? "n/a" : user?.loanId}</td>
                     <td>{moment(user?.disbursedDate).format("DD-MM-YYYY")}</td>
@@ -144,10 +201,20 @@ const SetupBook = () => {
         </div>
         <Pagination
           setDisplayData={setDisplayUsers}
-          data={data}
+          data={filteredCustomers}
           entriesPerPage={entriesPerPage}
           Total={"Customers"}
         />
+        {isAgent ? <Pagination
+          setDisplayData={setDisplayUsers}
+          data={filteredCustomers}
+          entriesPerPage={entriesPerPage}
+          Total={"Customers"}
+        /> : <div id={"notificationbtn"}>
+          <button className="btn" disabled={pagination?.page === pagination?.totalPages} onClick={handlePrev}>Previous</button>
+          <div id="notispan-container">  <span>page</span> <span>{pagination?.page}</span> <span>of</span> <span>{pagination?.totalPages}</span></div>
+          <button className="btn" disabled={pagination?.page === pagination?.totalPages} onClick={handleNext} >Next</button>
+        </div>}
       </main>
     </div>
 

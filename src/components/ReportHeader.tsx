@@ -5,7 +5,8 @@ import { Nav } from "react-bootstrap";
 import logo from "../assets/img/outcess-logo-white.png";
 import { baseUrl } from "../shared/baseUrl";
 import axios from "axios";
-import { FaBook, FaPowerOff, FaSwatchbook, FaTachometerAlt, FaUsers } from "react-icons/fa";
+import { FaBook, FaChevronDown, FaPowerOff, FaSwatchbook, FaTachometerAlt, FaUser, FaUsers } from "react-icons/fa";
+import { userInfo } from "../hooks/config";
 
 const ReportHeader = ({ title }: any) => {
   const dispatch = useDispatch();
@@ -28,12 +29,9 @@ const ReportHeader = ({ title }: any) => {
   return (
     <div id="report-header" onMouseLeave={() => setDropDown(false)}>
       <div className="r-header-sub1">
-        {/* <div className="report-logo">
-          <img src={logo} alt="Outcess Solutions" />
-        </div> */}
         <div>
           <h1 className="people2 ">
-            <span className="letter2">Peopl</span>
+            <span className="letter21">Peopl</span>
             <span className="rotate letter6">e</span>
           </h1>
         </div>
@@ -42,17 +40,17 @@ const ReportHeader = ({ title }: any) => {
           onClick={() => setDropDown(!dropDown)}
           onMouseEnter={() => setDropDown(true)}>
           <div className="preview-header img-container-header">
-            {/* {!data?.user?.profilePic ? (
-              <i className="fas fa-user fa-5x" />
+            {userInfo?.profilePic ? (
+              <  FaUser />
             ) : (
               <img
-                src={`${baseUrl}/${data?.user?.profilePic}`}
+                src={`${baseUrl}/+ ${userInfo?.profilePic}`}
                 alt="Profile Pic"
               />
-            )} */}
+            )}
           </div>
           <span>Godwin</span>
-          <i className="fas fa-chevron-down" />
+          <  FaChevronDown />
 
           {dropDown && (
             <div className="dropdown">

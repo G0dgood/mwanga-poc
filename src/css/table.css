@@ -23,5 +23,37 @@ table th {
   font-weight: bold;
 }
 
+
+
+#notificationbtn {
+display: flex;
+justify-content: flex-end;
+gap: 20px;
+
+ 
+}
+
+ #notispan-container{
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  color: var(--text);
+  gap: 5px;
+ }
+
+/* #notibtn, #notibtn:hover {
+    background: none!important;
+    color: #000; 
+     width: 100px;
+      height: 20px;
+} */
+
+#notibtn {
+    border: none!important;
+    font-weight: 600;
+    outline: none!important;
+}
+
+ 
  
  

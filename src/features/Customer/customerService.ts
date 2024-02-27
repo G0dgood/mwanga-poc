@@ -21,12 +21,16 @@ const uploadBase = async (values: any) => {
 	return data
 }
 
-
-const getSetupBook = async ( ) => {
+const getSetupBook = async (datas: any) => { 
 	const HttpService = createHttpService();
-	const { data }: any = await HttpService.get('/api/v1/branch/customers')  
-	return data
+	const { endDate, startDate } = datas  
+const base = `/api/v1/branch/customers` 
+  const url = buildDynamicURL(null,startDate, endDate, null, null,base); 
+	const { data }: any = await HttpService.get(url)  
+return data
 }
+
+ 
 
 const getASingleResponse= async ( phone: any) => {
 	const HttpService = createHttpService();
@@ -52,9 +56,9 @@ const getAgentResponses = async () => {
  
 const getAllResponses = async (datas: any) => { 
 	const HttpService = createHttpService();
-	const { endDates, startDates } = datas  
+	const { endDate, startDate } = datas  
 const base = `/api/v1/branch/responses` 
-  const url = buildDynamicURL(null,startDates, endDates, null, null,base); 
+  const url = buildDynamicURL(null,startDate, endDate, null, null,base); 
 	const { data }: any = await HttpService.get(url)  
 return data
 }

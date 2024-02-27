@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Modal } from 'react-bootstrap'
 import { userInfo } from '../../hooks/config';
 import { useAppDispatch, useAppSelector } from '../../store/useStore';
-import { getallReguser, getallRoles, getsupervisors, reset, userRegistration } from '../../features/Registration/registrationSlice';
+import { getallRoles, getsupervisors, reset, userRegistration } from '../../features/Registration/registrationSlice';
 import { toast } from 'react-toastify';
 import { customId } from '../TableOptions';
 import ModalHeader from './ModalHeader';
@@ -35,10 +35,6 @@ const CreateNewUserModal = () => {
 		createdBy: createdBy,
 		profilePic: "",
 	})
-
-
-
-
 
 
 	useEffect(() => {

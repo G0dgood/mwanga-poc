@@ -73,7 +73,7 @@ export const uploadBase = createAsyncThunk('customer/uploadBase', async (data, t
 
 export const getSetupBook = createAsyncThunk('customer/getSetupBook', async (data, thunkAPI) => {
   try {
-    return await customerService.getSetupBook( )
+    return await customerService.getSetupBook( data)
 
   } catch (error: any) {  
     const message = (error.response && 

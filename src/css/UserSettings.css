@@ -226,6 +226,7 @@
   margin-right: auto;
   display: flex;
   justify-content: center;
+  align-items: center;
   width: 7rem;
   height: 7rem;
 }

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import moment from "moment";
 import { getUserPrivileges } from "../hooks/auth";
 import { FaTimes } from "react-icons/fa";
+import ModalHeader from "./Modal/ModalHeader";
 
 const CustomFilter = ({
   filtered,
@@ -9,14 +10,14 @@ const CustomFilter = ({
   setDropFilter,
   selectedRadio,
   setSelectedRadio,
-  setEndDates,
-  setStartDates,
+  setEndDate,
+  setStartDate,
   handleCustomFilters
 }: any) => {
   const { isAgent } = getUserPrivileges();
 
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
+  // const [startDate, setStartDate] = useState("");
+  // const [endDate, setEndDate] = useState("");
   const [dateRangeStart, setDateRangeStart] = useState("");
   const [dateRangeEnd, setDateRangeEnd] = useState("");
 
@@ -46,21 +47,15 @@ const CustomFilter = ({
       setStartDate(moment(dateRangeStart)?.format("YYYY-MM-DD"));
       setEndDate(moment(dateRangeEnd)?.format("YYYY-MM-DD"));
     }
-  }, [
-    selectedRadio,
-    dateRangeStart,
-    dateRangeEnd,
-    currentDate,
-    yesterday,
-    sevenDays,
-    thirtyDays,
-  ]);
+  }, [selectedRadio, dateRangeStart, dateRangeEnd, currentDate, yesterday, sevenDays, thirtyDays, setStartDate, setEndDate]);
+
+
 
   const handleCustomFilter = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     setDropFilter(false);
-    setEndDates(endDate);
-    setStartDates(startDate);
+    // setEndDates(endDate);
+    // setStartDates(startDate);
   };
 
   // const handleCustomFilters = (e: { preventDefault: () => void; }) => {
@@ -76,12 +71,8 @@ const CustomFilter = ({
 
   return (
     <div className="filter-dropdown">
-      <form
-        className="checkbox-grp"
-        onSubmit={isAgent ? handleCustomFilter : handleCustomFilters}
-      >
-        < FaTimes onClick={() => setDropFilter(false)} />
-        <p>Filter options:</p>
+      <ModalHeader headerTitle={"Filter options:"} setShow={setDropFilter} />
+      <form className="checkbox-grp" onSubmit={isAgent ? handleCustomFilter : handleCustomFilters} >
         <div className="checkbox-ctrl">
           <input
             type="radio"
@@ -169,7 +160,7 @@ const CustomFilter = ({
           />
         </div>
         <div className="submit-filter mt-4" >
-          <button type="submit" className="btn"  >  Filter</button>
+          <button type="submit" className="btn"  >Filter</button>
         </div>
       </form>
     </div>

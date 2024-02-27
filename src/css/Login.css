@@ -203,10 +203,11 @@
     }
 
     .letter2 { color: #403D3B  !important} 
-    .letter1 { color: #fff; }
+    .letter21 { color: var(--white) !important} 
+    .letter1 { color: var(--white); }
     .letter6 { color: var(--accent-orange);}
   
 .people_p{
-	color: #fff;
+	color: var(--white);
 }
 				

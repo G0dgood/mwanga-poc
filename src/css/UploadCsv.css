@@ -37,3 +37,10 @@
   margin: 0;
   width: 100%;
 } 
+
+
+#filter-options-container{
+  display: flex !important;
+  flex-direction: row;
+  justify-content: space-between !important;
+}

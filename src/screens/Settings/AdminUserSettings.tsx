@@ -10,23 +10,16 @@ import { useAppDispatch, useAppSelector } from "../../store/useStore";
 import { toast } from "react-toastify";
 import { customId } from "../../components/TableOptions";
 import { getallRoles, getsupervisors } from "../../features/Registration/registrationSlice";
-import axios from "axios";
-import { userInfo } from "../../hooks/config";
+import { FaUser } from "react-icons/fa";
 
 const AdminUserSettings = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const [filtered, setFilterd] = useState([]);
-  const [resetMessage, setResetMessage] = useState('');
-  const [result, setResult] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [getUsersErr, setGetUsersErr] = useState(null);
-  // const userInfo = useAppSelector((state: { auth: any; }) => state.auth)
   const { dataID, isLoadingID, messageID, isErrorID, isSuccessID } = useAppSelector((state: any) => state.auth);
-  const { profiledata, profileisLoading, profilemessage, profileisError, profileisSuccess } = useAppSelector((state: any) => state.auth);
-  const { adupdatedata, adupdateisLoading, adupdatemessage, adupdateisError, adupdateisSuccess } = useAppSelector((state: any) => state.auth);
-  const { adminresetdata, adminresetisLoading, adminresetmessage, adminresetisError, adminresetisSuccess } = useAppSelector((state: any) => state.auth);
+
+  const { adupdateisLoading, adupdatemessage, adupdateisError, adupdateisSuccess } = useAppSelector((state: any) => state.auth);
+  const { adminresetisLoading, adminresetmessage, adminresetisError, adminresetisSuccess } = useAppSelector((state: any) => state.auth);
   const { rolesdata } = useAppSelector((state: any) => state.reg)
   const { getsupervisorsdata } = useAppSelector((state: any) => state.reg);
   const supervisor = getsupervisorsdata?.data
@@ -58,7 +51,6 @@ const AdminUserSettings = () => {
 
 
   useEffect(() => {
-    // dispatch(getUserProfileById());
   }, [dispatch]);
   useEffect(() => {
     setInput((prevState: any) => {
@@ -110,39 +102,6 @@ const AdminUserSettings = () => {
 
 
 
-  // const adminResetPassword = useSelector((state) => state.adminResetPassword);
-  // const {
-  //   loading: loadingReset,
-  //   error: errorReset,
-  //   success: successReset,
-  // } = adminResetPassword;
-
-  // useEffect(() => { 
-  //     if (successUpdate) {
-  //       dispatch(reset());
-  //       navigate("/registereduser");
-  //     } else {
-  //       if (!data?.user || data?.user?._id !== userProfileId) {
-  //         dispatch(getUserProfileById(userProfileId));
-  //       } else {
-  //         setFirstName(data.user?.firstname);
-  //         setLastName(data.user?.lastname);
-  //         setRole(data.user?.role?._id);
-  //         setIsActive(data.user?.isActive);
-  //         setReportsTo(data.user?.reportsTo?._id);
-  //         setLob(data?.user?.lob);
-  //         setuserId(data?.user?.userId);
-  //       }
-  //     }
-
-  //   },  
-  //   [
-  //     navigate,
-  //     userInfo, 
-  //     data,
-  //     userProfileId,
-  //     dispatch,
-  //   ]);
 
 
 
@@ -187,7 +146,7 @@ const AdminUserSettings = () => {
             <div className="user-display-first">
               <div className="preview img-container">
                 {!data?.profilePic ? (
-                  <i className="fas fa-user fa-5x" />
+                  <  FaUser size={80} color="gray" />
                 ) : (
                   <img
                     src={`${baseUrl}/${data?.profilePic}`}
@@ -348,8 +307,8 @@ const AdminUserSettings = () => {
                     <button
                       type="submit"
                       className="btn"
-                      disabled={isLoading && true}>
-                      {isLoading ? "Updating..." : "Update"}
+                      disabled={adupdateisLoading && true}>
+                      {adupdateisLoading ? "Updating..." : "Update"}
                     </button>
                   </div>
                 </form>

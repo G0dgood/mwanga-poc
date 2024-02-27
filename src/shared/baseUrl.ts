@@ -4,7 +4,7 @@ export const baseUrl = "http://localhost:5000";
 // export const baseUrl = "https://crm.outcess.com:443"; 
 
 
-export const buildDynamicURL = (id: any, fromDate: any, endDate: any, limit: any, page: any, base: any) => {
+export const buildDynamicURL = (id: any, fromDate: any, toDate: any, limit: any, page: any, base: any) => {
  
   let baseURL = `${base}`;
   const queryParams = [];
@@ -19,9 +19,9 @@ export const buildDynamicURL = (id: any, fromDate: any, endDate: any, limit: any
   queryParams.push(`fromDate=${fromDate}`);
 }
 
-  // Add 'endDate' to the query parameters if it's not null or undefined
-  if (endDate !== null && endDate !== undefined && !Array.isArray(endDate)) {
-    queryParams.push(`endDate=${endDate}`);
+  // Add 'toDate' to the query parameters if it's not null or undefined
+  if (toDate !== null && toDate !== undefined && !Array.isArray(toDate)) {
+    queryParams.push(`toDate=${toDate}`);
   }
 
   // Add 'limit' to the query parameters if it's not null or undefined

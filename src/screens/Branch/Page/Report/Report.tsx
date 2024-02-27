@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import moment from "moment";
-// import FairMoneyReportDownloader from "../components/FairMoneyReportDownloader";
 import { useNavigate } from "react-router-dom";
 import { EntriesPerPage, NoRecordFound, TableFetch, customId } from "../../../../components/TableOptions";
 import Search from "../../../../components/Search";
@@ -15,9 +14,10 @@ import { getUserPrivileges } from "../../../../hooks/auth";
 import { userInfo } from "../../../../hooks/config";
 import { getAgentResponses, getAllResponses } from "../../../../features/Customer/customerSlice";
 import Pagination from "../../../../components/Pagination";
+import ReportDownloader from "../../components/ReportDownloader";
+
 
 const Report = () => {
-	const navigate = useNavigate();
 	const dispatch = useAppDispatch();
 	const { isSuperAdmin, isSupervisor, isMis, isAgent } = getUserPrivileges();
 	const { alldata, allisError, allmessage, allisLoading } = useAppSelector((state: any) => state.customer);
@@ -27,16 +27,21 @@ const Report = () => {
 	const [selectedRadio, setSelectedRadio] = useState("All-time");
 
 	const [data, setData] = useState<any>([]);
+	const [limit, setLimit] = useState<any>(10);
 	const [filtered, setFilterd] = useState([]);
 	const [filter, setFilter] = useState<any>([]);
 	const [result, setResult] = useState("");
+	const endDates = new Date();
+	const formattedEndDate = endDates.toISOString().split('T')[0]; // Extracting date part and removing time
 
-	const [startDates, setStartDates] = useState("");
-	const [endDates, setEndDates] = useState("");
 
-	console.log('alldata', alldata)
-	console.log('getAgentResponsesdata', getAgentResponsesdata)
-	console.log('filter', filter)
+
+	const [startDate, setStartDate] = useState("");
+	const [endDate, setEndDate] = useState("");
+	const [startDate1] = useState(formattedEndDate);
+	const [endDate1] = useState(formattedEndDate);
+
+
 
 	// Error Handling Effect
 	useEffect(() => {
@@ -49,25 +54,46 @@ const Report = () => {
 
 
 
-	useEffect(() => {
-		const datas = { startDates, endDates }
 
+	useEffect(() => {
+		const datas = { startDate: startDate1, endDate: endDate1 };
 		if (isAgent) {
 			dispatch(getAgentResponses());
 		} else {
 			// @ts-ignore
 			dispatch(getAllResponses(datas));
 		}
+	}, [dispatch, endDate1, isAgent, startDate1]);
 
-
-	}, [dispatch, endDates, isAgent, startDates]);
+	const pagination = alldata?.pagination
 
 
 	const handleCustomFilters = () => {
-		const datas = { startDates, endDates }
+		const datas = { startDate, endDate }
 		// @ts-ignore
 		dispatch(getAllResponses(datas))
 		setDropFilter(false)
+	}
+	const handlePrev = () => {
+		const datas = { page: pagination.page - 1 }
+		// @ts-ignore
+		dispatch(getAllResponses(datas))
+	}
+
+	const handleNext = () => {
+		const datas = { page: pagination.page + 1 }
+		// @ts-ignore
+		dispatch(getAllResponses(datas))
+	}
+
+	const handleLmit = (e: { target: { value: any; }; }) => {
+		const newLimit = e.target.value;
+		setLimit(newLimit); // Update the limit state
+
+		const datas = { limit: newLimit };
+		// @ts-ignore
+		dispatch(getAllResponses(datas));
+
 	}
 
 
@@ -101,6 +127,15 @@ const Report = () => {
 		setResult(e.target.value);
 	};
 
+	// --- Pagination --- //
+
+	const [entriesPerPage, setEntriesPerPage] = useState(() => {
+		return localStorage.getItem("reportsPerPage") || "3";
+	});
+
+	useEffect(() => {
+		localStorage.setItem("reportsPerPage", entriesPerPage);
+	}, [entriesPerPage]);
 
 
 	const [displayUsers, setDisplayUsers] = useState([]);
@@ -122,24 +157,39 @@ const Report = () => {
 									<  FaChevronDown />
 								</span>
 							</div>
-							{/* <  FaFilter />
-						<p>Custom Filter</p> */}
-							<  FaChevronDown />
+							<div />
 						</div>
 
-						<div className="Disposition-Search ">
+						<div className="Disposition-Search">
 							<Search
 								value={result}
 								onChange={handleChangeFilter}
 								placeHolder={"Search Agent ID  OR  Loan ID"}
 							/>
 						</div>
-
-						{/* <EntriesPerPage
+						{isAgent ? <EntriesPerPage
 							data={filter}
-						   entriesPerPage={entriesPerPage}
-						  setEntriesPerPage={setEntriesPerPage}
-						/> */}
+							entriesPerPage={entriesPerPage}
+							setEntriesPerPage={setEntriesPerPage}
+						/>
+							: <div className="entries-perpage">
+								{filter?.length > 1 && (
+									<>
+										<select
+											value={limit}
+											onChange={handleLmit}  >
+											<option value="5">5</option>
+											<option value="8">8</option>
+											<option value="10">10</option>
+											<option value="25">25</option>
+											<option value="50">50</option>
+											<option value="100">100</option>
+										</select>
+									</>
+								)}
+							</div>}
+
+
 
 						{dropFilter && (
 							<CustomFilter
@@ -148,22 +198,23 @@ const Report = () => {
 								setDropFilter={setDropFilter}
 								selectedRadio={selectedRadio}
 								setSelectedRadio={setSelectedRadio}
-								setStartDates={setStartDates}
-								setEndDates={setEndDates}
+								setStartDate={setStartDate}
+								setEndDate={setEndDate}
 								data={data}
 								handleCustomFilters={handleCustomFilters}
 							/>
 						)}
 					</div>
+
 					<div className="download-filtered-report">
-						{/* <FairMoneyReportDownloader data={filter} /> */}
+						<ReportDownloader data={filter} />
 					</div>
 				</div>
 
 				<div className="table-container">
 					{allisLoading ? <TableLoader isLoading={allisLoading} /> : ""}
 					{getAgentResponsesisLoading ? <TableLoader isLoading={getAgentResponsesisLoading} /> : ""}
-					<table className="scrollable">
+					<table  >
 						<thead>
 							<tr>
 								<th>Agent ID</th>
@@ -198,14 +249,14 @@ const Report = () => {
 						<tbody>
 							{false ? (
 								<TableFetch colSpan={15} />
-							) : data?.length === 0 || data == null ? (
+							) : isAgent ? displayUsers : filter?.length === 0 || isAgent ? displayUsers : filter == null ? (
 								<NoRecordFound colSpan={19} />
 							) : (
-								data?.map((item: any) => (
+								isAgent ? displayUsers : filter.map((item: any) => (
 									<tr key={item._id}>
 										<td>{item?.user?.userId}</td>
 										<td>{item?.customer?.campaign}</td>
-										<td> </td>
+										<td> ,,</td>
 										<td>{item?.customer?.loanId}</td>
 										<td>{item?.customer?.customer_name}</td>
 										<td>{moment(item?.customer?.disbursed_date).format("DD-MMM-YY")}</td>
@@ -235,13 +286,19 @@ const Report = () => {
 							)}
 						</tbody>
 					</table>
-					<Pagination
-						setDisplayData={setDisplayUsers}
-						data={filter}
-						// entriesPerPage={entriesPerPage}
-						Total={"Reports"}
-					/>
 				</div>
+
+				{isAgent ? <Pagination
+					setDisplayData={setDisplayUsers}
+					data={filter}
+					entriesPerPage={entriesPerPage}
+					Total={"Reports"}
+				/> : <div id={"notificationbtn"}>
+					<button className="btn" disabled={pagination?.page === pagination?.totalPages} onClick={handlePrev}>Previous</button>
+					<div id="notispan-container">  <span>page</span> <span>{pagination?.page}</span> <span>of</span> <span>{pagination?.totalPages}</span></div>
+					<button className="btn" disabled={pagination?.page === pagination?.totalPages} onClick={handleNext} >Next</button>
+				</div>}
+
 			</div>
 		</div>
 	);
