@@ -57,6 +57,16 @@ const initialState = {
   supervisorUserisSuccess: false,
   supervisorUserisLoading: false, 
   supervisorUsermessage: '', 
+
+  adupdateisError: false,
+  adupdateisSuccess: false,
+  adupdateisLoading: false, 
+  adupdatemessage: '', 
+
+  adminresetisError: false,
+  adminresetisSuccess: false,
+  adminresetisLoading: false, 
+  adminresetmessage: '', 
  
 }
  
@@ -192,6 +202,32 @@ export const userprofile = createAsyncThunk('auth/userprofile', async (data, thu
      return thunkAPI.rejectWithValue(message)
   }
 })
+export const adminupdateprofile = createAsyncThunk('auth/adminupdateprofile', async (data, thunkAPI) => { 
+    try {
+    return await authService.adminupdateprofile( data)
+  } catch (error:any) {
+    const message =
+      (error.response && 
+        error.response.data && 
+        error.response.data.message) ||
+      error.message ||
+      error.toString() 
+     return thunkAPI.rejectWithValue(message)
+  }
+})
+export const adminupdatePassword = createAsyncThunk('auth/adminupdatePassword', async (data, thunkAPI) => { 
+    try {
+    return await authService.adminupdatePassword( data)
+  } catch (error:any) {
+    const message =
+      (error.response && 
+        error.response.data && 
+        error.response.data.message) ||
+      error.message ||
+      error.toString() 
+     return thunkAPI.rejectWithValue(message)
+  }
+})
 
 export const authSlice = createSlice({
   name: 'auth',
@@ -248,6 +284,18 @@ export const authSlice = createSlice({
       state.supervisorUserisSuccess = false
       state.supervisorUserisError = false
       state.supervisorUsermessage = ''  
+
+      state.adupdateisLoading = false
+      state.adupdateisSuccess = false
+      state.adupdateisError = false
+      state.adupdatemessage = ''  
+
+      state.adminresetisLoading = false
+      state.adminresetisSuccess = false
+      state.adminresetisError = false
+      state.adminresetmessage = ''  
+
+     
 
     }
   },
@@ -350,6 +398,36 @@ export const authSlice = createSlice({
         state.userprofileisError = true
         state.userprofilemessage = action.payload
         state.userprofiledata = [] 
+      })  
+      // Update Profile
+      .addCase(adminupdateprofile.pending, (state) => {
+        state.adupdateisLoading = true 
+      })
+      .addCase(adminupdateprofile.fulfilled, (state:any, action) => {
+        state.adupdateisLoading = false
+        state.adupdateisSuccess = true
+        state.adupdatedata = action.payload 
+      })
+      .addCase(adminupdateprofile.rejected, (state:any, action) => {
+        state.adupdateisLoading = false
+        state.adupdateisError = true
+        state.adupdatemessage = action.payload
+        state.adupdatedata = [] 
+      })  
+      // Update Profile
+      .addCase(adminupdatePassword.pending, (state) => {
+        state.adminresetisLoading = true 
+      })
+      .addCase(adminupdatePassword.fulfilled, (state:any, action) => {
+        state.adminresetisLoading = false
+        state.adminresetisSuccess = true
+        state.adminresetdatas = action.payload 
+      })
+      .addCase(adminupdatePassword.rejected, (state:any, action) => {
+        state.adminresetisLoading = false
+        state.adminresetisError = true
+        state.adminresetmessage = action.payload
+        state.adminresetdata = [] 
       })  
 
       // Update Profile

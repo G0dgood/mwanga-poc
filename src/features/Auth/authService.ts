@@ -50,6 +50,20 @@ const updatePassword = async (value: any) => {
   const { data } = await HttpService.put( `/api/v1/auth/updatepassword`,value)  
    return data
 };
+  //Update Password
+const adminupdateprofile = async (value: any) => { 
+  const {id ,input} = value
+ const HttpService = createHttpService(); 
+  const { data } = await HttpService.put( `/api/v1/users/${id}`,input)  
+   return data
+};
+  //admin update Password
+const adminupdatePassword = async (value: any) => { 
+    const {id ,newPassword} = value
+ const HttpService = createHttpService(); 
+  const { data } = await HttpService.put(`/api/v1/users/resetpassword/${id}`, {newPassword:newPassword})  
+   return data
+};
 
 
   // Update Profile
@@ -89,7 +103,9 @@ const authService = {
   updatePassword,
   updateProfile,
   currentUser,
-  supervisorUser
+  supervisorUser,
+  adminupdatePassword,
+  adminupdateprofile
 }
 
 export default authService

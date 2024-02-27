@@ -4,22 +4,29 @@ import { Tab, Tabs } from "react-bootstrap";
 import { baseUrl } from "../../shared/baseUrl";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { getUserProfileId, reset } from "../../features/Auth/authSlice";
+import { adminupdatePassword, adminupdateprofile, getUserProfileId, reset } from "../../features/Auth/authSlice";
 import Header from "../../components/Header";
 import { useAppDispatch, useAppSelector } from "../../store/useStore";
 import { toast } from "react-toastify";
 import { customId } from "../../components/TableOptions";
 import { getallRoles, getsupervisors } from "../../features/Registration/registrationSlice";
+import axios from "axios";
+import { userInfo } from "../../hooks/config";
 
 const AdminUserSettings = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-
-  const userInfo = useAppSelector((state: { auth: any; }) => state.auth)
+  const [filtered, setFilterd] = useState([]);
+  const [resetMessage, setResetMessage] = useState('');
+  const [result, setResult] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [getUsersErr, setGetUsersErr] = useState(null);
+  // const userInfo = useAppSelector((state: { auth: any; }) => state.auth)
   const { dataID, isLoadingID, messageID, isErrorID, isSuccessID } = useAppSelector((state: any) => state.auth);
   const { profiledata, profileisLoading, profilemessage, profileisError, profileisSuccess } = useAppSelector((state: any) => state.auth);
-  const { resetdata, resetisLoading, resetmessage, resetisError, resetisSuccess } = useAppSelector((state: any) => state.auth);
+  const { adupdatedata, adupdateisLoading, adupdatemessage, adupdateisError, adupdateisSuccess } = useAppSelector((state: any) => state.auth);
+  const { adminresetdata, adminresetisLoading, adminresetmessage, adminresetisError, adminresetisSuccess } = useAppSelector((state: any) => state.auth);
   const { rolesdata } = useAppSelector((state: any) => state.reg)
   const { getsupervisorsdata } = useAppSelector((state: any) => state.reg);
   const supervisor = getsupervisorsdata?.data
@@ -45,10 +52,8 @@ const AdminUserSettings = () => {
     isActive: false,
     reportsTo: "",
     lob: "",
-    userId: ""
+    userId: "",
   })
-
-
 
 
 
@@ -88,20 +93,20 @@ const AdminUserSettings = () => {
 
 
   useEffect(() => {
-    if (profileisSuccess) {
+    if (adupdateisSuccess) {
       toast.success("Profile Updated", { toastId: customId });
     }
-    if (resetisSuccess) {
+    if (adminresetisSuccess) {
       toast.success("Passwords Updated", { toastId: customId });
     }
-    if (profileisError) {
-      toast.error(profilemessage, { toastId: customId });
+    if (adupdateisError) {
+      toast.error(adupdatemessage, { toastId: customId });
     }
-    if (resetisError) {
-      toast.error(resetmessage, { toastId: customId });
+    if (adminresetisError) {
+      toast.error(adminresetmessage, { toastId: customId });
     }
     dispatch(reset());
-  }, [dispatch, profileisSuccess, profileisError, profilemessage, resetisError, resetmessage, resetisSuccess]);
+  }, [dispatch, adupdateisSuccess, adupdateisError, adupdatemessage, adminresetisError, adminresetmessage, adminresetisSuccess]);
 
 
 
@@ -139,6 +144,8 @@ const AdminUserSettings = () => {
   //     dispatch,
   //   ]);
 
+
+
   useEffect(() => {
     if (isErrorID) {
       toast.error(messageID, {
@@ -149,17 +156,21 @@ const AdminUserSettings = () => {
   }, [dispatch, isErrorID, messageID]);
 
   const updateUserHandler = (e: { preventDefault: () => void; }) => {
+    const value = { input, id }
     e.preventDefault();
-    // dispatch(adminUpdateUser(input));
+    // @ts-ignore
+    dispatch(adminupdateprofile(value));
   };
   const resetPasswordHandler = (e: { preventDefault: () => void; }) => {
+    const value = { newPassword, id }
     e.preventDefault();
 
-    // if (newPassword !== confirmPassword) {
-    //   setResetMessage("Passwords do not match");
-    // } else {
-    //   dispatch(adminResetPasswordAction(userProfileId, newPassword));
-    // }
+    if (newPassword !== confirmPassword) {
+      toast.error("Passwords do not match", { toastId: customId });
+    } else {
+      // @ts-ignore
+      dispatch(adminupdatePassword(value));
+    }
   };
 
   return (
@@ -334,12 +345,12 @@ const AdminUserSettings = () => {
                     </div>
                   </div>
                   <div className="align-right-btn">
-                    {/* <button
+                    <button
                       type="submit"
-                      className="password"
-                      disabled={loadingUpdate && true}>
-                      {loadingUpdate ? "Updating..." : "Update"}
-                    </button> */}
+                      className="btn"
+                      disabled={isLoading && true}>
+                      {isLoading ? "Updating..." : "Update"}
+                    </button>
                   </div>
                 </form>
               </Tab>
@@ -367,13 +378,13 @@ const AdminUserSettings = () => {
                     />
                   </div>
                   <div className="align-right-btn">
-                    {/* <button
+                    <button
                       type="submit"
                       className="btn"
-                      disabled={loadingReset && true}>
-                      {loadingReset ? "Updating..." : "Update"}
-                      
-                    </button>   */}
+                      disabled={adminresetisLoading && true}>
+                      {adminresetisLoading ? "Updating..." : "Update"}
+
+                    </button>
                   </div>
                 </form>
               </Tab>
