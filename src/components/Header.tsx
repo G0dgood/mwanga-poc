@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Nav } from "react-bootstrap";
-import { FaBars, FaChevronDown, FaUser } from "react-icons/fa";
+import { FaBars, FaChevronDown, FaPowerOff, FaTools, FaUser } from "react-icons/fa";
 import { baseUrl } from "../shared/baseUrl";
 import axios from "axios";
 import logo from "../assets/img/outcess-logo.png";
@@ -151,17 +151,16 @@ const Header = () => {
           {dropDown && (
             <div className="dropdown">
               <Nav className="flex-column">
-                <NavLink to="/user/settings" className="drop-user-settings">
-                  <i className="fas fa-tools" />
+                <NavLink to="/user/settings" className="drop-user-settings ">
+                  < FaTools className="i_icons" />
                   Profile
                 </NavLink>
 
                 <NavLink
                   to=" "
                   className="drop-logout"
-                  onClick={handleLogout}
-                >
-                  <i className="fas fa-power-off" />
+                  onClick={handleLogout} >
+                  < FaPowerOff className="i_icons" />
                   Logout
                 </NavLink>
               </Nav>

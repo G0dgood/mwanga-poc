@@ -210,4 +210,11 @@
 .people_p{
 	color: var(--white);
 }
-				
+				.login-form-container .form-ctrl #i-FaEye {
+    color: #5c5c5c;
+    cursor: pointer;
+    font-size: .9rem;
+    position: absolute;
+    right: 8px;
+    top: 30px;
+}

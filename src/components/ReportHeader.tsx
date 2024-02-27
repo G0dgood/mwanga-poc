@@ -55,18 +55,16 @@ const ReportHeader = ({ title }: any) => {
           {dropDown && (
             <div className="dropdown">
               <Nav className="flex-column">
-                <NavLink to="/Dashboard" className="drop-user-settings">
+                <NavLink to="/Dashboard" className="drop-user-settings ">
                   <FaTachometerAlt />
                   Dashboard
                 </NavLink>
                 <NavLink to="/customerbook" className="drop-user-settings">
-                  <i><FaBook />  Customer Book</i>
+                  <FaBook className="i_icons " />
+                  Customer Book
                 </NavLink>
 
-                {/* <NavLink to="/loan-book" className="drop-user-settings">
-                  <FaBook />
-                  Loan Book
-                </NavLink> */}
+
 
                 <NavLink
                   to="/setupcustomerbook"
@@ -85,13 +83,13 @@ const ReportHeader = ({ title }: any) => {
                   Registered Users
                 </NavLink>
 
-                <NavLink
+                {/* <NavLink
                   to="/"
                   className="drop-logout"
                 >
                   <FaPowerOff />
                   Logout
-                </NavLink>
+                </NavLink> */}
               </Nav>
             </div>
           )}

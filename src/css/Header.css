@@ -97,9 +97,10 @@
   padding: 15px 10px;
   padding-left: 20px;
 }
-#header .dropdown i {
+#header .dropdown .i_icons {
   font-size: medium;
   margin-right: 15px;
+  align-items: center;
 }
 #header .dropdown a:hover {
   color: #fff;
@@ -107,7 +108,7 @@
   transition: all 0.15s ease-out;
   -webkit-transition: all 0.15s ease-out;
 }
-#header .dropdown a:hover i {
+#header .dropdown a:hover .i_icons {
   color: #fff;
 }
 #header .dropdown .drop-logout {
@@ -232,3 +233,9 @@ font-family: "Mulish" !important;
   cursor: pointer;
  
 }
+
+
+/* .drop-icons{
+  display: flex;
+  justify-content: flex-start;
+} */
