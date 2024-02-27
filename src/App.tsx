@@ -14,9 +14,9 @@ import AgentReport from "./screens/Branch/Page/Report/AgentReport";
 
 function App() {
   // Assuming currentLob is available from Redux state or some context
-  const currentLob = useSelector((state: RootState) => state.lob.currentLob);
+  // const currentLob = useSelector((state: RootState) => state.lob.currentLob);
 
-  const lobName = currentLob ? currentLob.name : null;
+  // const lobName = currentLob ? currentLob.name : null;
 
 
 
@@ -26,18 +26,13 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="user/settings" element={<UserSettings />} />
         <Route path="user/:id/settings" element={<AdminUserSettings />} />
-
-        {lobName === 'Branch' && (
-          <>
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/setupbook" element={<SetupBook />} />
-            <Route path="/report" element={<Report />} />
-            <Route path="/agentreport" element={<AgentReport />} />
-            <Route path="/customerbook" element={<CustomerBook />} />
-            <Route path="/teammembers" element={<TeamMembers />} />
-            <Route path="/registeredusers" element={<RegisteredUsers />} />
-          </>
-        )}
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/setupbook" element={<SetupBook />} />
+        <Route path="/report" element={<Report />} />
+        <Route path="/agentreport" element={<AgentReport />} />
+        <Route path="/customerbook" element={<CustomerBook />} />
+        <Route path="/teammembers" element={<TeamMembers />} />
+        <Route path="/registeredusers" element={<RegisteredUsers />} />
       </Routes>
     </BrowserRouter>
   );
