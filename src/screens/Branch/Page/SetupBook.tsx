@@ -76,13 +76,6 @@ const SetupBook = () => {
 
 
 
-  // useEffect(() => {
-  //   dispatch(getSetupBook());
-  //   if (isSuccess) {
-  //     dispatch(getSetupBook());
-  //   }
-  // }, [dispatch, getSetupBookisError, getSetupBookmessage, isSuccess]);
-
   // Error Handling Effect
   useEffect(() => {
     if (getSetupBookisError) {

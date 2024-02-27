@@ -25,7 +25,7 @@ const CustomerBook = () => {
 	// Initialize customers as an empty array if singledata is null
 	const customers = singledata ? singledata?.customers : undefined;
 
-	console.log('singledata', singledata)
+
 
 	const [phone, setPhone] = useState("");
 	// const [customer, setCustomerDetails] = useState<any>({});
@@ -41,7 +41,7 @@ const CustomerBook = () => {
 	const customer = singledata?.customer || {};
 	const arrayOfObject = [customer];
 
-	console.log(arrayOfObject, "arrayOfObject");
+
 
 
 
@@ -139,13 +139,12 @@ const CustomerBook = () => {
 								<tr>
 									<th></th>
 									<th>Full Name</th>
-									<th>Account Number</th>
+									<th>Virtual Account</th>
 									<th>Bank Name</th>
 									<th>Loan ID</th>
 									<th>Phone No</th>
 									<th>Amt. Disbursed</th>
 									<th>Amt. Repaid</th>
-									<th>Amt. To Repay Today</th>
 									<th>Created Date</th>
 								</tr>
 							</thead>
@@ -184,14 +183,13 @@ const CustomerBook = () => {
 													virtual_account={customer?.virtual_account}
 													virtual_bank_name={customer?.virtual_bank_name} />
 											</td>
-											<td>{customer?.name_of_borrower}</td>
-											<td>{customer?.account_number}</td>
+											<td>{customer?.customer_name}</td>
+											<td>{customer?.virtual_account}</td>
 											<td>{customer?.bank_name}</td>
-											<td>{customer?.loan_id}</td>
-											<td>{customer?.signup_phone_number}</td>
+											<td>{customer?.loanId}</td>
+											<td>{customer?.phone1}</td>
 											<td>{customer?.amount_disbursed}</td>
 											<td>{customer?.amount_repaid}</td>
-											<td>{customer?.amount_to_repay_today}</td>
 											<td>{moment(customer?.createdAt).format("DD-MM-YYYY")}</td>
 										</tr>
 									))
@@ -208,36 +206,4 @@ const CustomerBook = () => {
 export default CustomerBook;
 
 
-
-{/* <FairMoneyDispositionModal
-												id={user?._id}
-												accountnumber={user?.account_number}
-												amountdisbursed={user?.amount_disbursed}
-												amountrepaid={user?.amount_repaid}
-												amounttorepaytoday={user?.amount_to_repay_today}
-												bankname={user?.bank_name}
-												createdAt={user?.createdAt}
-												createdBy={user?.createdBy}
-												dayslate={user?.days_late}
-												dayspastdue={user?.days_past_due}
-												disbursementdate={user?.disbursement_date}
-												dpdbucket={user?.dpd_bucket}
-												duedate={user?.due_date}
-												email={user?.email}
-												enterdate={user?.enter_date}
-												instalmentslate={user?.instalments_late}
-												instalmentstotal={user?.instalments_total}
-												loanid={user?.loan_id}
-												loaninstalmentid={user?.loan_instalment_id}
-												nameofborrower={user?.name_of_borrower}
-												occupation={user?.occupation}
-												riskscore={user?.risk_score}
-												signupphonenumber={user?.signup_phone_number}
-												state={user?.state}
-												userid={user?.user_id}
-												extensionOffer={user?.extension_offer}
-												extensionExpiryTimestamp={
-													user?.extension_expiry_timestamp
-												}
-											/> */}
 

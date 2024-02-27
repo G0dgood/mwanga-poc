@@ -12,7 +12,10 @@ const CustomFilter = ({
   setSelectedRadio,
   setEndDate,
   setStartDate,
-  handleCustomFilters
+  handleCustomFilters,
+  startDate,
+  endDate,
+  filter
 }: any) => {
   const { isAgent } = getUserPrivileges();
 
@@ -25,7 +28,7 @@ const CustomFilter = ({
   const thirtyDays = moment().subtract(30, "days").format("YYYY-MM-DD");
   const sevenDays = moment().subtract(7, "days").format("YYYY-MM-DD");
   const yesterday = moment().subtract(1, "days").format("YYYY-MM-DD");
-  const allTime = "2022-02-30";
+  const allTime = "2024-01-30";
 
   useEffect(() => {
     if (selectedRadio === "All-time") {
@@ -51,23 +54,19 @@ const CustomFilter = ({
 
 
 
+
+
   const handleCustomFilter = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
+    const filteredData = filter?.filter(
+      (item: { createdAt: moment.MomentInput; }) =>
+        moment(item.createdAt)?.format("YYYY-MM-DD") >= startDate &&
+        moment(item.createdAt)?.format("YYYY-MM-DD") <= endDate
+    );
+    console.log('filteredData', filteredData)
+    setData(filteredData);
     setDropFilter(false);
-    // setEndDates(endDate);
-    // setStartDates(startDate);
   };
-
-  // const handleCustomFilters = (e: { preventDefault: () => void; }) => {
-  //   e.preventDefault();
-  //   const filteredData = filtered?.filter(
-  //     (item: { createdAt: moment.MomentInput; }) =>
-  //       moment(item.createdAt)?.format("YYYY-MM-DD") >= startDate &&
-  //       moment(item.createdAt)?.format("YYYY-MM-DD") <= endDate
-  //   );
-  //   setData(filteredData);
-  //   setDropFilter(false);
-  // };
 
   return (
     <div className="filter-dropdown">

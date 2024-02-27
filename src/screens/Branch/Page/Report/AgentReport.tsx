@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import moment from "moment";
-import { NoRecordFound, TableFetch, customId } from "../../../../components/TableOptions";
+import { EntriesPerPage, NoRecordFound, TableFetch, customId } from "../../../../components/TableOptions";
 import Search from "../../../../components/Search";
 import CustomFilter from "../../../../components/CustomFilter";
 import { FaFilter } from "react-icons/fa";
@@ -9,86 +9,54 @@ import ReportHeader from "../../../../components/ReportHeader";
 import TableLoader from "../../../../components/TableLoader";
 import { useAppDispatch, useAppSelector } from "../../../../store/useStore";
 import { toast } from "react-toastify";
-import { getAllResponses } from "../../../../features/Customer/customerSlice";
-
+import { getAgentResponses } from "../../../../features/Customer/customerSlice";
+import Pagination from "../../../../components/Pagination";
 import ReportDownloader from "../../components/ReportDownloader";
 
 
-const Report = () => {
+const AgentReport = () => {
 	const dispatch = useAppDispatch();
-	const { alldata, allisError, allmessage, allisLoading } = useAppSelector((state: any) => state.customer);
+
+	const { getAgentResponsesdata, getAgentResponsesisError, getAgentResponsesmessage, getAgentResponsesisLoading } = useAppSelector((state: any) => state.customer);
+
 	const [dropFilter, setDropFilter] = useState(false);
-	const [selectedRadio, setSelectedRadio] = useState("Today");
+	const [selectedRadio, setSelectedRadio] = useState("All-time");
+
 	const [data, setData] = useState<any>([]);
-	const [limit, setLimit] = useState<any>(10);
 	const [filtered, setFilterd] = useState([]);
 	const [filter, setFilter] = useState<any>([]);
 	const [result, setResult] = useState("");
-	const endDates = new Date();
-	const formattedEndDate = endDates.toISOString().split('T')[0]; // Extracting date part and removing time
 
 
 
 	const [startDate, setStartDate] = useState("");
 	const [endDate, setEndDate] = useState("");
-	const [startDate1] = useState(formattedEndDate);
-	const [endDate1] = useState(formattedEndDate);
+
 
 
 
 	// Error Handling Effect
 	useEffect(() => {
-		if (allisError) {
-			toast.error(allmessage, { toastId: customId });
+		dispatch(getAgentResponses());
+		if (getAgentResponsesisError) {
+			toast.error(getAgentResponsesmessage, { toastId: customId });
 		}
-	}, [allisError, allmessage]);
+	}, [dispatch, getAgentResponsesisError, getAgentResponsesmessage]);
 
-
-
-
-	useEffect(() => {
-		const datas = { startDate: startDate1, endDate: endDate1 };
-		// @ts-ignore
-		dispatch(getAllResponses(datas));
-
-	}, [dispatch, endDate1, startDate1]);
-
-	const pagination = alldata?.pagination
 
 
 	const handleCustomFilters = () => {
-		const datas = { startDate, endDate }
-		// @ts-ignore
-		dispatch(getAllResponses(datas))
+		dispatch(getAgentResponses())
 		setDropFilter(false)
 	}
-	const handlePrev = () => {
-		const datas = { page: pagination.page - 1 }
-		// @ts-ignore
-		dispatch(getAllResponses(datas))
-	}
 
-	const handleNext = () => {
-		const datas = { page: pagination.page + 1 }
-		// @ts-ignore
-		dispatch(getAllResponses(datas))
-	}
-
-	const handleLmit = (e: { target: { value: any; }; }) => {
-		const newLimit = e.target.value;
-		setLimit(newLimit); // Update the limit state
-		const datas = { limit: newLimit };
-		// @ts-ignore
-		dispatch(getAllResponses(datas));
-	}
 
 
 	useEffect(() => {
-		setData(alldata?.responses);
-		setFilterd(alldata?.responses);
-		setFilter(alldata?.responses);
+		setFilterd(getAgentResponsesdata?.responses);
+		setFilter(getAgentResponsesdata?.responses);
 
-	}, [alldata?.responses]);
+	}, [getAgentResponsesdata?.responses]);
 
 	useEffect(() => {
 		const results = filter?.filter(
@@ -96,6 +64,7 @@ const Report = () => {
 				data?.user?.userId?.toLowerCase()?.includes(result) ||
 				data?.customer?.loan_id?.toLowerCase()?.includes(result)
 		);
+		console.log('results', results)
 		setData(results);
 	}, [result, filter]);
 
@@ -103,8 +72,18 @@ const Report = () => {
 		setResult(e.target.value);
 	};
 
+	// --- Pagination --- //
+
+	const [entriesPerPage, setEntriesPerPage] = useState(() => {
+		return localStorage.getItem("reportsPerPage") || "10";
+	});
+
+	useEffect(() => {
+		localStorage.setItem("reportsPerPage", entriesPerPage);
+	}, [entriesPerPage]);
 
 
+	const [displayUsers, setDisplayUsers] = useState([]);
 
 	return (
 		<div id="reports-screen-wrapper">
@@ -133,26 +112,11 @@ const Report = () => {
 								placeHolder={"Search Agent ID  OR  Loan ID"}
 							/>
 						</div>
-
-						<div className="entries-perpage">
-							{filter?.length > 1 && (
-								<>
-									<select
-										value={limit}
-										onChange={handleLmit}  >
-										<option value="5">5</option>
-										<option value="8">8</option>
-										<option value="10">10</option>
-										<option value="25">25</option>
-										<option value="50">50</option>
-										<option value="100">100</option>
-									</select>
-								</>
-							)}
-						</div>
-
-
-
+						<EntriesPerPage
+							data={filter}
+							entriesPerPage={entriesPerPage}
+							setEntriesPerPage={setEntriesPerPage}
+						/>
 						{dropFilter && (
 							<CustomFilter
 								filtered={filtered}
@@ -162,7 +126,10 @@ const Report = () => {
 								setSelectedRadio={setSelectedRadio}
 								setStartDate={setStartDate}
 								setEndDate={setEndDate}
+								startDate={startDate}
+								endDate={endDate}
 								data={data}
+								filter={filter}
 								handleCustomFilters={handleCustomFilters}
 							/>
 						)}
@@ -174,7 +141,7 @@ const Report = () => {
 				</div>
 
 				<div className="table-container">
-					{allisLoading ? <TableLoader isLoading={allisLoading} /> : ""}
+					{getAgentResponsesisLoading ? <TableLoader isLoading={getAgentResponsesisLoading} /> : ""}
 					<table  >
 						<thead>
 							<tr>
@@ -208,12 +175,12 @@ const Report = () => {
 							</tr>
 						</thead>
 						<tbody>
-							{allisLoading ? (
+							{getAgentResponsesisLoading ? (
 								<TableFetch colSpan={15} />
-							) : filter?.length === 0 || filter == null ? (
+							) : displayUsers?.length === 0 || displayUsers == null ? (
 								<NoRecordFound colSpan={19} />
 							) : (
-								filter?.map((item: any) => (
+								displayUsers?.map((item: any) => (
 									<tr key={item._id}>
 										<td>{item?.user?.userId}</td>
 										<td>{item?.customer?.campaign}</td>
@@ -249,15 +216,16 @@ const Report = () => {
 					</table>
 				</div>
 
-				<div id={"notificationbtn"}>
-					<button className="btn" disabled={pagination?.page === pagination?.totalPages} onClick={handlePrev}>Previous</button>
-					<div id="notispan-container">  <span>page</span> <span>{pagination?.page}</span> <span>of</span> <span>{pagination?.totalPages}</span></div>
-					<button className="btn" disabled={pagination?.page === pagination?.totalPages} onClick={handleNext} >Next</button>
-				</div>
+				<Pagination
+					setDisplayData={setDisplayUsers}
+					data={data}
+					entriesPerPage={entriesPerPage}
+					Total={"Reports"}
+				/>
 
 			</div>
 		</div>
 	);
 };
 
-export default Report; 
+export default AgentReport; 

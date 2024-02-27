@@ -1,30 +1,18 @@
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { Nav } from "react-bootstrap";
-import logo from "../assets/img/outcess-logo-white.png";
+
 import { baseUrl } from "../shared/baseUrl";
-import axios from "axios";
-import { FaBook, FaChevronDown, FaPowerOff, FaSwatchbook, FaTachometerAlt, FaUser, FaUsers } from "react-icons/fa";
+import { FaBook, FaChevronDown, FaSwatchbook, FaTachometerAlt, FaUser, FaUsers } from "react-icons/fa";
 import { userInfo } from "../hooks/config";
 
 const ReportHeader = ({ title }: any) => {
-  const dispatch = useDispatch();
+
   const [dropDown, setDropDown] = useState(false);
 
 
-  // const handleLogoutUser = () => {
-  //   const loginFlag = async () => {
-  //     await axios.get(baseUrl + "/api/v1/auth", {
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: `Bearer ${userInfo.token}`,
-  //       },
-  //     });
-  //   };
-  //   dispatch(logoutUserAction());
-  //   loginFlag();
-  // };
+
 
   return (
     <div id="report-header" onMouseLeave={() => setDropDown(false)}>

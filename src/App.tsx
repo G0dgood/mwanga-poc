@@ -10,6 +10,7 @@ import { RootState } from "./store/store";
 import UserSettings from "./screens/UserProfile/UserSettings";
 import AdminUserSettings from "./screens/Settings/AdminUserSettings";
 import TeamMembers from "./screens/Branch/TeamMembers/TeamMembers";
+import AgentReport from "./screens/Branch/Page/Report/AgentReport";
 
 function App() {
   // Assuming currentLob is available from Redux state or some context
@@ -31,6 +32,7 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/setupbook" element={<SetupBook />} />
             <Route path="/report" element={<Report />} />
+            <Route path="/agentreport" element={<AgentReport />} />
             <Route path="/customerbook" element={<CustomerBook />} />
             <Route path="/teammembers" element={<TeamMembers />} />
             <Route path="/registeredusers" element={<RegisteredUsers />} />

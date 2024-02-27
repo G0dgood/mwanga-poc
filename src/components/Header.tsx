@@ -4,7 +4,6 @@ import { Nav } from "react-bootstrap";
 import { FaBars, FaChevronDown, FaPowerOff, FaTools, FaUser } from "react-icons/fa";
 import { baseUrl } from "../shared/baseUrl";
 import axios from "axios";
-import logo from "../assets/img/outcess-logo.png";
 import NetworkConnetion from "./NetworkConnetion";
 import { useAppDispatch, useAppSelector } from "../store/useStore";
 import { toggleSideNav } from "../features/SideNav/navSlice";
@@ -16,14 +15,10 @@ import { getUserPrivileges } from "../hooks/auth";
 import { useSelector } from "react-redux";
 import { setLob } from "../features/Lob/LobSlice";
 import { RootState } from "../store/store";
-interface HeaderProps {
-  toggleSideNav: string;
-  setResetLOB: string;
-  state: string;
-}
+
 
 const Header = () => {
-  const { isSuperAdmin, isSupervisor, isMis, isAgent } = getUserPrivileges();
+  const { isSuperAdmin, isSupervisor, isMis } = getUserPrivileges();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [dropDown, setDropDown] = useState(false);
@@ -86,18 +81,18 @@ const Header = () => {
 
 
 
-  const handleLogoutUser = () => {
-    const loginFlag = async () => {
-      await axios.get(baseUrl + "/api/v1/auth", {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${userInfo.token}`,
-        },
-      });
-    };
-    dispatch(logoutUserAction());
-    loginFlag();
-  };
+  // const handleLogoutUser = () => {
+  //   const loginFlag = async () => {
+  //     await axios.get(baseUrl + "/api/v1/auth", {
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: `Bearer ${userInfo.token}`,
+  //       },
+  //     });
+  //   };
+  //   dispatch(logoutUserAction());
+  //   loginFlag();
+  // };
 
 
 

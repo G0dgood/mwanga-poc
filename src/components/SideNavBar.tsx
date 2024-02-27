@@ -152,8 +152,7 @@ const SideNavBar = () => {
           ) : null}
         </NavLink>}
 
-
-        <NavLink
+        {(isSuperAdmin || isSupervisor || isMis) && <NavLink
           to="/report"
           className={
             window.location.pathname === "/report" ? "active-here" : "nav-link"
@@ -168,7 +167,25 @@ const SideNavBar = () => {
               <p>Disposition Report</p>
             </div>
           ) : null}
-        </NavLink>
+        </NavLink>}
+
+        {isAgent && <NavLink
+          to="/agentreport"
+          className={
+            window.location.pathname === "/agentreport" ? "active-here" : "nav-link"
+          }
+          onMouseEnter={() => setDispositionReport(true)}
+          onMouseLeave={() => setDispositionReport(false)}>
+          < FaPoll />
+          <span className="nav-name">Report</span>
+          {(dispositionReport && toggleState) ||
+            (dispositionReport && collapse) ? (
+            <div className="sidenav-bubble">
+              <p>Disposition Report</p>
+            </div>
+          ) : null}
+        </NavLink>}
+
       </Nav>
     </div>
   );
