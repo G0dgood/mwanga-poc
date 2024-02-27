@@ -27,24 +27,48 @@ const DoughnutChart = ({ chartData, selectedDate, setSelectedDate }: any) => {
   const [secondParam, setSecondParam] = useState([]);
   const [thirdParam, setThirdParam] = useState([]);
 
-  const [firstChart, setFirstChart] = useState("Promise to pay");
-  const [secondChart, setSecondChart] = useState("Right Party Contacted");
-  const [thirdChart, setThirdChart] = useState("Already Paid");
+  const [firstChart, setFirstChart] = useState("Connected");
+  const [secondChart, setSecondChart] = useState("Not answered");
+  const [thirdChart, setThirdChart] = useState("Switched off");
+  const [forthChart, setForthChart] = useState("Unreachable");
+  const [fifthChart, setFifthChart] = useState("Hung up");
+
+  console.log('secondParam?.length', secondParam?.length)
+
+  useEffect(() => {
+    setFirstChart("Connected");
+    setSecondChart("Not answered");
+    setThirdChart("Switched off");
+    setForthChart("Unreachable");
+    setFifthChart("Hung up");
+  }, []);
+
+
 
   useEffect(() => {
     setFirstParam(
-      chartData?.filter((obj: { promiseToPay: string; }) => {
-        return obj?.promiseToPay === "Yes";
+      chartData?.filter((obj: { disposition: string; }) => {
+        return obj?.disposition === "Connected";
       })
     );
     setSecondParam(
-      chartData?.filter((obj: { rightPartyContacted: string; }) => {
-        return obj?.rightPartyContacted === "No";
+      chartData?.filter((obj: { disposition: string; }) => {
+        return obj?.disposition === "Not answered";
       })
     );
     setThirdParam(
-      chartData?.filter((obj: { reasonForDelinquency: string; }) => {
-        return obj.reasonForDelinquency === "Already Paid Loan";
+      chartData?.filter((obj: { disposition: string; }) => {
+        return obj.disposition === "Switched off";
+      })
+    );
+    setForthChart(
+      chartData?.filter((obj: { disposition: string; }) => {
+        return obj.disposition === "Unreachable";
+      })
+    );
+    setFifthChart(
+      chartData?.filter((obj: { disposition: string; }) => {
+        return obj.disposition === "Hung up";
       })
     );
   }, [chartData, selectedDate]);
@@ -56,7 +80,7 @@ const DoughnutChart = ({ chartData, selectedDate, setSelectedDate }: any) => {
   const aplToPercent = Math.round((thirdParam?.length / total) * 100);
 
   const chartConfig = {
-    labels: [firstChart, secondChart, thirdChart],
+    labels: [firstChart, secondChart, thirdChart, forthChart, fifthChart],
     datasets: [
       {
         label: "My First dataset",
@@ -65,8 +89,7 @@ const DoughnutChart = ({ chartData, selectedDate, setSelectedDate }: any) => {
         borderWidth: 3,
         hoverBackgroundColor: ["#e2522e", "#F9C262", "#ADB55E"],
         hoverBorderColor: ["#e2522e", "#F9C262", "#ADB55E"],
-        // data: [ptpToPercent, nrpToPercent, aplToPercent],
-        data: [40, 35, 25],
+        data: [ptpToPercent, nrpToPercent, aplToPercent],
       },
     ],
   };
@@ -125,11 +148,7 @@ const DoughnutChart = ({ chartData, selectedDate, setSelectedDate }: any) => {
               {thirdChart}
               <p>{thirdParam?.length} count</p>
             </div>
-            <ProgressBar
-              now={aplToPercent}
-              className="progress-three"
-              animated
-            />
+            <ProgressBar now={aplToPercent} className="progress-three" animated />
           </div>
         </div>
       </div>

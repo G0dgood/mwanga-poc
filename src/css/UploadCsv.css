@@ -17,24 +17,22 @@
   color: #666;
 }
 
-
 .upload-toast{
     width: 100%;
 }
 
-
 .logic-modal .toast-body.upload-toast {
-  color: #e2522e;
+  color: var(--accent-orange);
   display: grid;
   grid-template-columns: .03fr 1fr .03fr;
   padding-left: 20px;
   padding-top: 15px;
   padding-bottom: 15px;
-  border: 2px solid #e2522e;
+  border: 2px solid var(--accent-orange);
 }
  
 .logic-modal .toast-body .upload-toast  p {
-  color: #e2522e;
+  color: var(--accent-orange);
   font-weight: bold;
   margin: 0;
   width: 100%;

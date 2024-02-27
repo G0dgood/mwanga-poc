@@ -1,75 +1,107 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
 import moment from "moment";
 // import FairMoneyReportDownloader from "../components/FairMoneyReportDownloader";
-
 import { useNavigate } from "react-router-dom";
-import { EntriesPerPage, NoRecordFound, TableFetch } from "../../../../components/TableOptions";
+import { EntriesPerPage, NoRecordFound, TableFetch, customId } from "../../../../components/TableOptions";
 import Search from "../../../../components/Search";
 import CustomFilter from "../../../../components/CustomFilter";
 import { FaFilter } from "react-icons/fa";
 import { FaChevronDown } from "react-icons/fa";
 import ReportHeader from "../../../../components/ReportHeader";
+import TableLoader from "../../../../components/TableLoader";
+import { useAppDispatch, useAppSelector } from "../../../../store/useStore";
+import { toast } from "react-toastify";
+import { getUserPrivileges } from "../../../../hooks/auth";
+import { userInfo } from "../../../../hooks/config";
+import { getAgentResponses, getAllResponses } from "../../../../features/Customer/customerSlice";
+import Pagination from "../../../../components/Pagination";
 
 const Report = () => {
-	const dispatch = useDispatch();
 	const navigate = useNavigate();
+	const dispatch = useAppDispatch();
+	const { isSuperAdmin, isSupervisor, isMis, isAgent } = getUserPrivileges();
+	const { alldata, allisError, allmessage, allisLoading } = useAppSelector((state: any) => state.customer);
+	const { getAgentResponsesdata, getAgentResponsesisError, getAgentResponsesmessage, getAgentResponsesisLoading } = useAppSelector((state: any) => state.customer);
 
 	const [dropFilter, setDropFilter] = useState(false);
 	const [selectedRadio, setSelectedRadio] = useState("All-time");
 
 	const [data, setData] = useState<any>([]);
 	const [filtered, setFilterd] = useState([]);
-	const [filter, setFilter] = useState([]);
+	const [filter, setFilter] = useState<any>([]);
 	const [result, setResult] = useState("");
 
 	const [startDates, setStartDates] = useState("");
 	const [endDates, setEndDates] = useState("");
 
+	console.log('alldata', alldata)
+	console.log('getAgentResponsesdata', getAgentResponsesdata)
+	console.log('filter', filter)
+
+	// Error Handling Effect
+	useEffect(() => {
+		if (allisError) {
+			toast.error(allmessage, { toastId: customId });
+		} if (getAgentResponsesisError) {
+			toast.error(getAgentResponsesmessage, { toastId: customId });
+		}
+	}, [dispatch, allisError, allmessage, getAgentResponsesisError, getAgentResponsesmessage]);
 
 
 
+	useEffect(() => {
+		const datas = { startDates, endDates }
+
+		if (isAgent) {
+			dispatch(getAgentResponses());
+		} else {
+			// @ts-ignore
+			dispatch(getAllResponses(datas));
+		}
 
 
-	// useEffect(() => {
-	// 	if (userInfo) {
-	// 		userInfo?.role === "agent"
-	// 			? dispatch(getFairMoneyAgentResponsesAction())
-	// 			: dispatch(getAllFairMoneyResponsesAction(startDates, endDates));
-	// 	} else {
-	// 		navigate("/");
-	// 	}
-	// }, [dispatch, endDates, navigate, startDates, userInfo]);
+	}, [dispatch, endDates, isAgent, startDates]);
 
-	// useEffect(() => {
-	// 	if (
-	// 		userInfo &&
-	// 		(userInfo?.role === "admin" ||
-	// 			userInfo?.role === "supervisor" ||
-	// 			userInfo?.role === "mis")
-	// 	) {
-	// 		setData(allRespData?.data);
-	// 		setFilterd(allRespData?.data);
-	// 		setFilter(allRespData?.data);
-	// 	} else if (userInfo && userInfo.role === "agent") {
-	// 		setData(agentRespData?.data);
-	// 		setFilterd(agentRespData?.data);
-	// 		setFilter(agentRespData?.data);
-	// 	}
-	// }, [userInfo, allRespData, agentRespData]);
 
-	// useEffect(() => {
-	// 	const results = filter?.filter(
-	// 		(data) =>
-	// 			data?.user?.userId?.toLowerCase()?.includes(result) ||
-	// 			data?.customer?.loan_id?.toLowerCase()?.includes(result)
-	// 	);
-	// 	setData(results);
-	// }, [result, filter]);
+	const handleCustomFilters = () => {
+		const datas = { startDates, endDates }
+		// @ts-ignore
+		dispatch(getAllResponses(datas))
+		setDropFilter(false)
+	}
 
-	// const handleChangeFilter = (e) => {
-	// 	setResult(e.target.value);
-	// };
+
+	useEffect(() => {
+		if (
+			userInfo &&
+			(isMis ||
+				isSupervisor ||
+				isSuperAdmin)
+		) {
+			setData(alldata?.responses);
+			setFilterd(alldata?.responses);
+			setFilter(alldata?.responses);
+		} else if (isAgent) {
+			setData(getAgentResponsesdata?.responses);
+			setFilterd(getAgentResponsesdata?.responses);
+			setFilter(getAgentResponsesdata?.responses);
+		}
+	}, [alldata?.responses, getAgentResponsesdata?.responses, isAgent, isMis, isSuperAdmin, isSupervisor]);
+
+	useEffect(() => {
+		const results = filter?.filter(
+			(data: { user: { userId: string; }; customer: { loan_id: string; }; }) =>
+				data?.user?.userId?.toLowerCase()?.includes(result) ||
+				data?.customer?.loan_id?.toLowerCase()?.includes(result)
+		);
+		setData(results);
+	}, [result, filter]);
+
+	const handleChangeFilter = (e: { target: { value: React.SetStateAction<string>; }; }) => {
+		setResult(e.target.value);
+	};
+
+
 
 	const [displayUsers, setDisplayUsers] = useState([]);
 
@@ -92,22 +124,22 @@ const Report = () => {
 							</div>
 							{/* <  FaFilter />
 						<p>Custom Filter</p> */}
-							<i className="fas fa-chevron-down" />
+							<  FaChevronDown />
 						</div>
 
 						<div className="Disposition-Search ">
 							<Search
 								value={result}
-								// onChange={handleChangeFilter}
+								onChange={handleChangeFilter}
 								placeHolder={"Search Agent ID  OR  Loan ID"}
 							/>
 						</div>
 
-						<EntriesPerPage
+						{/* <EntriesPerPage
 							data={filter}
-						// entriesPerPage={entriesPerPage}
-						// setEntriesPerPage={setEntriesPerPage}
-						/>
+						   entriesPerPage={entriesPerPage}
+						  setEntriesPerPage={setEntriesPerPage}
+						/> */}
 
 						{dropFilter && (
 							<CustomFilter
@@ -118,7 +150,8 @@ const Report = () => {
 								setSelectedRadio={setSelectedRadio}
 								setStartDates={setStartDates}
 								setEndDates={setEndDates}
-								datad={data}
+								data={data}
+								handleCustomFilters={handleCustomFilters}
 							/>
 						)}
 					</div>
@@ -128,83 +161,90 @@ const Report = () => {
 				</div>
 
 				<div className="table-container">
-					{/* <XLoader isLoading={isLoading} /> */}
+					{allisLoading ? <TableLoader isLoading={allisLoading} /> : ""}
+					{getAgentResponsesisLoading ? <TableLoader isLoading={getAgentResponsesisLoading} /> : ""}
 					<table className="scrollable">
 						<thead>
 							<tr>
-								<th>Call Date</th>
 								<th>Agent ID</th>
-								<th>Enter Date</th>
+								<th>Campaign</th>
+								<th>Bucket</th>
 								<th>Loan ID</th>
-								<th>Disbursement Date</th>
-								<th>Name of Borrower</th>
-								<th>Email</th>
-								<th>Signup Phone Number</th>
-								<th>Reason For Non Payment</th>
-								<th>Promise To Pay</th>
-								<th>Comment</th>
-								<th>Commitment Date</th>
-								<th>Bank Name</th>
-								<th>Account Number</th>
-								<th>Amount Repaid</th>
+								<th>customer name</th>
+								<th>Disbursed Date</th>
 								<th>Amount Disbursed</th>
-								<th>Amount to Repay Today</th>
-								<th>Days Late</th>
-								<th>Call Status</th>
-								<th>Extension Offer</th>
-								<th>Extension Expiry Timestamp</th>
+								<th>Amount Delinquent</th>
+								<th>Amount Repaid</th>
+								<th>Days Delinquent</th>
+								<th>Bank Name</th>
+								<th>Phone Number</th>
+								<th>Alternate Number</th>
+								<th>discount(%)</th>
+								<th>Call Disposition Parameter</th>
+								<th>Right Party Contacted</th>
+								<th>Promise to Pay</th>
+								<th>PTP Date</th>
+								<th>Commitment Amount</th>
+								<th>Callback Date</th>
+								<th>Reason for Delinquency</th>
+								<th>Preferred Method</th>
+								<th>Auto comment</th>
+								<th>Manual comment</th>
+								<th>Disposition Date</th>
+								<th>Agent</th>
+								<th>Last Upload Date</th>
 							</tr>
 						</thead>
 						<tbody>
 							{false ? (
 								<TableFetch colSpan={15} />
-							) : displayUsers?.length === 0 || displayUsers == null ? (
+							) : data?.length === 0 || data == null ? (
 								<NoRecordFound colSpan={19} />
 							) : (
 								data?.map((item: any) => (
 									<tr key={item._id}>
-										<td>{moment(item?.createdAt).format("DD-MMM-YY")}</td>
 										<td>{item?.user?.userId}</td>
-										<td>
-											{moment(item?.customer?.enter_date).format("DD-MMM-YY")}
-										</td>
-										<td>{item?.customer?.loan_id}</td>
-										<td>
-											{moment(item?.customer?.disbursement_date).format(
-												"DD-MMM-YY"
-											)}
-										</td>
-										<td>{item?.customer?.name_of_borrower}</td>
-										<td>{item?.customer?.email}</td>
-										<td>{item?.customer?.signup_phone_number}</td>
-										<td>{item?.reasonForNonPayment}</td>
-										<td>{item?.promiseToPay}</td>
-										<td>{item?.comment}</td>
-										<td>{moment(item?.commitmentDate).format("DD-MMM-YY")}</td>
-										<td>{item?.customer?.bank_name}</td>
-										<td>{item?.customer?.account_number}</td>
+										<td>{item?.customer?.campaign}</td>
+										<td> </td>
+										<td>{item?.customer?.loanId}</td>
+										<td>{item?.customer?.customer_name}</td>
+										<td>{moment(item?.customer?.disbursed_date).format("DD-MMM-YY")}</td>
+										<td> {item?.customer?.amount_disbursed} </td>
+										<td>{item?.customer?.amount_delinquent}</td>
 										<td>{item?.customer?.amount_repaid}</td>
-										<td>{item?.customer?.amount_disbursed}</td>
-										<td>{item?.amountToBeRecieved}</td>
-										<td>{item?.customer?.days_late}</td>
-										<td>{item?.callStatus}</td>
-										<td>{item?.customer?.extension_offer}</td>
+										<td>{item?.customer?.days_delinquent}</td>
+										<td>{item?.customer?.bank_name}</td>
+										<td>{item?.customer?.phone1}</td>
+										<td>{item?.customer?.phone2}</td>
+										<td>{item?.customer?.discount}</td>
+										<td>{item?.disposition}</td>
+										<td>{item?.rightPartyContacted}</td>
+										<td>{item?.promiseToPay}</td>
+										<td>{moment(item?.promiseToPayDate).format("DD-MMM-YY")}</td>
+										<td> ,,</td>
+										<td>{moment(item?.callBackDate).format("DD-MMM-YY")}</td>
+										<td>{item?.reasonForDelinquency}</td>
+										<td>{item?.prefferedMethods}</td>
+										<td>{item?.autoComment}</td>
+										<td>{item?.comment}</td>
+										<td>,,</td>
+										<td>{item?.user?.userId}</td>
 										<td>{item?.customer?.extension_expiry_timestamp}</td>
 									</tr>
 								))
 							)}
 						</tbody>
 					</table>
-					{/* <Pagination
-					setDisplayData={setDisplayUsers}
-					data={filter}
-					// entriesPerPage={entriesPerPage}
-					Total={"Reports"}
-				/> */}
+					<Pagination
+						setDisplayData={setDisplayUsers}
+						data={filter}
+						// entriesPerPage={entriesPerPage}
+						Total={"Reports"}
+					/>
 				</div>
 			</div>
 		</div>
 	);
 };
 
-export default Report;
+export default Report; 

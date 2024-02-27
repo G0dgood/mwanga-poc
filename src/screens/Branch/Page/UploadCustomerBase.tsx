@@ -1,20 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import CSVReader from "react-csv-reader";
-import { Modal, Toast, ProgressBar } from 'react-bootstrap';
-
-import { FaUpload } from 'react-icons/fa';
+import { Modal, ProgressBar } from 'react-bootstrap';
+import { FaCloudDownloadAlt } from "react-icons/fa";
 import ModalHeader from '../../../components/Modal/ModalHeader';
 import { GrUploadOption } from "react-icons/gr";
 import { useAppDispatch, useAppSelector } from '../../../store/useStore';
-import { reset, uploadBase } from '../../../features/Customer/customerSlice';
 import { customId } from '../../../components/TableOptions';
 import { toast } from 'react-toastify';
+import { reset, uploadBase } from '../../../features/Customer/customerSlice';
 
 
 
 const UploadCustomerBase = () => {
 	const dispatch = useAppDispatch();
-	const { data, isError, message, isLoading, isSuccess } = useAppSelector((state: any) => state.customer);
+	const { isError, message, isLoading, isSuccess } = useAppSelector((state: any) => state.customer);
 
 	const [progress, setProgress] = useState(0)
 	const [show, setShow] = useState(false)
@@ -25,16 +24,12 @@ const UploadCustomerBase = () => {
 
 	const [jsonData, setJSONData] = useState<any>([])
 
-	console.log('jsonData', jsonData)
-	console.log('jsonData', jsonData)
 
 	const submitHandler = () => {
 		const vaules = { jsonData, setProgress }
 		// @ts-ignore
 		dispatch(uploadBase(vaules));
 	};
-
-
 
 	const onClickReset = () => {
 		setProgress(0)
@@ -53,12 +48,13 @@ const UploadCustomerBase = () => {
 			setJSONData([]);
 			dispatch(reset())
 		} else if (isError) {
-			toast.error(message, {
-				toastId: customId
-			});
-			setProgress(0)
-
+			toast.error(message, { toastId: customId });
+			setTimeout(() => {
+				setProgress(0);
+				dispatch(reset());
+			}, 3000);
 		}
+
 	}, [dispatch, isError, isSuccess, message])
 
 	return (
@@ -84,26 +80,10 @@ const UploadCustomerBase = () => {
 				<ModalHeader headerTitle={"Upload File"} setShow={setShow} />
 				<Modal.Body>
 					<form className="upload-form">
-						{/* {error &&
-							<Toast show={error}>
-								<Toast.Body>
-									<span><i className="fas fa-exclamation-circle" /></span>
-									<p>{error}!</p>
-									<span> <i className="fas fa-times" onClick={onClickReset} /></span>
-								</Toast.Body>
-							</Toast>
-						} */}
-						{/* {success &&
-							<Toast show={success} className="success-toast" delay={5000} autohide >
-								<Toast.Body>
-									<span><i className="fas fa-exclamation-circle" /></span>
-									<p>Upload customer base is successfull!</p>
-									<span><i className="fas fa-times" /></span>
-								</Toast.Body>
-							</Toast>
-						} */}
+
+
 						<div className={progress === 0 ? "upload-icon" : "upload-icon-active"}>
-							<i className="fas fa-cloud-upload-alt fa-4x" />
+							<FaCloudDownloadAlt size={80} color='#e2522e' />
 							<p>{progress === 0 ? "Drag and Drop file or click below" : `Uploading...`}</p>
 						</div>
 						<CSVReader

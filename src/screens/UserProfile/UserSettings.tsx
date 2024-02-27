@@ -1,12 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { Tab, Tabs, Toast } from "react-bootstrap";
-import { useSelector } from "react-redux";
+import { useState, useEffect } from "react";
+import { Tab, Tabs } from "react-bootstrap";
 import axios from "axios";
 import Header from "../../components/Header";
 import SideNavBar from "../../components/SideNavBar";
 import { useAppDispatch, useAppSelector } from "../../store/useStore";
-import { user } from "../../hooks/config";
-import { useNavigate } from "react-router-dom";
 import { baseUrl } from "../../shared/baseUrl";
 import { reset, updatePassword, updateProfile, userprofile } from "../../features/Auth/authSlice";
 import { toast } from 'react-toastify';
@@ -14,7 +11,6 @@ import { customId } from "../../components/TableOptions";
 
 const UserSettings = () => {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
   const userInfo = useAppSelector((state: { auth: any; }) => state.auth)
   const { userprofiledata } = useAppSelector((state: any) => state.auth);
   const { user: data } = userprofiledata;
@@ -25,11 +21,8 @@ const UserSettings = () => {
   const [profilePic, setProfilePic] = useState("");
   const [previewImgLoading, setPreviewImgLoading] = useState(false);
   const [imgLocalURL, setImgLocalURL] = useState<string | null>(null);
-  const [resetPassMsg, setResetPassMsg] = useState<string>('');
-  const [showToast, setShowToast] = useState<any>(false);
-  const [showPasswordToast, setShowPasswordToast] = useState(false);
-  const [showProfileToast, setShowProfileToast] = useState(false);
-  const [showPassErrorToast, setShowPassErrorToast] = useState(false);
+
+
 
 
   const [input, setInput] = useState<any>({
@@ -98,11 +91,6 @@ const UserSettings = () => {
     e.preventDefault();
     if (input.newPassword !== confirmPassword) {
       toast.error("Passwords do not match", { toastId: customId });
-      setShowToast(true)
-      setTimeout(() => {
-        setShowToast(false)
-      }, 2000);
-
     } else {
       const value = { newPassword: input.newPassword }
       // @ts-ignore
@@ -168,94 +156,6 @@ const UserSettings = () => {
         <div className="page-title">
           <h5>User Settings</h5>
         </div>
-        {showProfileToast && (
-          <Toast
-            className="success-toast"
-            onClose={() => setShowProfileToast(false)}
-            show={showProfileToast}
-            delay={6000}
-            autohide>
-            <Toast.Body>
-              <span>
-                <i className="fas fa-exclamation-circle" />
-              </span>
-              <p>Profile updated successfuly!</p>
-              <span onClick={() => setShowProfileToast(false)}>
-                <i className="fas fa-times" />
-              </span>
-            </Toast.Body>
-          </Toast>
-        )}
-
-        {showPasswordToast && (
-          <Toast
-            className="success-toast"
-            onClose={() => setShowPasswordToast(false)}
-            show={showPasswordToast}
-            delay={6000}
-            autohide>
-            <Toast.Body>
-              <span>
-                <i className="fas fa-exclamation-circle" />
-              </span>
-              <p>Password updated successfuly!</p>
-              <span onClick={() => setShowPasswordToast(false)}>
-                <i className="fas fa-times" />
-              </span>
-            </Toast.Body>
-          </Toast>
-        )}
-        {resetPassMsg && (
-          <Toast
-            onClose={() => setShowToast(false)}
-            show={showToast}
-            delay={10000}
-            autohide>
-            <Toast.Body>
-              <span>
-                <i className="fas fa-exclamation-circle" />
-              </span>
-              <p>{resetPassMsg}</p>
-              <span onClick={() => setShowToast(false)}>
-                <i className="fas fa-times" />
-              </span>
-            </Toast.Body>
-          </Toast>
-        )}
-        {showPassErrorToast && (
-          <Toast
-            onClose={() => setShowPassErrorToast(false)}
-            show={showToast}
-            delay={20000}
-            autohide>
-            <Toast.Body>
-              <span>
-                <i className="fas fa-exclamation-circle" />
-              </span>
-              <p>Password Incorrect</p>
-              <span onClick={() => setShowPassErrorToast(false)}>
-                <i className="fas fa-times" />
-              </span>
-            </Toast.Body>
-          </Toast>
-        )}
-        {profileisError && (
-          <Toast
-            onClose={() => setShowToast(false)}
-            show={showToast}
-            delay={10000}
-            autohide>
-            <Toast.Body>
-              <span>
-                <i className="fas fa-exclamation-circle" />
-              </span>
-              <p>{profileisError}</p>
-              <span onClick={() => setShowToast(false)}>
-                <i className="fas fa-times" />
-              </span>
-            </Toast.Body>
-          </Toast>
-        )}
         <div className="user-settings">
           <div className="user-settings-display">
             <div className="user-display-first">
@@ -335,7 +235,6 @@ const UserSettings = () => {
                   <button
                     className="password"
                     disabled={profileisLoading && true}
-                    onClick={() => setShowToast(true)}
                     type="submit">
                     {profileisLoading ? "Updating..." : "Update"}
                   </button>
@@ -378,7 +277,6 @@ const UserSettings = () => {
                           ? "Please wait..."
                           : "Upload Image"
                       }
-                      onClick={() => setShowToast(true)}
                     />
                   )}
                 </form>
@@ -422,7 +320,6 @@ const UserSettings = () => {
                   <button
                     className="btn"
                     disabled={profileisLoading && true}
-                    onClick={() => setShowToast(true)}
                     type="submit"
                     value="Update">
                     {profileisLoading ? "Updating..." : "Update"}

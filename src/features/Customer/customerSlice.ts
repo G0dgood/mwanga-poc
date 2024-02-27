@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import customerService from './CustomerService'
+import customerService from './customerService'
+ 
  
  
  
@@ -17,60 +18,36 @@ const initialState = {
   getisLoading: false, 
   getmessage: '', 
 
-  getSetupBookdata:   [],
-  getSetupBookisError: false,
-  getSetupBookisSuccess: false,
-  getSetupBookisLoading: false, 
-  getSetupBookmessage: '', 
+  singledata:   [],
+  singleisError: false,
+  singleisSuccess: false,
+  singleisLoading: false, 
+  singlemessage: '', 
 
-  viewdata:   [],
-  viewisError: false,
-  viewisSuccess: false,
-  viewisLoading: false, 
-  viewmessage: '', 
+  createResponsedata:   [],
+  createResponseisError: false,
+  createResponseisSuccess: false,
+  createResponseisLoading: false, 
+  createResponsemessage: '', 
 
-  updatedata:   [],
-  updateisError: false,
-  updateisSuccess: false,
-  updateisLoading: false, 
-  updatemessage: '', 
+  createResponseIDdata:   [],
+  createResponseIDisError: false,
+  createResponseIDisSuccess: false,
+  createResponseIDisLoading: false, 
+  createResponseIDmessage: '', 
 
-  uploaddata:   [],
-  uploadisError: false,
-  uploadisSuccess: false,
-  uploadisLoading: false, 
-  uploadmessage: '', 
+  alldata:   [],
+  allisError: false,
+  allisSuccess: false,
+  allisLoading: false, 
+  allmessage: '', 
 
-  assignproductdata:   [],
-  assignproductisError: false,
-  assignproductisSuccess: false,
-  assignproductisLoading: false, 
-  assignproductmessage:'',
-
-  getAllAssignProductsdata:   [],
-  getAllAssignProductsisError: false,
-  getAllAssignProductsisSuccess: false,
-  getAllAssignProductsisLoading: false, 
-  getAllAssignProductsmessage: '', 
-
-  updateAssignProductsdata:   [],
-  updateAssignProductsisError: false,
-  updateAssignProductsisSuccess: false,
-  updateAssignProductsisLoading: false, 
-  updateAssignProductsmessage: '', 
-
-  reductProductCountdata:   [],
-  reductProductCountisError: false,
-  reductProductCountisSuccess: false,
-  reductProductCountisLoading: false, 
-  reductProductCountmessage: '', 
-
-  supervisorUsersdata:   [],
-  supervisorUsersisError: false,
-  supervisorUsersisSuccess: false,
-  supervisorUsersisLoading: false, 
-  supervisorUsersmessage: '', 
-
+  getAgentResponsesdata:   [],
+  getAgentResponsesisError: false,
+  getAgentResponsesisSuccess: false,
+  getAgentResponsesisLoading: false, 
+  getAgentResponsesmessage: '', 
+ 
  
 }
 
@@ -79,7 +56,7 @@ const initialState = {
  
 
  
-export const uploadBase = createAsyncThunk('inventory/uploadBase', async (data, thunkAPI) => {
+export const uploadBase = createAsyncThunk('customer/uploadBase', async (data, thunkAPI) => {
   try {
     return await customerService.uploadBase(data)
 
@@ -94,7 +71,7 @@ export const uploadBase = createAsyncThunk('inventory/uploadBase', async (data, 
 })
 
 
-export const getSetupBook = createAsyncThunk('inventory/getSetupBook', async (data, thunkAPI) => {
+export const getSetupBook = createAsyncThunk('customer/getSetupBook', async (data, thunkAPI) => {
   try {
     return await customerService.getSetupBook( )
 
@@ -108,10 +85,9 @@ export const getSetupBook = createAsyncThunk('inventory/getSetupBook', async (da
   }
 })
 
-
-export const viewInventory = createAsyncThunk('inventory/viewInventory', async (data, thunkAPI) => {
+export const getASingleResponse = createAsyncThunk('customer/getASingleResponse', async (data, thunkAPI) => {
   try {
-    return await customerService.viewInventory(data)
+    return await customerService.getASingleResponse(data)
 
   } catch (error: any) {  
     const message = (error.response && 
@@ -122,10 +98,9 @@ export const viewInventory = createAsyncThunk('inventory/viewInventory', async (
     return thunkAPI.rejectWithValue(message)
   }
 })
-export const updateInventory = createAsyncThunk('inventory/updateInventory', async (data, thunkAPI) => {
+export const createResponse = createAsyncThunk('customer/createResponse', async (data, thunkAPI) => {
   try {
-    // @ts-ignore
-    return await customerService.updateInventory(data)
+    return await customerService.createResponse(data)
 
   } catch (error: any) {  
     const message = (error.response && 
@@ -136,10 +111,9 @@ export const updateInventory = createAsyncThunk('inventory/updateInventory', asy
     return thunkAPI.rejectWithValue(message)
   }
 })
-export const UploadInventorys = createAsyncThunk('inventory/UploadInventorys', async (data, thunkAPI) => {
+export const createResponseID = createAsyncThunk('customer/createResponseID', async (data, thunkAPI) => {
   try {
-    // @ts-ignore
-    return await customerService.UploadInventorys(data)
+    return await customerService.createResponseID(data)
 
   } catch (error: any) {  
     const message = (error.response && 
@@ -150,12 +124,9 @@ export const UploadInventorys = createAsyncThunk('inventory/UploadInventorys', a
     return thunkAPI.rejectWithValue(message)
   }
 })
-
-
-export const assignProductToAgent = createAsyncThunk('inventory/assignProductToAgent', async (data, thunkAPI) => {
+export const getAllResponses = createAsyncThunk('customer/getAllResponses', async (data, thunkAPI) => {
   try {
-    // @ts-ignore
-    return await customerService.assignProductToAgent(data)
+    return await customerService.getAllResponses(data)
 
   } catch (error: any) {  
     const message = (error.response && 
@@ -166,10 +137,9 @@ export const assignProductToAgent = createAsyncThunk('inventory/assignProductToA
     return thunkAPI.rejectWithValue(message)
   }
 })
-export const getAllAssignProducts = createAsyncThunk('inventory/getAllAssignProducts', async (data, thunkAPI) => {
+export const getAgentResponses = createAsyncThunk('customer/getAgentResponses', async (data, thunkAPI) => {
   try {
-    // @ts-ignore
-    return await customerService.getAllAssignProducts()
+    return await customerService.getAgentResponses()
 
   } catch (error: any) {  
     const message = (error.response && 
@@ -180,55 +150,8 @@ export const getAllAssignProducts = createAsyncThunk('inventory/getAllAssignProd
     return thunkAPI.rejectWithValue(message)
   }
 })
-export const updateAssignedproduct = createAsyncThunk('inventory/updateAssignedproduct', async (data, thunkAPI) => {
-  try {
-    // @ts-ignore
-    return await customerService.updateAssignedproduct(data)
-
-  } catch (error: any) {  
-    const message = (error.response && 
-        error.response.data && 
-        error.response.data.message) ||error.response.data.errors[0].message
-      error.message ||
-      error.toString()  
-    return thunkAPI.rejectWithValue(message)
-  }
-})
-
-
-export const reductProductCount = createAsyncThunk('inventory/reductProductCount', async (data, thunkAPI) => {
-  try {
-    // @ts-ignore
-    return await customerService.reductProductCount(data)
-
-  } catch (error: any) {  
-    const message = (error.response && 
-        error.response.data && 
-        error.response.data.message) ||error.response.data.errors[0].message
-      error.message ||
-      error.toString()  
-    return thunkAPI.rejectWithValue(message)
-  }
-})
-
-export const supervisorUsers = createAsyncThunk('inventory/supervisorUsers', async (data, thunkAPI) => {
-  try {
-    // @ts-ignore
-    return await customerService.supervisorUsers(data)
-
-  } catch (error: any) {  
-    const message = (error.response && 
-        error.response.data && 
-        error.response.data.message) ||error.response.data.errors[0].message
-      error.message ||
-      error.toString()  
-    return thunkAPI.rejectWithValue(message)
-  }
-})
-
 
  
-
  
 export const customerSlice = createSlice({
   name: 'customer',
@@ -244,53 +167,32 @@ export const customerSlice = createSlice({
       state.getisLoading = false
       state.getisSuccess = false
       state.getisError = false
-      state.getmessage = '' 
+      state.getmessage = ''  
 
-      state.getSetupBookisLoading = false
-      state.getSetupBookisSuccess = false
-      state.getSetupBookisError = false
-      state.getSetupBookmessage = '' 
+      state.singleisLoading = false
+      state.singleisSuccess = false
+      state.singleisError = false
+      state.singlemessage = '' 
+      
+      state.createResponseisLoading = false
+      state.createResponseisSuccess = false
+      state.createResponseisError = false
+      state.createResponsemessage = ''  
 
-      state.viewisLoading = false
-      state.viewisSuccess = false
-      state.viewisError = false
-      state.viewmessage = '' 
+      state.createResponseIDisLoading = false
+      state.createResponseIDisSuccess = false
+      state.createResponseIDisError = false
+      state.createResponseIDmessage = ''  
 
-      state.updateisLoading = false
-      state.updateisSuccess = false
-      state.updateisError = false
-      state.updatemessage = '' 
+      state.allisLoading = false
+      state.allisSuccess = false
+      state.allisError = false
+      state.allmessage = ''  
 
-      state.uploadisLoading = false
-      state.uploadisSuccess = false
-      state.uploadisError = false
-      state.uploadmessage = '' 
-
-      state.assignproductisLoading = false
-      state.assignproductisSuccess = false
-      state.assignproductisError = false
-      state.assignproductmessage = '' 
-
-      state.getAllAssignProductsisLoading = false
-      state.getAllAssignProductsisSuccess = false
-      state.getAllAssignProductsisError = false
-      state.getAllAssignProductsmessage = '' 
-
-      state.updateAssignProductsisLoading = false
-      state.updateAssignProductsisSuccess = false
-      state.updateAssignProductsisError = false
-      state.updateAssignProductsmessage = '' 
-
-      state.reductProductCountisLoading = false
-      state.reductProductCountisSuccess = false
-      state.reductProductCountisError = false
-      state.reductProductCountmessage = '' 
-
-      state.supervisorUsersisLoading = false
-      state.supervisorUsersisSuccess = false
-      state.supervisorUsersisError = false
-      state.supervisorUsersmessage = '' 
- 
+      state.getAgentResponsesisLoading = false
+      state.getAgentResponsesisSuccess = false
+      state.getAgentResponsesisError = false
+      state.getAgentResponsesmessage = ''  
     }
   },
 
@@ -319,7 +221,7 @@ export const customerSlice = createSlice({
 			.addCase(getSetupBook.fulfilled, (state: any, action) => {
 				state.getSetupBookisLoading = false
 				state.getSetupBookisSuccess = true
-				state.getSetupBookdata = action.payload?.data
+				state.getSetupBookdata = action.payload
 			})
 			.addCase(getSetupBook.rejected, (state: any, action) => {
 				state.getSetupBookisLoading = false
@@ -327,128 +229,82 @@ export const customerSlice = createSlice({
 				state.getSetupBookmessage = action.payload
 				state.getSetupBookdata = null
       })
-      
 
-     	.addCase(viewInventory.pending, (state:any) => {
-				state.viewisLoading = true
+     	.addCase(getASingleResponse.pending, (state:any) => {
+				state.singleisLoading = true
 			})
-			.addCase(viewInventory.fulfilled, (state: any, action) => {
-				state.viewisLoading = false
-				state.viewisSuccess = true
-				state.viewdata = action.payload?.data
+			.addCase(getASingleResponse.fulfilled, (state: any, action) => {
+				state.singleisLoading = false
+				state.singleisSuccess = true
+				state.singledata = action.payload
 			})
-			.addCase(viewInventory.rejected, (state: any, action) => {
-				state.viewisLoading = false
-				state.viewisError = true
-				state.viewmessage = action.payload
-				state.viewdata = null
+			.addCase(getASingleResponse.rejected, (state: any, action) => {
+				state.singleisLoading = false
+				state.singleisError = true
+				state.singlemessage = action.payload
+				state.singledata = null
       })
-      
-     	.addCase(updateInventory.pending, (state:any) => {
-				state.updateisLoading = true
+           
+     	.addCase(createResponse.pending, (state:any) => {
+				state.createResponseisLoading = true
 			})
-			.addCase(updateInventory.fulfilled, (state: any, action) => {
-				state.updateisLoading = false
-				state.updateisSuccess = true
-				state.updatedata = action.payload?.data
+			.addCase(createResponse.fulfilled, (state: any, action) => {
+				state.createResponseisLoading = false
+				state.createResponseisSuccess = true
+				state.createResponsedata = action.payload
 			})
-			.addCase(updateInventory.rejected, (state: any, action) => {
-				state.updateisLoading = false
-				state.updateisError = true
-				state.updatemessage = action.payload
-				state.updatedata = null
+			.addCase(createResponse.rejected, (state: any, action) => {
+				state.createResponseisLoading = false
+				state.createResponseisError = true
+				state.createResponsemessage = action.payload
+				state.createResponsedata = null
       })
-      
-     	.addCase(UploadInventorys.pending, (state:any) => {
-				state.uploadisLoading = true
-			})
-			.addCase(UploadInventorys.fulfilled, (state: any, action) => {
-				state.uploadisLoading = false
-				state.uploadisSuccess = true
-				state.uploaddata = action.payload?.data
-			})
-			.addCase(UploadInventorys.rejected, (state: any, action) => {
-				state.uploadisLoading = false
-				state.uploadisError = true
-				state.uploadmessage = action.payload
-				state.uploaddata = null
-			})
 
-     	.addCase(assignProductToAgent.pending, (state:any) => {
-				state.assignproductisLoading = true
+     	.addCase(createResponseID.pending, (state:any) => {
+				state.createResponseIDisLoading = true
 			})
-			.addCase(assignProductToAgent.fulfilled, (state: any, action) => {
-				state.assignproductisLoading = false
-				state.assignproductisSuccess = true
-				state.assignproductdata = action.payload?.data
+			.addCase(createResponseID.fulfilled, (state: any, action) => {
+				state.createResponseIDisLoading = false
+				state.createResponseIDisSuccess = true
+				state.createResponseIDdata = action.payload
 			})
-			.addCase(assignProductToAgent.rejected, (state: any, action) => {
-				state.assignproductisLoading = false
-				state.assignproductisError = true
-				state.assignproductmessage = action.payload
-				state.assignproductdata = null
-			})
-
-     	.addCase(getAllAssignProducts.pending, (state:any) => {
-				state.getAllAssignProductsisLoading = true
-			})
-			.addCase(getAllAssignProducts.fulfilled, (state: any, action) => {
-				state.getAllAssignProductsisLoading = false
-				state.getAllAssignProductsisSuccess = true
-				state.getAllAssignProductsdata = action.payload?.data
-			})
-			.addCase(getAllAssignProducts.rejected, (state: any, action) => {
-				state.getAllAssignProductsisLoading = false
-				state.getAllAssignProductsisError = true
-				state.getAllAssignProductsmessage = action.payload
-				state.getAllAssignProductsdata = null
+			.addCase(createResponseID.rejected, (state: any, action) => {
+				state.createResponseIDisLoading = false
+				state.createResponseIDisError = true
+				state.createResponseIDmessage = action.payload
+				state.createResponseIDdata = null
       })
-      
-     	.addCase(updateAssignedproduct.pending, (state:any) => {
-				state.updateAssignProductsisLoading = true
-			})
-			.addCase(updateAssignedproduct.fulfilled, (state: any, action) => {
-				state.updateAssignProductsisLoading = false
-				state.updateAssignProductsisSuccess = true
-				state.updateAssignProductsdata = action.payload?.data
-			})
-			.addCase(updateAssignedproduct.rejected, (state: any, action) => {
-				state.updateAssignProductsisLoading = false
-				state.updateAssignProductsisError = true
-				state.updateAssignProductsmessage = action.payload
-				state.updateAssignProductsdata = null
-      })
-      
-     	.addCase(reductProductCount.pending, (state:any) => {
-				state.reductProductCountisLoading = true
-			})
-			.addCase(reductProductCount.fulfilled, (state: any, action) => {
-				state.reductProductCountisLoading = false
-				state.reductProductCountisSuccess = true
-				state.reductProductCountdata = action.payload?.data
-			})
-			.addCase(reductProductCount.rejected, (state: any, action) => {
-				state.reductProductCountisLoading = false
-				state.reductProductCountisError = true
-				state.reductProductCountmessage = action.payload
-				state.reductProductCountdata = null
-			})
-     	.addCase(supervisorUsers.pending, (state:any) => {
-				state.supervisorUsersisLoading = true
-			})
-			.addCase(supervisorUsers.fulfilled, (state: any, action) => {
-				state.supervisorUsersisLoading = false
-				state.supervisorUsersisSuccess = true
-				state.supervisorUsersdata = action.payload?.data
-			})
-			.addCase(supervisorUsers.rejected, (state: any, action) => {
-				state.supervisorUsersisLoading = false
-				state.supervisorUsersisError = true
-				state.supervisorUsersmessage = action.payload
-				state.supervisorUsersdata = null
-			})
 
-      
+     	.addCase(getAllResponses.pending, (state:any) => {
+				state.allisLoading = true
+			})
+			.addCase(getAllResponses.fulfilled, (state: any, action) => {
+				state.allisLoading = false
+				state.allisSuccess = true
+				state.alldata = action.payload
+			})
+			.addCase(getAllResponses.rejected, (state: any, action) => {
+				state.allisLoading = false
+				state.allisError = true
+				state.allmessage = action.payload
+				state.alldata = null
+      })
+
+     	.addCase(getAgentResponses.pending, (state:any) => {
+				state.getAgentResponsesisLoading = true
+			})
+			.addCase(getAgentResponses.fulfilled, (state: any, action) => {
+				state.getAgentResponsesisLoading = false
+				state.getAgentResponsesisSuccess = true
+				state.getAgentResponsesdata = action.payload
+			})
+			.addCase(getAgentResponses.rejected, (state: any, action) => {
+				state.getAgentResponsesisLoading = false
+				state.getAgentResponsesisError = true
+				state.getAgentResponsesmessage = action.payload
+				state.getAgentResponsesdata = null
+      })
+           
       
   },
 })

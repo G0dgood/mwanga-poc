@@ -1,18 +1,30 @@
 .create-user-container {
-  background: #fff;
+  background: var(--accent-orange);
   border: 1px solid #e8e8e8;
   padding: 0 45px;
   padding-bottom: 35px;
 }
 
+ 
 .create-user-form-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  column-gap: 70px;
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 50px;
+}
+
+.create-user-form-grid > * {
+  flex: 1 1 100%;  
+}
+
+ 
+@media (min-width: 600px) {
+  .create-user-form-grid > * {
+    flex-basis: calc(50% - 25px); 
+  }
 }
 
 .create-user-container form label::after {
   content: "*";
-  color: #e2522e;
+  color: var(--accent-orange);
   font-weight: bold;
 }

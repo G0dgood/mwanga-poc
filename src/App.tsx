@@ -8,6 +8,8 @@ import SetupBook from "./screens/Branch/Page/SetupBook";
 import { useSelector } from "react-redux";
 import { RootState } from "./store/store";
 import UserSettings from "./screens/UserProfile/UserSettings";
+import AdminUserSettings from "./screens/Settings/AdminUserSettings";
+import TeamMembers from "./screens/Branch/TeamMembers/TeamMembers";
 
 function App() {
   // Assuming currentLob is available from Redux state or some context
@@ -22,6 +24,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="user/settings" element={<UserSettings />} />
+        <Route path="user/:id/settings" element={<AdminUserSettings />} />
 
         {lobName === 'Branch' && (
           <>
@@ -29,6 +32,7 @@ function App() {
             <Route path="/setupbook" element={<SetupBook />} />
             <Route path="/report" element={<Report />} />
             <Route path="/customerbook" element={<CustomerBook />} />
+            <Route path="/teammembers" element={<TeamMembers />} />
             <Route path="/registeredusers" element={<RegisteredUsers />} />
           </>
         )}

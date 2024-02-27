@@ -29,13 +29,12 @@
   --gradient-yellow: #EBDDCA;
   --accent-purple-light:#F4ECFB;
   --accent-purple:#883DCF;
-  --accent-yellow:#FFD71D;
-  --accent-orange-light:var(--white);
+  --accent-yellow:#FFD71D; 
   --accent-orange:#e2522e;
   --accent-orange-light:rgba(226, 82, 46, .7);
   --accent-orange-hover:#cf4c2b;
   --accent-green-light:#E9FAF7; 
-  --white:#fff;
+  --white:#ffffff;
   --border:#cdd1d3;
   --gray:#495057;
 		--text: #5c5c5c;
@@ -145,7 +144,7 @@ table {
  
 table thead tr ,
 table tbody tr {
-  background-color: #fff;
+  background-color: var(--white);
   border-bottom: 1px solid #f0f0f0;
   transition: all 0.2s ease-out;
   -webkit-transition: all 0.2s ease-out;
@@ -166,17 +165,17 @@ table tbody tr:hover {
   background-color: #f5f5f5;
 }
  table tfoot tr td{
-  background-color: #fff !important;
+  background-color: var(--white) !important;
   white-space:nowrap;
 }
 
 
 table tbody tr:last-of-type {
-  border-bottom: 5px solid #ffffff;
+  border-bottom: 5px solid var(--white);
 }
 .table-navlink {
-  color: #fff;
-  background-color: #e2522e;
+  color: var(--white);
+  background-color: var(--accent-orange);
   text-decoration: none;
   padding: 3px 25px;
   border-radius: 3px;
@@ -186,14 +185,14 @@ table tbody tr:last-of-type {
   outline: none !important;
 }
 .table-navlink:hover {
-  color: #fff;
+  color: var(--white);
   background-color: #ce4f30;
 }
 .table-navlink i {
-  color: #fff;
+  color: var(--white);
 }
 .table-loader {
-  color:#e2522e;
+  color:var(--accent-orange);
   text-align: center;
   padding: 6rem;
 }
@@ -688,7 +687,7 @@ form.searchbox button:hover {
 main .toast,
 .logic-modal .toast,
 .report-body .toast {
-  background-color: var(--accent-orange-light);
+  background-color: rgba(226, 82, 46, .45);;
   border-radius: 3px;
   width: 100%;
   margin-bottom: 15px;
@@ -698,8 +697,8 @@ main .toast-body,
 .report-body .toast-body,
 .logic-modal .toast-body {
   color: var(--accent-orange);
-  display: grid;
-  grid-template-columns: .03fr 1fr .03fr;
+  /* display: grid;
+  grid-template-columns: .03fr 1fr .03fr; */
   padding-left: 20px;
   padding-top: 15px;
   padding-bottom: 15px;
@@ -711,7 +710,7 @@ main .toast-body p,
   font-weight: bold;
   margin: 0;
 }
-main .toast-body i.fa-exclamation-circle,
+main .toast-body i.FaExclamationCircle,
 main .toast-body i.fa-check-circle,
 .report-body .toast-body i.fa-exclamation-circle,
 .report-body .toast-body i.fa-check-circle,
@@ -846,6 +845,8 @@ main .toast.success-toast .toast-body i.fa-times:hover {
 @import url(./css/UploadBase.css);  
 @import url(./css/Modal.css);  
 @import url(./css/BottomNavigation.css);  
+@import url(./css/CustomerDetails.css);  
+@import url(./css/Autocomplete.css);  
  
  
   

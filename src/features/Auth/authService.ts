@@ -30,9 +30,9 @@ const userprofile = async ( ) => {
    return data
 };
   // View user by ID
-const ViewUserByID = async (id: any) => {
+const getUserProfileId = async (id: any) => {
   const HttpService = createHttpService(); 
-  const { data } = await HttpService.get( `/api/v1/auth/users/user/${id}`)  
+  const { data } = await HttpService.get( `/api/v1/auth/${id}`)  
    return data
 };
 
@@ -50,6 +50,7 @@ const updatePassword = async (value: any) => {
   const { data } = await HttpService.put( `/api/v1/auth/updatepassword`,value)  
    return data
 };
+
 
   // Update Profile
 const updateProfile = async (value: any) => { 
@@ -83,7 +84,7 @@ const authService = {
   logout,
   login,  
   userprofile,
-  ViewUserByID,
+  getUserProfileId,
   forgetPassword,
   updatePassword,
   updateProfile,

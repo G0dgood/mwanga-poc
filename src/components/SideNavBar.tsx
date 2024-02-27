@@ -1,16 +1,17 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { Nav } from "react-bootstrap";
 import { useIsMobile } from "./resize";
 import { useAppSelector } from "../store/useStore";
-import { FaTachometerAlt, FaSwatchbook, FaBook, FaUsers, FaEnvelope, FaPoll } from "react-icons/fa";
-
+import { FaTachometerAlt, FaSwatchbook, FaBook, FaUsers, FaPoll } from "react-icons/fa";
+import { getUserPrivileges } from "../hooks/auth";
+import { FiUsers } from "react-icons/fi";
 
 
 
 const SideNavBar = () => {
   const toggleState = useAppSelector((state) => state.nav.toggleSideNav);
-
+  const { isSuperAdmin, isSupervisor, isMis, isAgent } = getUserPrivileges();
 
   // --- SideNav Bubble (States) --- // 
   const [dashboard, setDashboard] = useState(false);
@@ -19,8 +20,7 @@ const SideNavBar = () => {
   const [teamMembers, setTeamMembers] = useState(false);
   const [registeredUsers, setRegisteredUsers] = useState(false);
   const [dispositionReport, setDispositionReport] = useState(false);
-  const [customerSms, setCustomerSms] = useState(false);
-  const [airteloutbound, setAirtelOutbound] = useState(false);
+  // const [customerSms, setCustomerSms] = useState(false);
   const [collapse, setCollapse] = useState(false);
 
   const isMobile = useIsMobile();
@@ -55,7 +55,7 @@ const SideNavBar = () => {
           ) : null}
         </NavLink>
 
-        <NavLink
+        {isAgent && <NavLink
           to="/customerbook"
           className={
             window.location.pathname === "/customerbook"
@@ -72,43 +72,50 @@ const SideNavBar = () => {
               <p>Customer Book</p>
             </div>
           ) : null}
-        </NavLink>
-        <NavLink
-          to="/setupbook"
-          className={
-            window.location.pathname === "/setupbook"
-              ? "active-here"
-              : "nav-link"
-          }
-          onMouseEnter={() => setSetupBook(true)}
-          onMouseLeave={() => setSetupBook(false)}>
-          < FaSwatchbook />
-          <span className="nav-name">Setup Book</span>
-          {(setupBook && toggleState) ||
-            (setupBook && collapse) ? (
-            <div className="sidenav-bubble">
-              <p>Setup Book</p>
-            </div>
-          ) : null}
-        </NavLink>
-        <NavLink
-          to="/registeredusers"
-          className={
-            window.location.pathname === "/registeredusers"
-              ? "active-here"
-              : "nav-link"
-          }
-          onMouseEnter={() => setRegisteredUsers(true)}
-          onMouseLeave={() => setRegisteredUsers(false)}>
-          <FaUsers />
-          <span className="nav-name">Registered Users</span>
-          {(registeredUsers && toggleState) ||
-            (registeredUsers && collapse) ? (
-            <div className="sidenav-bubble">
-              <p>Registered Users</p>
-            </div>
-          ) : null}
-        </NavLink>
+        </NavLink>}
+
+
+        {isSuperAdmin &&
+          <NavLink
+            to="/setupbook"
+            className={
+              window.location.pathname === "/setupbook"
+                ? "active-here"
+                : "nav-link"
+            }
+            onMouseEnter={() => setSetupBook(true)}
+            onMouseLeave={() => setSetupBook(false)}>
+            < FaSwatchbook />
+            <span className="nav-name">Setup Book</span>
+            {(setupBook && toggleState) ||
+              (setupBook && collapse) ? (
+              <div className="sidenav-bubble">
+                <p>Setup Book</p>
+              </div>
+            ) : null}
+          </NavLink>}
+
+
+        {isSuperAdmin &&
+          <NavLink
+            to="/registeredusers"
+            className={
+              window.location.pathname === "/registeredusers"
+                ? "active-here"
+                : "nav-link"
+            }
+            onMouseEnter={() => setRegisteredUsers(true)}
+            onMouseLeave={() => setRegisteredUsers(false)}>
+            <FaUsers />
+            <span className="nav-name">Registered Users</span>
+            {(registeredUsers && toggleState) ||
+              (registeredUsers && collapse) ? (
+              <div className="sidenav-bubble">
+                <p>Registered Users</p>
+              </div>
+            ) : null}
+          </NavLink>}
+
         {/* <NavLink
           to="/allcustomersms"
           className={
@@ -127,6 +134,25 @@ const SideNavBar = () => {
               </div>
             )): null}
         </NavLink> */}
+
+        {isSupervisor && <NavLink
+          to="/teammembers"
+          className={
+            window.location.pathname === "/teammembers" ? "active-here" : "nav-link"
+          }
+          onMouseEnter={() => setTeamMembers(true)}
+          onMouseLeave={() => setTeamMembers(false)}>
+          < FaUsers />
+          <span className="nav-name">Team Members</span>
+          {(teamMembers && toggleState) ||
+            (teamMembers && collapse) ? (
+            <div className="sidenav-bubble">
+              <p>Team Members</p>
+            </div>
+          ) : null}
+        </NavLink>}
+
+
         <NavLink
           to="/report"
           className={

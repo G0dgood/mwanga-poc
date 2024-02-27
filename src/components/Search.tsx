@@ -2,7 +2,7 @@ import React from 'react';
 import { Form } from 'react-bootstrap';
 import { FaSearch } from 'react-icons/fa';
 
-const Search = ({ placeHolder, onChange, result }: any) => {
+const Search = ({ placeHolder, onChange, result, handleSearch }: any) => {
 
     return (
         <Form className='searchbox'>
@@ -11,7 +11,7 @@ const Search = ({ placeHolder, onChange, result }: any) => {
                     value={result}
                     onChange={onChange} />
 
-                <button type="button" className='search-icon-btn'>
+                <button type="button" className='search-icon-btn' onClick={handleSearch}>
                     <FaSearch />
                 </button>
             </div>

@@ -2,7 +2,9 @@ import { configureStore } from '@reduxjs/toolkit'
 import navSlice from '../features/SideNav/navSlice'
 import authSlice from '../features/Auth/authSlice'
 import lobReducer from '../features/Lob/LobSlice'
-import registrationSlice from '../features/Registration/registrationSlice' 
+import registrationSlice from '../features/Registration/registrationSlice'  
+import customerSlice from '../features/Customer/customerSlice'
+ 
  
  
  
@@ -14,7 +16,7 @@ export const store = configureStore({
     lob: lobReducer,
     auth: authSlice, 
     reg: registrationSlice, 
-   customer: customerService, 
+   customer: customerSlice, 
   },
 })
 

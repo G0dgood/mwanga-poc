@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import moment from "moment";
-
+import { getUserPrivileges } from "../hooks/auth";
+import { FaTimes } from "react-icons/fa";
 
 const CustomFilter = ({
   filtered,
@@ -10,8 +11,9 @@ const CustomFilter = ({
   setSelectedRadio,
   setEndDates,
   setStartDates,
+  handleCustomFilters
 }: any) => {
-
+  const { isAgent } = getUserPrivileges();
 
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
@@ -24,47 +26,47 @@ const CustomFilter = ({
   const yesterday = moment().subtract(1, "days").format("YYYY-MM-DD");
   const allTime = "2022-02-30";
 
-  // useEffect(() => {
-  //   if (selectedRadio === "All-time") {
-  //     setStartDate(allTime);
-  //     setEndDate(currentDate);
-  //   } else if (selectedRadio === "30-Days") {
-  //     setStartDate(thirtyDays);
-  //     setEndDate(currentDate);
-  //   } else if (selectedRadio === "7-Days") {
-  //     setStartDate(sevenDays);
-  //     setEndDate(currentDate);
-  //   } else if (selectedRadio === "Yesterday") {
-  //     setStartDate(yesterday);
-  //     setEndDate(yesterday);
-  //   } else if (selectedRadio === "Today") {
-  //     setStartDate(currentDate);
-  //     setEndDate(currentDate);
-  //   } else if (selectedRadio === "DateRange") {
-  //     setStartDate(moment(dateRangeStart)?.format("YYYY-MM-DD"));
-  //     setEndDate(moment(dateRangeEnd)?.format("YYYY-MM-DD"));
-  //   }
-  // }, [
-  //   selectedRadio,
-  //   dateRangeStart,
-  //   dateRangeEnd,
-  //   currentDate,
-  //   yesterday,
-  //   sevenDays,
-  //   thirtyDays,
-  // ]);
+  useEffect(() => {
+    if (selectedRadio === "All-time") {
+      setStartDate(allTime);
+      setEndDate(currentDate);
+    } else if (selectedRadio === "30-Days") {
+      setStartDate(thirtyDays);
+      setEndDate(currentDate);
+    } else if (selectedRadio === "7-Days") {
+      setStartDate(sevenDays);
+      setEndDate(currentDate);
+    } else if (selectedRadio === "Yesterday") {
+      setStartDate(yesterday);
+      setEndDate(yesterday);
+    } else if (selectedRadio === "Today") {
+      setStartDate(currentDate);
+      setEndDate(currentDate);
+    } else if (selectedRadio === "DateRange") {
+      setStartDate(moment(dateRangeStart)?.format("YYYY-MM-DD"));
+      setEndDate(moment(dateRangeEnd)?.format("YYYY-MM-DD"));
+    }
+  }, [
+    selectedRadio,
+    dateRangeStart,
+    dateRangeEnd,
+    currentDate,
+    yesterday,
+    sevenDays,
+    thirtyDays,
+  ]);
 
-  // const handleCustomFilter = (e) => {
-  //   e.preventDefault();
-  //   setDropFilter(false);
-  //   setEndDates(endDate);
-  //   setStartDates(startDate);
-  // };
+  const handleCustomFilter = (e: { preventDefault: () => void; }) => {
+    e.preventDefault();
+    setDropFilter(false);
+    setEndDates(endDate);
+    setStartDates(startDate);
+  };
 
-  // const handleCustomFilters = (e) => {
+  // const handleCustomFilters = (e: { preventDefault: () => void; }) => {
   //   e.preventDefault();
   //   const filteredData = filtered?.filter(
-  //     (item) =>
+  //     (item: { createdAt: moment.MomentInput; }) =>
   //       moment(item.createdAt)?.format("YYYY-MM-DD") >= startDate &&
   //       moment(item.createdAt)?.format("YYYY-MM-DD") <= endDate
   //   );
@@ -76,11 +78,9 @@ const CustomFilter = ({
     <div className="filter-dropdown">
       <form
         className="checkbox-grp"
-      // onSubmit={
-      //   userInfo?.role === "agent" ? handleCustomFilters : handleCustomFilter
-      // }
+        onSubmit={isAgent ? handleCustomFilter : handleCustomFilters}
       >
-        <i className="fas fa-times" onClick={() => setDropFilter(false)} />
+        < FaTimes onClick={() => setDropFilter(false)} />
         <p>Filter options:</p>
         <div className="checkbox-ctrl">
           <input
@@ -168,8 +168,8 @@ const CustomFilter = ({
             onChange={(e) => setDateRangeEnd(e.target.value)}
           />
         </div>
-        <div className="submit-filter">
-          <input type="submit" value="Filter" />
+        <div className="submit-filter mt-4" >
+          <button type="submit" className="btn"  >  Filter</button>
         </div>
       </form>
     </div>

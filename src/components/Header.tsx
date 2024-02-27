@@ -23,7 +23,7 @@ interface HeaderProps {
 }
 
 const Header = () => {
-  const { isSuperAdmin, isSupervisor, isMis } = getUserPrivileges();
+  const { isSuperAdmin, isSupervisor, isMis, isAgent } = getUserPrivileges();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [dropDown, setDropDown] = useState(false);
@@ -45,8 +45,6 @@ const Header = () => {
   useEffect(() => {
     dispatch(userprofile());
   }, [dispatch])
-
-
 
   const handleToggle = () => {
     dispatch(toggleSideNav());

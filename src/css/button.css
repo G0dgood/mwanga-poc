@@ -141,3 +141,21 @@ margin-top: 1rem;
 .table-container{
   overflow: auto;
 }
+
+.toast-crm-container{
+  display: flex;
+  justify-content: space-between; 
+  align-items: center;
+}
+.toast-crm-container-sub{
+  display: flex; 
+  align-items: center;
+  gap: 20px;
+}
+
+.btn-flex{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0px 20px !important;
+}

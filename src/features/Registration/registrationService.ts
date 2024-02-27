@@ -4,7 +4,7 @@ import createHttpService from '../../components/HttpService';
  // Registration
 const userRegistration = async (input: any) => {  
   	const HttpService = createHttpService();
-  const { data } = await HttpService.post(  '/api/v1/users/register',input) 
+  const { data } = await HttpService.post('/api/v1/users/register',input) 
   return data
 }
 
@@ -36,14 +36,21 @@ const getUserProfileById = async (id:any) => {
   return data
 }
 
+//   //Update Password
+// const adminUpdateUser = async (value: any) => { 
+//  const HttpService = createHttpService(); 
+//   const { data } = await HttpService.put( `/api/v1/users/${id}`,value)  
+//    return data
+// };
 
-// Reset  password
+// Admin Update User
 const adminUpdateUser = async (value: any) => {  
   const HttpService = createHttpService();
-  const {id ,newPassword} = value
-  const { data } = await HttpService.put(`/api/v1/users/${id}` ,value )  
+  const {id ,input} = value
+  const { data } = await HttpService.put(`/api/v1/users/${id}` ,input )  
   return data
 }
+
 // Reset  password
 const adminResetPassword = async (value: any) => {  
   const HttpService = createHttpService();
@@ -75,6 +82,7 @@ const agentByLOBAction = async (LOB: any ) => {
 
 
 const registrationSlice = { 
+  adminUpdateUser,
   userRegistration,
   getallReguser,
   getLoginUser,

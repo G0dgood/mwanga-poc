@@ -27,7 +27,7 @@ const BarChart = ({
   switchedOff,
   selectedDate,
   setSelectedDate,
-}) => {
+}: any) => {
   const data = {
     labels: [
       "Successful",
@@ -60,7 +60,7 @@ const BarChart = ({
     ],
   };
 
-  const options = {
+  const options: any = {
     responsive: true,
     plugins: {
       legend: false,
@@ -97,8 +97,8 @@ const BarChart = ({
       <Bar
         data={data}
         options={options}
-        selectedDate={selectedDate}
-        setSelectedDate={setSelectedDate}
+      // selectedDate={selectedDate}
+      // setSelectedDate={setSelectedDate}
       />
     </div>
   );

@@ -66,21 +66,22 @@ export const login = createAsyncThunk('auth/login', async (data, thunkAPI) => {
   try {
     return await authService.login(data)
 
-  } catch (error: any) {  
-    const message = (error.response && 
+  } catch (error: any) {   
+   const message =
+      (error.response && 
         error.response.data && 
-        error.response.data.message) ||error.response.data.errors[0].message
+        error.response.data.message) ||
       error.message ||
-      error.toString()  
+      error.toString() 
     return thunkAPI.rejectWithValue(message)
   }
 })
 
  
-// ViewUserByID
-export const ViewUserByID = createAsyncThunk('auth/ViewUserByID', async (  data,thunkAPI) => {
+//Get User Profile Id
+export const getUserProfileId = createAsyncThunk('auth/getUserProfileId', async (  data,thunkAPI) => {
   try {
-    return await authService.ViewUserByID(data)
+    return await authService.getUserProfileId(data)
   } catch (error:any) {
     const message =
       (error.response && 
@@ -285,17 +286,17 @@ export const authSlice = createSlice({
        state.datalogout = [] 
      })
       
-// View User By ID
-      .addCase(ViewUserByID.pending, (state:any, action) => {
+// get User Profile Id
+      .addCase(getUserProfileId.pending, (state:any, action) => {
         state.isLoadingID = true
         state.isErrorID = false  
       }) 
-      .addCase(ViewUserByID.fulfilled, (state ,action) => {
+      .addCase(getUserProfileId.fulfilled, (state ,action) => {
              state.isLoadingID = false
         state.isSuccessID = true
         state.dataID = action.payload 
       }) 
-     .addCase(ViewUserByID.rejected, (state:any, action) => {
+     .addCase(getUserProfileId.rejected, (state:any, action) => {
         state.isLoadingID  = false
         state.isErrorID  = true
         state.messageID  = action.payload

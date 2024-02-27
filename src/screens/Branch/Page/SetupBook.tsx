@@ -28,7 +28,7 @@ const SetupBook = () => {
     return localStorage.getItem("rowsPerPage") || "10";
   });
 
-  console.log('getSetupBookdata', getSetupBookdata)
+
 
 
   useEffect(() => {
@@ -45,16 +45,31 @@ const SetupBook = () => {
     }
   }, [dispatch, getSetupBookisError, getSetupBookmessage]);
 
-  // useEffect(() => {
-  //   setData(baseData?.data);
-  //   setFilterd(baseData?.data);
-
-  //   // --- Set state of collapseNav to localStorage on pageLoad --- //
-  //   localStorage.setItem("rowsPerPage", entriesPerPage);
-  // }, [entriesPerPage, baseData]);
 
 
-  const results = getSetupBookdata?.filter((obj: { loanId: string; }) => obj?.loanId?.toLowerCase().includes(result));
+
+
+  const [searchQuery, setSearchQuery] = useState('');
+
+  // Handler for search input changes
+  const handleSearchInputChange = (e: { target: { value: React.SetStateAction<string>; }; }) => {
+    setSearchQuery(e.target.value);
+  };
+
+  // Apply search filter to the customer list
+  const filteredCustomers = getSetupBookdata?.customers?.filter((customer: { loanId: any; email: any; phone1: any; phone2: any; guarantor_name: any; }) => {
+    const searchTerms = [
+      customer?.loanId,
+      customer?.email,
+      customer?.phone1,
+      customer?.phone2,
+      customer?.guarantor_name
+    ];
+    const lowerCaseQuery = searchQuery.toLowerCase();
+    return searchTerms.some(term => term?.toLowerCase().includes(lowerCaseQuery));
+  });
+  const results = getSetupBookdata?.customers?.filter((obj: { loanId: string; }) => obj?.loanId?.toLowerCase().includes(result));
+
 
 
   const handleChangeFilter = (e: { target: { value: React.SetStateAction<string>; }; }) => {
@@ -76,8 +91,7 @@ const SetupBook = () => {
         <div className="page-features">
           <Search
             placeHolder={"Search Loan ID"}
-            value={result}
-            onChange={handleChangeFilter}
+            value={searchQuery} onChange={handleSearchInputChange}
           />
           <EntriesPerPage
             data={data}
@@ -105,23 +119,23 @@ const SetupBook = () => {
               </tr>
             </thead>
             <tbody>
-              {false ? (
+              {getSetupBookisLoading ? (
                 <TableFetch colSpan={"10"} />
-              ) : results?.length === 0 || results == null ? (
+              ) : filteredCustomers?.length === 0 || filteredCustomers == null ? (
                 <NoRecordFound colSpan={"10"} />
               ) : (
-                results?.map((user: any) => (
+                filteredCustomers?.map((user: any) => (
                   <tr key={user._id}>
-                    <td>{user.loanId}</td>
-                    <td>{moment(user.disbursedDate).format("DD-MM-YYYY")}</td>
-                    <td>{user.fullname}</td>
-                    <td>{user.phoneNumber}</td>
-                    <td>{user.email}</td>
-                    <td>{user.bankName}</td>
-                    <td>{user.amountDisbursed}</td>
-                    <td>{user.amountRepaid}</td>
-                    <td>{user.amountDelinquent}</td>
-                    <td>{user.daysDelinquent}</td>
+                    <td>{!user?.loanId ? "n/a" : user?.loanId}</td>
+                    <td>{moment(user?.disbursedDate).format("DD-MM-YYYY")}</td>
+                    <td>{!user?.customer_name ? "n/a" : user?.customer_name}</td>
+                    <td>{user?.phone1}</td>
+                    <td>{user?.email}</td>
+                    <td>{user?.bank_name}</td>
+                    <td>{user?.amount_disbursed}</td>
+                    <td>{user?.amount_repaid}</td>
+                    <td>{user?.amount_delinquent}</td>
+                    <td>{user?.days_delinquent}</td>
                   </tr>
                 ))
               )}
@@ -140,3 +154,7 @@ const SetupBook = () => {
   );
 };
 export default SetupBook;
+
+
+
+

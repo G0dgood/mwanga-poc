@@ -9,6 +9,10 @@ import { FaPhone } from "react-icons/fa";
 import BottomNavigation from "../../../../components/BottomNavigation";
 import { useAppDispatch, useAppSelector } from "../../../../store/useStore";
 import { userprofile } from "../../../../features/Auth/authSlice";
+import { toast } from "react-toastify";
+import { customId } from "../../../../components/TableOptions";
+import { getUserPrivileges } from "../../../../hooks/auth";
+import { getAgentResponses, getAllResponses } from "../../../../features/Customer/customerSlice";
 
 interface DashboardProps {
   collapseNav: boolean;
@@ -17,14 +21,18 @@ interface DashboardProps {
 const Dashboard = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const { isSuperAdmin, isSupervisor, isMis, isAgent } = getUserPrivileges();
   const { userprofiledata } = useAppSelector((state: any) => state.auth);
+  const { alldata, allisError, allmessage, allisLoading } = useAppSelector((state: any) => state.customer);
+  const { getAgentResponsesdata, getAgentResponsesisError, getAgentResponsesmessage, getAgentResponsesisLoading } = useAppSelector((state: any) => state.customer);
+
+
 
 
 
   useEffect(() => {
     dispatch(userprofile());
-  }, [])
-
+  }, [dispatch])
 
 
   const [selectedDate, setSelectedDate] = useState("Today");
@@ -35,21 +43,10 @@ const Dashboard = () => {
   const sevenDays = moment().subtract(7, "days").format("YYYY-MM-DD");
   const yesterday = moment().subtract(1, "days").format("YYYY-MM-DD");
 
-  const [data, setData] = useState([]);
-
+  const [data, setData] = useState<any>([]);
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
 
-
-
-  // useEffect(() => {
-  //   const getResponsesAction = (lobKey, agentAction, allAction) => {
-  //     if (userInfo?.role === "agent") {
-  //       dispatch(agentAction());
-  //     } else {
-  //       dispatch(allAction(fromDate, toDate));
-  //     }
-  //   };
 
 
 
@@ -72,43 +69,66 @@ const Dashboard = () => {
     }
   }, [selectedDate, currentDate, sevenDays, yesterday]);
 
-  //  useEffect(() => { 
-  //        const filterAllData = allResponses?.data?.filter(
-  //          (obj) =>
-  //            moment(obj.createdAt).format("YYYY-MM-DD") >= startDate &&
-  //            moment(obj.createdAt).format("YYYY-MM-DD") <= endDate
-  //        );
-  //        setData(filterAllData);
-  //      } else if (userInfo.role === "agent") {
-  //        const filterUserData = userResponses?.data?.filter(
-  //          (obj) =>
-  //            moment(obj.createdAt).format("YYYY-MM-DD") >= startDate &&
-  //            moment(obj.createdAt).format("YYYY-MM-DD") <= endDate
-  //        );
-  //        setData(filterUserData);
-  //      }
+  useEffect(() => {
+    if (isSuperAdmin || isSupervisor || isMis) {
+      const filterAllData = alldata?.responses?.filter(
+        (obj: { createdAt: moment.MomentInput; }) =>
+          moment(obj.createdAt).format("YYYY-MM-DD") >= startDate &&
+          moment(obj.createdAt).format("YYYY-MM-DD") <= endDate);
+      setData(filterAllData);
 
-  // }, [   startDate,  endDate ]);
+    } else if (isAgent) {
+      const filterUserData = getAgentResponsesdata?.responses?.filter(
+        (obj: { createdAt: moment.MomentInput; }) =>
+          moment(obj.createdAt).format("YYYY-MM-DD") >= startDate &&
+          moment(obj.createdAt).format("YYYY-MM-DD") <= endDate
+      );
+      setData(filterUserData);
+    }
 
-  // --- Setting Up Dashboard Overview --- //
-  // const [succDisp, setSuccDisp] = useState([]);
-  // const [failDisp, setFailDisp] = useState([]);
+  }, [alldata?.responses, endDate, getAgentResponsesdata.data, getAgentResponsesdata?.responses, isAgent, isMis, isSuperAdmin, isSupervisor, startDate]);
 
-  //  useEffect(() => {
 
-  //      setSuccDisp(
-  //        data?.filter((obj) => {
-  //          return obj?.callAnswered === "Yes";
-  //        })
-  //      );
-  //      setFailDisp(
-  //        data?.filter((obj) => {
-  //          return obj?.callAnswered === "No";
-  //        })
-  //      );
-  //    }  
 
-  //   }, [   data]);
+  // --- Setting Up Dashboard Overview-- - //
+  const [succDisp, setSuccDisp] = useState([]);
+  const [failDisp, setFailDisp] = useState([]);
+
+  useEffect(() => {
+
+    setSuccDisp(
+      data?.filter((obj: { disposition: string; }) => {
+        return obj?.disposition === "Connected";
+      })
+    );
+    setFailDisp(
+      data?.filter((obj: { disposition: string; }) => {
+        return obj?.disposition === "Not answered" ||
+          obj?.disposition === "Switched off" ||
+          obj?.disposition === "Unreachable" ||
+          obj?.disposition === "Hung up";
+      }) || []
+    );
+  }, [data]);
+
+  useEffect(() => {
+    if (allisError) {
+      toast.error(allmessage, { toastId: customId });
+    }
+  }, [dispatch, allisError, allmessage]);
+
+
+  useEffect(() => {
+    const datas = { startDates: fromDate, endDates: toDate };
+
+    if (isAgent) {
+      dispatch(getAgentResponses());
+    } else {
+      // @ts-ignore
+      dispatch(getAllResponses(datas));
+    }
+  }, [dispatch, fromDate, isAgent, navigate, toDate]);
+
 
 
 
@@ -126,21 +146,21 @@ const Dashboard = () => {
             <div className="total-calls">
               < FaPhone className="ifa" />
             </div>
-            <span className="call-score">0</span>
+            <span className="call-score">{!data?.length ? 0 : data?.length}</span>
             <span className="call-text">Total calls</span>
           </div>
           <div className="call-cards">
             <div className="successful-calls">
               < FaPhone />
             </div>
-            <span className="call-score">0</span>
+            <span className="call-score">{!succDisp?.length ? 0 : succDisp?.length}</span>
             <span className="call-text">Succesful calls</span>
           </div>
           <div className="call-cards">
             <div className="failed-calls">
               < FaPhone className="ifa" />
             </div>
-            <span className="call-score">0</span>
+            <span className="call-score">{!failDisp?.length ? 0 : failDisp?.length}</span>
             <span className="call-text">Failed calls</span>
           </div>
         </div>

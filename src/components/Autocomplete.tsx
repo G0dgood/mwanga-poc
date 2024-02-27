@@ -1,8 +1,9 @@
 import { useState, useEffect, SetStateAction } from "react";
 import suggestions from "./suggestions";
 import { useSelector } from "react-redux";
+import { userInfo } from "../hooks/config";
 
-const AutoComplete = ({ setComment }: any) => {
+const AutoComplete = ({ setautoComment }: any) => {
 
   const [filteredSuggestions, setFilteredSuggestions] = useState([]);
   const [activeSuggestionIndex, setActiveSuggestionIndex] = useState(0);
@@ -11,9 +12,9 @@ const AutoComplete = ({ setComment }: any) => {
 
   useEffect(() => {
     if (input) {
-      setComment(input);
+      setautoComment(input);
     }
-  }, [input, setComment]);
+  }, [input, setautoComment]);
 
   const onChange = (e: { target: { value: SetStateAction<string>; }; }) => {
     const userInput: any = e.target.value;
@@ -56,7 +57,7 @@ const AutoComplete = ({ setComment }: any) => {
     ) : (
       <div className="no-suggestions">
         <em>
-          {/* `No suggestions for you {userInfo?.firstname} , you're on your own!` */}
+          `No suggestions for you {userInfo?.firstname} , you're on your own!`
         </em>
       </div>
     );

@@ -49,7 +49,6 @@ const CreateNewUserModal = () => {
 
 	const createUserHandler = (e: { preventDefault: () => void; }) => {
 		e.preventDefault();
-		// const value: any = values;
 		// @ts-ignore 
 		dispatch(userRegistration(input))
 	}
@@ -96,23 +95,7 @@ const CreateNewUserModal = () => {
 				<ModalHeader setShow={setShow} headerTitle={"Registration"} />
 				<Modal.Body>
 					<form onSubmit={createUserHandler}>
-						{/* {errorRegister && (
-							<Toast
-								show={showToast}
-								onClose={() => setShowToast(false)}
-								delay={6000}
-								autohide>
-								<Toast.Body>
-									<span>
-										<i className="fas fa-exclamation-circle" />
-									</span>
-									<p>{errorRegister}</p>
-									<span onClick={() => setShowToast(false)}>
-										<i className="fas fa-times" />
-									</span>
-								</Toast.Body>
-							</Toast>
-						)} */}
+
 						<div className="create-user-form-grid">
 							<div className="form-ctrl">
 								<label>First name</label>
@@ -225,7 +208,7 @@ const CreateNewUserModal = () => {
 
 						<div className="disposition-btn">
 							<button
-								className='btn mt-5'
+								className='btn-upload mt-5'
 								type="submit"
 								disabled={isLoading && true}
 							>
