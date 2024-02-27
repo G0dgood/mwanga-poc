@@ -132,7 +132,6 @@ const FillDisposition = ({
             <label>Call Back Date</label>
             <input
               type="date"
-              required
               value={input?.callBackDate}
               onChange={(e) => handleOnChange("callBackDate", e.target.value)}
             />
@@ -141,7 +140,7 @@ const FillDisposition = ({
             <label>Promise To Pay Date</label>
             <input
               type="date"
-              required
+              required={input?.promiseToPay === "true"}
               value={input?.promiseToPayDate}
               onChange={(e) => handleOnChange("promiseToPayDate", e.target.value)}
             />
@@ -150,7 +149,7 @@ const FillDisposition = ({
             <label>Promise To Pay Amount</label>
             <input
               type="number"
-              required
+              required={input?.promiseToPay === "true"}
               value={input?.promiseToPayAmount}
               onChange={(e) => handleOnChange("promiseToPayAmount", e.target.value)}
             />
@@ -161,8 +160,8 @@ const FillDisposition = ({
               value={input?.reasonForDelinquency}
               onChange={(e) => handleOnChange("reasonForDelinquency", e.target.value)}
             >
+              <option>Please select...</option>
               {[
-                "Please select...",
                 "Incovenient mode of payment",
                 "Financial issues",
                 "Sick/Hospitalized",

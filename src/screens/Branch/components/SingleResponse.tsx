@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import moment from "moment";
+import DispositionTrend from '../Page/Dashboard/DispositionTrend';
 
 const SingleResponse = ({ data, prevIndex }: any) => {
   const responses = data?.responses;
@@ -30,8 +31,8 @@ const SingleResponse = ({ data, prevIndex }: any) => {
       </div>
       <div className="previous-disp-grid">
         <div>
-          <p>Call Answered</p>
-          <p>{singleResponse.callAnswered}</p>
+          <p>Call Disposition</p>
+          <p>{singleResponse.disposition}</p>
         </div>
         <div>
           <p>Right Party Contacted</p>
@@ -47,7 +48,7 @@ const SingleResponse = ({ data, prevIndex }: any) => {
         </div>
         <div>
           <p>Commitment Amount</p>
-          <p>{singleResponse.commitmentAmount}</p>
+          <p>{singleResponse.promiseToPayAmount}</p>
         </div>
         <div>
           <p>Reason For Delinquency</p>

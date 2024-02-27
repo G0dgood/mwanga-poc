@@ -200,13 +200,13 @@ const AgentReport = () => {
 										<td>{item?.rightPartyContacted}</td>
 										<td>{item?.promiseToPay}</td>
 										<td>{moment(item?.promiseToPayDate).format("DD-MMM-YY")}</td>
-										<td> ,,</td>
+										<td>{item?.promiseToPayAmount}  </td>
 										<td>{moment(item?.callBackDate).format("DD-MMM-YY")}</td>
 										<td>{item?.reasonForDelinquency}</td>
 										<td>{item?.prefferedMethods}</td>
 										<td>{item?.autoComment}</td>
 										<td>{item?.comment}</td>
-										<td>,,</td>
+										<td>{moment(item?.createdAt).format("DD-MMM-YY")}</td>
 										<td>{item?.user?.userId}</td>
 										<td>{item?.customer?.extension_expiry_timestamp}</td>
 									</tr>

@@ -29,7 +29,7 @@ table th {
 display: flex;
 justify-content: flex-end;
 gap: 20px;
-
+margin-top: 1rem;
  
 }
 

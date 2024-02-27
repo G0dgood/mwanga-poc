@@ -136,6 +136,7 @@ const Header = () => {
               <  FaUser />
             ) : (
               <img
+                crossOrigin="anonymous"
                 src={baseUrl + "/" + userprofiledata?.user?.profilePic}
                 alt="Profile Pic"
               />

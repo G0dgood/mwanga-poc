@@ -57,7 +57,7 @@ const ReportDownloader = ({ data }) => {
         right_party_contacted: item.rightPartyContacted,
         promise_to_pay: item.promiseToPay,
         ptp_date: moment(item?.promiseToPayDate).format("DD-MMM-YY"),
-        commitmentamount: item?.commitmentamount,
+        commitmentamount: item?.promiseToPayAmount,
         callback_date: moment(item?.callback_date).format("DD-MMM-YY"),
         reason_for_delinquency: item?.reasonForDelinquency,
         preferred_method: item?.prefferedMethods,
