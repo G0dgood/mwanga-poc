@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import moment from "moment";
 import { getUserPrivileges } from "../hooks/auth";
-import { FaTimes } from "react-icons/fa";
 import ModalHeader from "./Modal/ModalHeader";
 
 const CustomFilter = ({
@@ -19,8 +18,7 @@ const CustomFilter = ({
 }: any) => {
   const { isAgent } = getUserPrivileges();
 
-  // const [startDate, setStartDate] = useState("");
-  // const [endDate, setEndDate] = useState("");
+
   const [dateRangeStart, setDateRangeStart] = useState("");
   const [dateRangeEnd, setDateRangeEnd] = useState("");
 

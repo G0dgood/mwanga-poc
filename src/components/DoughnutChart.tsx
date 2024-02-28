@@ -33,7 +33,7 @@ const DoughnutChart = ({ chartData, selectedDate, setSelectedDate }: any) => {
   const [forthChart, setForthChart] = useState("Unreachable");
   const [fifthChart, setFifthChart] = useState("Hung up");
 
-  console.log('secondParam?.length', secondParam?.length)
+
 
   useEffect(() => {
     setFirstChart("Connected");

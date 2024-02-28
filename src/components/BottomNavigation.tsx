@@ -6,8 +6,6 @@ import { FaBook, FaPoll, FaSwatchbook, FaTachometerAlt, FaUsers } from 'react-ic
 const BottomNavigation = () => {
   const { isSuperAdmin, isSupervisor, isMis, isAgent } = getUserPrivileges();
 
-
-
   const { pathname } = useLocation();
 
   return (
@@ -60,7 +58,7 @@ const BottomNavigation = () => {
             <h4 className="footerOption_title">Setup Book</h4>
           </div>
         }
-        {(isSupervisor || isSuperAdmin) &&
+        {(isSupervisor) &&
           <div className={pathname === "/teammembers" ? 'footerOption-active' : "footerOption"}>
             <NavLink to="/teammembers" className={({ isActive }) =>
               [
