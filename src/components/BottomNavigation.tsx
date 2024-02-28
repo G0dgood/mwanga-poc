@@ -62,7 +62,7 @@ const BottomNavigation = () => {
         }
 
 
-        {(isSupervisor || isSuperAdmin || isMis) &&
+        {(isSuperAdmin) &&
           <div className={pathname === "/registeredusers" ? 'footerOption-active' : "footerOption"}>
             <NavLink to="/registeredusers" className={({ isActive }) =>
               [

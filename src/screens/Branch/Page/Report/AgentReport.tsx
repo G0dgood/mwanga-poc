@@ -64,7 +64,7 @@ const AgentReport = () => {
 				data?.user?.userId?.toLowerCase()?.includes(result) ||
 				data?.customer?.loan_id?.toLowerCase()?.includes(result)
 		);
-		console.log('results', results)
+
 		setData(results);
 	}, [result, filter]);
 
@@ -222,7 +222,6 @@ const AgentReport = () => {
 					entriesPerPage={entriesPerPage}
 					Total={"Reports"}
 				/>
-
 			</div>
 		</div>
 	);

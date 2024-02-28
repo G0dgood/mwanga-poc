@@ -25,6 +25,7 @@ const UploadCustomerBase = () => {
 	const [jsonData, setJSONData] = useState<any>([])
 
 
+
 	const submitHandler = () => {
 		const vaules = { jsonData, setProgress }
 		// @ts-ignore

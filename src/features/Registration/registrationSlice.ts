@@ -54,6 +54,12 @@ const initialState = {
   rolesisSuccess: false,
   rolesisLoading: false, 
   rolesmessage: '', 
+
+  getTeammembersdata:   [],
+  getTeammembersisError: false,
+  getTeammembersisSuccess: false,
+  getTeammembersisLoading: false, 
+  getTeammembersmessage: '', 
 }
 
  
@@ -178,6 +184,21 @@ export const getsupervisors = createAsyncThunk('register/getsupervisors', async 
   }
 })
  
+// Get Team members
+export const getTeammembers = createAsyncThunk('register/getTeammembers', async (  data,thunkAPI) => {
+  try { 
+    return await registrationService.getTeammembers(data)
+  } catch (error:any) {
+    const message =
+      error.response &&
+        error.response.data ?
+        error?.response?.data?.errors[0]?.message :
+        error?.message  
+    
+    return thunkAPI.rejectWithValue(message)
+  }
+})
+ 
 
 
 
@@ -224,7 +245,12 @@ export const registrationSlice = createSlice({
       state.rolesisLoading = false
       state.rolesisSuccess = false  
       state.rolesisError = false
-      state.rolesmessage= ''
+      state.rolesmessage = ''
+      
+      state.getTeammembersisLoading = false
+      state.getTeammembersisSuccess = false  
+      state.getTeammembersisError = false
+      state.getTeammembersmessage= ''
       
     },
     
@@ -352,6 +378,21 @@ export const registrationSlice = createSlice({
         state.getsupervisorsisError = true
         state.getsupervisorsmessage = action.payload
         state.getsupervisorsdata = [] 
+      })
+
+    .addCase(getTeammembers.pending, (state) => {
+        state.getTeammembersisLoading = true 
+      })
+      .addCase(getTeammembers.fulfilled, (state:any, action) => {
+        state.getTeammembersisLoading = false
+        state.getTeammembersisSuccess = true
+        state.getTeammembersdata = action.payload 
+      })
+      .addCase(getTeammembers.rejected, (state:any, action) => {
+        state.getTeammembersisLoading = false
+        state.getTeammembersisError = true
+        state.getTeammembersmessage = action.payload
+        state.getTeammembersdata = [] 
       })
       
   },

@@ -36,13 +36,14 @@ const getUserProfileById = async (id:any) => {
   return data
 }
 
-//   //Update Password
-// const adminUpdateUser = async (value: any) => { 
-//  const HttpService = createHttpService(); 
-//   const { data } = await HttpService.put( `/api/v1/users/${id}`,value)  
-//    return data
-// };
+// Get Team members
+const getTeammembers = async (id:any) => {  
+  const HttpService = createHttpService();
+  const { data } = await HttpService.post( `/api/v1/auth/getteam`,	{ id:id}) 
+  return data
+}
 
+ 
 // Admin Update User
 const adminUpdateUser = async (value: any) => {  
   const HttpService = createHttpService();
@@ -91,7 +92,8 @@ const registrationSlice = {
   edituser,
   getsupervisors,
   agentByLOBAction,
-  getallRoles
+  getallRoles,
+  getTeammembers
 }
 
 export default registrationSlice

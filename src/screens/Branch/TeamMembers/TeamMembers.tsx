@@ -16,10 +16,14 @@ import BottomNavigation from "../../../components/BottomNavigation";
 import { userInfo } from "../../../hooks/config";
 import { getUserPrivileges } from "../../../hooks/auth";
 import TableLoader from "../../../components/TableLoader";
+import { useAppDispatch, useAppSelector } from "../../../store/useStore";
+import { getTeammembers } from "../../../features/Registration/registrationSlice";
 
 const TeamMembers = () => {
+	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 	const { isSupervisor } = getUserPrivileges();
+	const { getTeammembersdata, getTeammembersisError, getTeammembersmessage, getTeammembersisLoading } = useAppSelector((state: any) => state.reg);
 	const [data, setData] = useState([]);
 	const [filtered, setFilterd] = useState([]);
 	const [result, setResult] = useState("");
@@ -36,8 +40,14 @@ const TeamMembers = () => {
 		return localStorage.getItem("rowsPerPage") || "10";
 	});
 
+	// console.log('getTeammembersdata', getTeammembersdata)
 
 
+	useEffect(() => {
+		// @ts-ignore
+		dispatch(getTeammembers(user?.id));
+
+	}, [dispatch, user?.id]);
 
 
 	useEffect(() => {
@@ -151,7 +161,7 @@ const TeamMembers = () => {
 
 	const [displayUsers, setDisplayUsers] = useState([]);
 
-	console.log('displayUsers', data)
+
 
 	return (
 		<div id="screen-wrapper">
@@ -266,3 +276,4 @@ const TeamMembers = () => {
 };
 
 export default TeamMembers;
+

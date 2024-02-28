@@ -84,7 +84,6 @@ const Report = () => {
 
 
 	useEffect(() => {
-		setData(alldata?.responses);
 		setFilterd(alldata?.responses);
 		setFilter(alldata?.responses);
 
@@ -210,10 +209,10 @@ const Report = () => {
 						<tbody>
 							{allisLoading ? (
 								<TableFetch colSpan={15} />
-							) : filter?.length === 0 || filter == null ? (
+							) : data?.length === 0 || data == null ? (
 								<NoRecordFound colSpan={19} />
 							) : (
-								filter?.map((item: any) => (
+								data?.map((item: any) => (
 									<tr key={item._id}>
 										<td>{item?.user?.userId}</td>
 										<td>{item?.customer?.campaign}</td>

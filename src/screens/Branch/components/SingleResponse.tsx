@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import moment from "moment";
-import DispositionTrend from '../Page/Dashboard/DispositionTrend';
 
 const SingleResponse = ({ data, prevIndex }: any) => {
   const responses = data?.responses;

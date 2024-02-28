@@ -78,7 +78,6 @@ const ReportDownloader = ({ data }) => {
       headers={headers}
       filename={"Disposition Report.csv"}>
       Download
-      {/* <FiArrowDownCircle /> */}
     </CSVLink>
   );
 };

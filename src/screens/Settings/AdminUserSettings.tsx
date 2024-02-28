@@ -37,7 +37,7 @@ const AdminUserSettings = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const [input, setInput] = useState<any>({
+  const [input, setInput] = useState({
     userProfileId: "",
     role: "",
     firstname: "",
@@ -296,8 +296,9 @@ const AdminUserSettings = () => {
                       <label className="toggle-switch">
                         <input
                           type="checkbox"
-                          value={input?.isActive}
-                          onChange={(e) => handleOnChange("isActive", e.target.value)}
+                          // @ts-ignore
+                          checked={input?.isActive}
+                          onChange={(e) => handleOnChange("isActive", e.target.checked)}
                         />
                         <span className="slider round"></span>
                       </label>
