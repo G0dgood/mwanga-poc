@@ -182,10 +182,12 @@
   .people {
       font-size: 100px;
       display: inline-block;
+						white-space: nowrap;
     }
 
     .people span {
       display: inline-block;
+				 white-space: nowrap;
     }
 				
   .people2 {
