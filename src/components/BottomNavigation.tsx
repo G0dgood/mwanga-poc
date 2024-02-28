@@ -60,6 +60,22 @@ const BottomNavigation = () => {
             <h4 className="footerOption_title">Setup Book</h4>
           </div>
         }
+        {(isSupervisor || isSuperAdmin) &&
+          <div className={pathname === "/teammembers" ? 'footerOption-active' : "footerOption"}>
+            <NavLink to="/teammembers" className={({ isActive }) =>
+              [
+                "nav-link",
+                isActive ? "active" : null,
+              ]
+                .filter(Boolean)
+                .join(" ")
+            }  >
+
+              <FaUsers size={25} className="footerOption_icon" />
+            </NavLink>
+            <h4 className="footerOption_title">Team Members</h4>
+          </div>
+        }
 
 
         {(isSuperAdmin) &&

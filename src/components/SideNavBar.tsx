@@ -5,7 +5,7 @@ import { useIsMobile } from "./resize";
 import { useAppSelector } from "../store/useStore";
 import { FaTachometerAlt, FaSwatchbook, FaBook, FaUsers, FaPoll } from "react-icons/fa";
 import { getUserPrivileges } from "../hooks/auth";
-import { FiUsers } from "react-icons/fi";
+
 
 
 
@@ -75,7 +75,7 @@ const SideNavBar = () => {
         </NavLink>}
 
 
-        {isSuperAdmin &&
+        {(isSuperAdmin || isSupervisor) &&
           <NavLink
             to="/setupbook"
             className={

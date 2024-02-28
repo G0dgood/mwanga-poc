@@ -26,7 +26,7 @@ const logout = async () => {
 const userprofile = async ( ) => {
   const HttpService = createHttpService(); 
   const { data } = await HttpService.get(`/api/v1/auth/profile`)  
-  
+   localStorage.setItem("mwangauserDetails", JSON.stringify(data.user));
    return data
 };
   // View user by ID
@@ -45,9 +45,9 @@ const forgetPassword = async (email: any) => {
 };
 
   //Update Password
-const updatePassword = async (value: any) => { 
+const updatePassword = async (newPassword: any) => { 
  const HttpService = createHttpService(); 
-  const { data } = await HttpService.put( `/api/v1/auth/updatepassword`,value)  
+  const { data } = await HttpService.put( `/api/v1/auth/updatepassword`,newPassword)  
    return data
 };
   //Update Password

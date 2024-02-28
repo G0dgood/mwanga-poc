@@ -14,8 +14,8 @@ const UserSettings = () => {
   const userInfo = useAppSelector((state: { auth: any; }) => state.auth)
   const { userprofiledata } = useAppSelector((state: any) => state.auth);
   const { user: data } = userprofiledata;
-  const { profiledata, profileisLoading, profilemessage, profileisError, profileisSuccess } = useAppSelector((state: any) => state.auth);
-  const { resetdata, resetisLoading, resetmessage, resetisError, resetisSuccess } = useAppSelector((state: any) => state.auth);
+  const { profileisLoading, profilemessage, profileisError, profileisSuccess } = useAppSelector((state: any) => state.auth);
+  const { resetisLoading, resetmessage, resetisError, resetisSuccess } = useAppSelector((state: any) => state.auth);
 
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [profilePic, setProfilePic] = useState("");
@@ -92,9 +92,12 @@ const UserSettings = () => {
     if (input.newPassword !== confirmPassword) {
       toast.error("Passwords do not match", { toastId: customId });
     } else {
-      const value = { newPassword: input.newPassword }
+      const newPassword = {
+        "currentPassword": input.currentPassword,
+        "newPassword": input.newPassword
+      };
       // @ts-ignore
-      dispatch(updatePassword(value)
+      dispatch(updatePassword(newPassword)
       );
     }
   };
@@ -319,10 +322,10 @@ const UserSettings = () => {
                   </div>
                   <button
                     className="btn"
-                    disabled={profileisLoading && true}
+                    disabled={resetisLoading && true}
                     type="submit"
                     value="Update">
-                    {profileisLoading ? "Updating..." : "Update"}
+                    {resetisLoading ? "Updating..." : "Update"}
                   </button>
                 </form>
               </Tab>

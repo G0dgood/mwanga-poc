@@ -16,14 +16,11 @@ import BottomNavigation from "../../../components/BottomNavigation";
 import { userInfo } from "../../../hooks/config";
 import { getUserPrivileges } from "../../../hooks/auth";
 import TableLoader from "../../../components/TableLoader";
-import { useAppDispatch, useAppSelector } from "../../../store/useStore";
-import { getTeammembers } from "../../../features/Registration/registrationSlice";
+
 
 const TeamMembers = () => {
-	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 	const { isSupervisor } = getUserPrivileges();
-	const { getTeammembersdata, getTeammembersisError, getTeammembersmessage, getTeammembersisLoading } = useAppSelector((state: any) => state.reg);
 	const [data, setData] = useState([]);
 	const [filtered, setFilterd] = useState([]);
 	const [result, setResult] = useState("");
@@ -31,7 +28,7 @@ const TeamMembers = () => {
 	const [getUsersErr, setGetUsersErr] = useState(null);
 	const [showToast, setShowToast] = useState(false);
 	// @ts-ignore
-	const user = JSON.parse(localStorage.getItem("mwanga"));
+	const user = JSON?.parse(localStorage.getItem("mwangauserDetails"));;
 
 	const [selectedSup, setSelectedSupervisor] = useState(user?.id);
 	const [onlySupervisors, setOnlySupervisors] = useState<any>([]);
@@ -40,14 +37,10 @@ const TeamMembers = () => {
 		return localStorage.getItem("rowsPerPage") || "10";
 	});
 
-	// console.log('getTeammembersdata', getTeammembersdata)
 
 
-	useEffect(() => {
-		// @ts-ignore
-		dispatch(getTeammembers(user?.id));
 
-	}, [dispatch, user?.id]);
+
 
 
 	useEffect(() => {
@@ -68,10 +61,7 @@ const TeamMembers = () => {
 						},
 					};
 					const res = await axios.post(
-						baseUrl + "/api/v1/auth/getteam",
-						{ id: !selectedSup ? user?.id : selectedSup },
-						config
-					);
+						baseUrl + "/api/v1/auth/getteam", { id: !selectedSup ? user?.id : selectedSup }, config);
 					setData(res?.data?.users);
 					setFilterd(res?.data?.users);
 					setIsLoading(false);
@@ -92,42 +82,7 @@ const TeamMembers = () => {
 		}
 	}, [isSupervisor, navigate, selectedSup, user?.id]);
 
-	// const fetchData = async () => {
-	// 	try {
-	// 		setIsLoading(true);
-	// 		const config = {
-	// 			headers: {
-	// 				"Content-Type": "application/json",
-	// 				Authorization: `Bearer ${userInfo.token}`,
-	// 			},
-	// 		};
-	// 		const res = await axios.post(
-	// 			baseUrl + "/api/v1/auth/getteam",
-	// 			{ id: selectedSup },
-	// 			config
-	// 		);
-	// 		setData(res?.data?.users);
-	// 		setFilterd(res?.data?.users);
-	// 		setIsLoading(false);
-	// 		setShowToast(false);
-	// 	} catch (error: any) {
-	// 		setShowToast(true);
-	// 		setGetUsersErr(
-	// 			error.response && error.response.data.message
-	// 				? error.response.data.message
-	// 				: error.message
-	// 		);
-	// 		setIsLoading(false);
-	// 	}
-	// };
 
-	// useEffect(() => {
-	// 	if (isSupervisor) {
-	// 		fetchData();
-	// 	} else {
-	// 		navigate("/");
-	// 	}
-	// }, [isSupervisor, navigate, selectedSup]);
 
 
 	useEffect(() => {
