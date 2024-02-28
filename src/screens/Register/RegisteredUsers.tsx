@@ -6,7 +6,7 @@ import Search from '../../components/Search';
 import { NavLink } from 'react-router-dom';
 import { Spinner } from 'react-bootstrap';
 import moment from 'moment';
-import { user } from '../../components/data';
+
 import { RiDeleteBin6Fill } from "react-icons/ri";
 import BottomNavigation from '../../components/BottomNavigation';
 import { useAppDispatch, useAppSelector } from '../../store/useStore';
@@ -124,7 +124,7 @@ const RegisteredUsers = () => {
             />
           </div>
           <EntriesPerPage
-            data={user}
+            data={dataAll}
             entriesPerPage={entriesPerPage}
             setEntriesPerPage={setEntriesPerPage}
           />

@@ -3,7 +3,6 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { Nav } from "react-bootstrap";
 import { FaBars, FaChevronDown, FaPowerOff, FaTools, FaUser } from "react-icons/fa";
 import { baseUrl } from "../shared/baseUrl";
-import axios from "axios";
 import NetworkConnetion from "./NetworkConnetion";
 import { useAppDispatch, useAppSelector } from "../store/useStore";
 import { toggleSideNav } from "../features/SideNav/navSlice";
@@ -15,6 +14,7 @@ import { getUserPrivileges } from "../hooks/auth";
 import { useSelector } from "react-redux";
 import { setLob } from "../features/Lob/LobSlice";
 import { RootState } from "../store/store";
+import { pageTitles } from "./data";
 
 
 const Header = () => {
@@ -32,9 +32,9 @@ const Header = () => {
 
   // @ts-ignore
   const userInfo = JSON.parse(localStorage.getItem("mwanga"));
-  const { isLoadinglogout, isErrorlogout, messagelogout, isSuccesslogout } = useAppSelector((state: { auth: any; }) => state.auth)
+  const { isErrorlogout, messagelogout, isSuccesslogout } = useAppSelector((state: { auth: any; }) => state.auth)
   const { userprofiledata } = useAppSelector((state: any) => state.auth);
-
+  // isLoadinglogout, 
 
 
   useEffect(() => {
@@ -94,7 +94,12 @@ const Header = () => {
   //   loginFlag();
   // };
 
-
+  useEffect(() => {
+    const path = window.location.pathname;
+    const title = pageTitles[path] ? `People CRM | ${pageTitles[path]}` : "People CRM | Page";
+    document.title = title;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div id="header" onMouseLeave={() => setDropDown(false)}>
