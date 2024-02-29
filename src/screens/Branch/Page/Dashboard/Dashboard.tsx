@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import moment from "moment";
-// import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import SideNavBar from "../../../../components/SideNavBar";
 import Header from "../../../../components/Header";
@@ -14,17 +13,13 @@ import { customId } from "../../../../components/TableOptions";
 import { getUserPrivileges } from "../../../../hooks/auth";
 import { getAgentResponses, getAllResponses } from "../../../../features/Customer/customerSlice";
 
-interface DashboardProps {
-  collapseNav: boolean;
-}
 
 const Dashboard = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { isSuperAdmin, isSupervisor, isMis, isAgent } = getUserPrivileges();
-  const { userprofiledata } = useAppSelector((state: any) => state.auth);
-  const { alldata, allisError, allmessage, allisLoading } = useAppSelector((state: any) => state.customer);
-  const { getAgentResponsesdata, getAgentResponsesisError, getAgentResponsesmessage, getAgentResponsesisLoading } = useAppSelector((state: any) => state.customer);
+  const { alldata, allisError, allmessage } = useAppSelector((state: any) => state.customer);
+  const { getAgentResponsesdata } = useAppSelector((state: any) => state.customer);
 
 
 

@@ -3,7 +3,6 @@ import SideNavBar from "../../components/SideNavBar";
 import { Tab, Tabs } from "react-bootstrap";
 import { baseUrl } from "../../shared/baseUrl";
 import { useParams } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
 import { adminupdatePassword, adminupdateprofile, getUserProfileId, reset } from "../../features/Auth/authSlice";
 import Header from "../../components/Header";
 import { useAppDispatch, useAppSelector } from "../../store/useStore";
@@ -14,9 +13,8 @@ import { FaUser } from "react-icons/fa";
 
 const AdminUserSettings = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { dataID, isLoadingID, messageID, isErrorID, isSuccessID } = useAppSelector((state: any) => state.auth);
+  const { dataID, messageID, isErrorID, isSuccessID } = useAppSelector((state: any) => state.auth);
 
   const { adupdateisLoading, adupdatemessage, adupdateisError, adupdateisSuccess } = useAppSelector((state: any) => state.auth);
   const { adminresetisLoading, adminresetmessage, adminresetisError, adminresetisSuccess } = useAppSelector((state: any) => state.auth);
@@ -31,7 +29,11 @@ const AdminUserSettings = () => {
     dispatch(getallRoles());
     // @ts-ignore
     dispatch(getUserProfileId(id));
-  }, [dispatch, id]);
+    if (isSuccessID) {
+      // @ts-ignore
+      dispatch(getUserProfileId(id));
+    }
+  }, [dispatch, id, isSuccessID]);
 
 
   const [newPassword, setNewPassword] = useState("");

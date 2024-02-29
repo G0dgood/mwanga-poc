@@ -38,9 +38,7 @@ const DispositionModal = ({
     setShow(true);
   }
 
-  const remove = () => {
-    sessionStorage.removeItem("CreateUser");
-  };
+
 
   return (
     <div>

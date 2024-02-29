@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Nav } from "react-bootstrap";
 
@@ -12,7 +11,7 @@ import { useAppDispatch, useAppSelector } from "../store/useStore";
 import { logoutUserAction } from "../features/Auth/authService";
 
 const ReportHeader = ({ title }: any) => {
-  const { isSuperAdmin, isSupervisor, isMis, isAgent } = getUserPrivileges();
+  const { isSuperAdmin, isSupervisor, isAgent } = getUserPrivileges();
   const [dropDown, setDropDown] = useState(false);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();

@@ -1,6 +1,5 @@
 import { useState, useEffect, SetStateAction } from "react";
 import suggestions from "./suggestions";
-import { useSelector } from "react-redux";
 import { userInfo } from "../hooks/config";
 
 const AutoComplete = ({ setautoComment }: any) => {
