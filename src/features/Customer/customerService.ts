@@ -67,7 +67,8 @@ const getAllResponses = async (datas: any) => {
 	const { endDate, startDate } = datas  
 const base = `/api/v1/branch/responses` 
   const url = buildDynamicURL(null,startDate, endDate, null, null,base); 
-	const { data }: any = await HttpService.get(url)  
+	// const { data }: any = await HttpService.get(url)  
+	  const { data } = await axios.get(url)
 return data
 }
 

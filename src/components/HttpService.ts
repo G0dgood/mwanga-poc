@@ -1,8 +1,7 @@
 import axios from "axios";  
 // import { config } from "../hooks/config";
-import { baseUrl } from "../shared/baseUrl";
-import {   fireAlert2 } from "./Alert"; 
-import axiosInstance from "../hooks/config";
+import { baseUrl } from "../shared/baseUrl"; 
+// import axiosInstance from "../hooks/config";
  // @ts-ignore
   const userInfo = JSON.parse(localStorage.getItem("mwanga"));
 export const config = {
@@ -11,7 +10,16 @@ export const config = {
            Authorization: `Bearer ${userInfo?.token}`,
          },
   };   
-  
+   config.headers.Authorization =   `Bearer ${userInfo?.token}`
+// Create an Axios instance with default configuration
+export const axiosInstance = axios.create({ 
+  headers: {
+    'Content-Type': 'application/json',
+    // Add your authorization header with the token here
+    // Replace 'YOUR_TOKEN_HERE' with your actual token
+  Authorization: `Bearer ${userInfo?.token}`,
+  }
+});
 
 interface HeadersConfig {
   [key: string]: string; // This allows any string key to be used to access values
@@ -24,7 +32,7 @@ const createHttpService = () => {
   const get = async (url: string) => { 
     const endpoint = baseUrl + url;
     try {
-      const data = await axiosInstance.get(endpoint, config);
+      const data = await axios.get(endpoint, config);
       return data;
     } catch (e) {
       handleError(e);
@@ -123,7 +131,7 @@ const uploadFile = (url: string, data: Record<string, any>, files: Record<string
 
   const handleError = (e: any) => {  
     if (e.response.status === 401 && e.response.statusText === "Unauthorized") {
-      fireAlert2("Session Expired", "Please log in again", "error", "/", "");
+      // fireAlert2("Session Expired", "Please log in again", "error", "/", "");
       // window.location.replace("/login");
       // dataService.clearData();
     }  
@@ -140,8 +148,8 @@ const uploadFile = (url: string, data: Record<string, any>, files: Record<string
   return query;
  };
     
- const setToken = (newToken: string | null) => {
-  config.headers.Authorization = newToken ? `Bearer ${newToken}` : '';
+ const setToken = ( ) => {
+  config.headers.Authorization =   `Bearer ${userInfo?.token}` ;
 };
 
     return { 

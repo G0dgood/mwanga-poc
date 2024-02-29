@@ -23,9 +23,8 @@ const logout = async () => {
 
 
   //User Profile
-const userprofile = async ( ) => {
-  const HttpService = createHttpService(); 
-  const { data } = await HttpService.get(`/api/v1/auth/profile`)  
+const userprofile = async ( ) => {  
+  const { data } = await axios.get(baseUrl + `/api/v1/auth/profile`)
    localStorage.setItem("mwangauserDetails", JSON.stringify(data.user));
    return data
 };
