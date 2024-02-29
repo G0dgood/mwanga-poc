@@ -1,7 +1,8 @@
 import axios from "axios";  
 // import { config } from "../hooks/config";
 import { baseUrl } from "../shared/baseUrl";
-import {   fireAlert2 } from "./Alert";
+import {   fireAlert2 } from "./Alert"; 
+import axiosInstance from "../hooks/config";
  // @ts-ignore
   const userInfo = JSON.parse(localStorage.getItem("mwanga"));
 export const config = {
@@ -10,7 +11,7 @@ export const config = {
            Authorization: `Bearer ${userInfo?.token}`,
          },
   };   
-
+  
 
 interface HeadersConfig {
   [key: string]: string; // This allows any string key to be used to access values
@@ -23,7 +24,7 @@ const createHttpService = () => {
   const get = async (url: string) => { 
     const endpoint = baseUrl + url;
     try {
-      const data = await axios.get(endpoint, config);
+      const data = await axiosInstance.get(endpoint, config);
       return data;
     } catch (e) {
       handleError(e);
