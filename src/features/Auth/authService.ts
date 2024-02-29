@@ -1,8 +1,8 @@
 import axios from 'axios';
 import createHttpService from '../../components/HttpService';
 import { baseUrl } from '../../shared/baseUrl';
- 
-
+ // @ts-ignore
+export const userInfo = JSON.parse(localStorage.getItem("mwanga"));
  
 // Login user 
 const login = async (value: any) => {   
@@ -23,9 +23,15 @@ const logout = async () => {
 
 
   //User Profile
-const userprofile = async ( ) => {
-  const HttpService = createHttpService(); 
-  const { data } = await HttpService.get(`/api/v1/auth/profile`)  
+const userprofile = async () => {
+   const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.get(baseUrl + "/api/v1/auth/profile", config);   
    localStorage.setItem("mwangauserDetails", JSON.stringify(data.user));
    return data
 };
