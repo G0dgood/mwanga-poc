@@ -1,5 +1,4 @@
 import axios from "axios";  
-import { config } from "../hooks/config";
 import { baseUrl } from "../shared/baseUrl";
 import {   fireAlert2 } from "./Alert";
  
@@ -140,9 +139,9 @@ const uploadFile = (url: string, data: Record<string, any>, files: Record<string
 
   const handleError = (e: any) => {  
     if (e.response.status === 401 && e.response.statusText === "Unauthorized") {
-      // fireAlert2("Session Expired", "Please log in again", "error", "/", "");
-      // window.location.replace("/login");
-      // dataService.clearData();
+        // fireAlert2("Session Expired", "Please log in again", "error", "/", "");
+    
+   
     }  
   };
 
