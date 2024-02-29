@@ -18,9 +18,9 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Login />} />
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/user/settings" element={<UserSettings />} />
           <Route path="/user/:id/settings" element={<AdminUserSettings />} />
-          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/setupbook" element={<SetupBook />} />
           <Route path="/report" element={<Report />} />
           <Route path="/agentreport" element={<AgentReport />} />

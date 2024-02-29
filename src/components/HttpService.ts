@@ -1,8 +1,15 @@
 import axios from "axios";  
-import { config } from "../hooks/config";
+// import { config } from "../hooks/config";
 import { baseUrl } from "../shared/baseUrl";
 import {   fireAlert2 } from "./Alert";
- 
+ // @ts-ignore
+  const userInfo = JSON.parse(localStorage.getItem("mwanga"));
+export const config = {
+         headers: {
+          "Content-Type": "application/json", 
+           Authorization: `Bearer ${userInfo?.token}`,
+         },
+  };   
 
 
 interface HeadersConfig {
