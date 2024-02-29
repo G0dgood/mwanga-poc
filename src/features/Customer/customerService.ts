@@ -43,14 +43,22 @@ const createResponse = async (value: any) => {
 	const { data }: any = await HttpService.post(`/api/v1/branch/responses/${customerDetailsId}`, input)  
 	return data
 }
-const createResponseID = async (id: any) => { 
-	const HttpService = createHttpService();
-	const { data }: any = await HttpService.get(`/api/v1/branch/responses/${id}`)  
+const createResponseID = async (id: any) => {  
+	const { data } = await axios.get(baseUrl + `/api/v1/branch/responses/${id}`, {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+            "Content-Type": "application/json", 
+          }, 
+        }); 
 	return data
 }
-const getAgentResponses = async () => { 
-	const HttpService = createHttpService();
-	const { data }: any = await HttpService.get(`/api/v1/branch/responses/agentresponses`)  
+const getAgentResponses = async () => {  
+	const { data } = await axios.get(baseUrl + "/api/v1/branch/responses/agentresponses", {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+            "Content-Type": "application/json", 
+          }, 
+        });  
 	return data
 }
  

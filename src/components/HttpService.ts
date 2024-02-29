@@ -122,7 +122,7 @@ const uploadFile = (url: string, data: Record<string, any>, files: Record<string
 
   const handleError = (e: any) => {  
     if (e.response.status === 401 && e.response.statusText === "Unauthorized") {
-      // fireAlert2("Session Expired", "Please log in again", "error", "/", "");
+      fireAlert2("Session Expired", "Please log in again", "error", "/", "");
       // window.location.replace("/login");
       // dataService.clearData();
     }  
