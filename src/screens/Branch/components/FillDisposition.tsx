@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import AutoComplete from "../../../components/Autocomplete";
 import { createResponse, reset } from "../../../features/Customer/customerSlice";
-import { toast } from "react-toastify";
-import { customId } from "../../../components/TableOptions";
 import { useAppDispatch, useAppSelector } from "../../../store/useStore";
 import { Toast } from "react-bootstrap";
 
@@ -101,7 +99,7 @@ const FillDisposition = ({
               value={input?.disposition}
               onChange={(e) => handleOnChange("disposition", e.target.value)}>
               <option>Please select...</option>
-              <option value="Not answered">Connected</option>
+              <option value="Connected">Connected</option>
               <option value="Not answered">Not answered</option>
               <option value="Switched off">Switched off</option>
               <option value="Unreachable">Unreachable</option>

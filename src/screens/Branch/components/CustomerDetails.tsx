@@ -1,18 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-// import { getCustomerDetailsIdAction } from "../store/actions/customerActions";
-import SideNavBar from "../../../components/SideNavBar";
-import Header from "../../../components/Header";
+import { useState, useEffect } from "react";
 import { Modal, Toast } from "react-bootstrap";
-import { useParams } from "react-router-dom";
-import moment from "moment";
-// import FillDisposition from "../components/FillDisposition";
-// import SingleResponse from "../components/SingleResponse";
-// import { sendCustomerMessageAction } from "../store/actions/customerActions";
-// import { SEND_CUSTOMER_SMS_RESET } from "../store/constants/customerConstants";
-import axios from "axios";
-import { baseUrl } from "../../../shared/baseUrl";
-import { userInfo } from "../../../hooks/config";
 import FillDisposition from "./FillDisposition";
 import ModalHeader from "../../../components/Modal/ModalHeader";
 import { FiPlusCircle } from "react-icons/fi";
@@ -21,6 +8,8 @@ import { createResponseID, reset } from "../../../features/Customer/customerSlic
 import SingleResponse from "./SingleResponse";
 import { toast } from "react-toastify";
 import { customId } from "../../../components/TableOptions";
+import { getUserPrivileges } from "../../../hooks/auth";
+import moment from "moment";
 
 const CustomerDetails = ({ id,
   amount_delinquent,
@@ -47,6 +36,7 @@ const CustomerDetails = ({ id,
   virtual_account,
   virtual_bank_name, }: any) => {
   const dispatch = useAppDispatch()
+  const { isAgent } = getUserPrivileges();
   const { createResponseIDdata, createResponseIDisError, createResponseIDmessage } = useAppSelector((state) => state.customer)
   const { responses }: any = createResponseIDdata
   const { createResponseisSuccess } = useAppSelector((state) => state.customer)
@@ -150,17 +140,8 @@ const CustomerDetails = ({ id,
           </div>
 
           <div className="btn-responsive">
-            {/* {userInfo.role === "agent" && (
-              <CustomerSMS
-                message={text}
-                phoneNumber={signupphonenumber}
-                loanId={loanid}
-                bankname={bankname}
-                nameofborrower={nameofborrower}
-                accountnumber={accountnumber}
-              />
-            )} */}
-            {userInfo.role === "agent" && (
+
+            {isAgent && (
               <div className="btn-side-container" onClick={handleShow}>
                 <button className="btn-side">
                   Fill Disposition

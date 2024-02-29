@@ -2,7 +2,7 @@ import Swal from "sweetalert2";
 
 const swalWithBootstrapButtons = Swal.mixin({
   customClass: {
-    confirmButton: "#6F47EB",
+    confirmButton: "#e2522e",
     cancelButton: "btn btn-danger",
   },
   buttonsStyling: false,

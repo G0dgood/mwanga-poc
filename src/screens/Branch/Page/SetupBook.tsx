@@ -95,9 +95,6 @@ const SetupBook = () => {
 
 
 
-
-
-
   return (
     <div id="screen-wrapper">
       <SideNavBar />
@@ -174,11 +171,14 @@ const SetupBook = () => {
             </tbody>
           </table>
         </div>
-        <div id={"notificationbtn"}>
-          <button className="btn" disabled={pagination?.page === pagination?.totalPages} onClick={handlePrev}>Previous</button>
-          <div id="notispan-container">  <span>page</span> <span>{pagination?.page}</span> <span>of</span> <span>{pagination?.totalPages}</span></div>
-          <button className="btn" disabled={pagination?.page === pagination?.totalPages} onClick={handleNext} >Next</button>
-        </div>
+        {pagination?.totalCustomers > 1 && <div className="totalResponses">
+          <h3>Total of {pagination?.totalCustomers} Customers</h3>
+          <div id={"notificationbtn"}>
+            <button className="btn" disabled={pagination?.page === pagination?.totalPages} onClick={handlePrev}>Previous</button>
+            <div id="notispan-container">  <span>page</span> <span>{pagination?.page}</span> <span>of</span> <span>{pagination?.totalPages}</span></div>
+            <button className="btn" disabled={pagination?.page === pagination?.totalPages} onClick={handleNext} >Next</button>
+          </div>
+        </div>}
       </main>
     </div>
 

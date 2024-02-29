@@ -46,6 +46,8 @@ const Report = () => {
 
 
 
+
+
 	useEffect(() => {
 		const datas = { startDate: startDate1, endDate: endDate1 };
 		// @ts-ignore
@@ -247,12 +249,16 @@ const Report = () => {
 						</tbody>
 					</table>
 				</div>
+				{pagination?.totalResponses > 1 && <div className="totalResponses">
+					<h3>Total of {pagination?.totalResponses} Responses</h3>
+					<div id={"notificationbtn"}>
+						<button className="btn" disabled={pagination?.page === pagination?.totalPages} onClick={handlePrev}>Previous</button>
+						<div id="notispan-container">  <span>page</span> <span>{pagination?.page}</span> <span>of</span> <span>{pagination?.totalPages}</span></div>
+						<button className="btn" disabled={pagination?.page === pagination?.totalPages} onClick={handleNext} >Next</button>
+					</div>
+				</div>}
 
-				<div id={"notificationbtn"}>
-					<button className="btn" disabled={pagination?.page === pagination?.totalPages} onClick={handlePrev}>Previous</button>
-					<div id="notispan-container">  <span>page</span> <span>{pagination?.page}</span> <span>of</span> <span>{pagination?.totalPages}</span></div>
-					<button className="btn" disabled={pagination?.page === pagination?.totalPages} onClick={handleNext} >Next</button>
-				</div>
+
 
 			</div>
 		</div>

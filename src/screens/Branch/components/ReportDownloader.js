@@ -34,7 +34,7 @@ const ReportDownloader = ({ data }) => {
   const loopData = (data) => {
     const newData = [];
     data?.forEach((item) => {
-      newData.push({
+      newData?.push({
         agentId: item.user?.userId,
         campaign: item.customer?.campaign,
         bucket: moment(item.customer?.disbursedDate).format("DD-MMM-YY"),
