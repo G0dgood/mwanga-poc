@@ -1,25 +1,10 @@
 import axios from "axios";  
-// import { config } from "../hooks/config";
-import { baseUrl } from "../shared/baseUrl"; 
-// import axiosInstance from "../hooks/config";
- // @ts-ignore
-  const userInfo = JSON.parse(localStorage.getItem("mwanga"));
-export const config = {
-         headers: {
-          "Content-Type": "application/json", 
-           Authorization: `Bearer ${userInfo?.token}`,
-         },
-  };   
-   config.headers.Authorization =   `Bearer ${userInfo?.token}`
-// Create an Axios instance with default configuration
-export const axiosInstance = axios.create({ 
-  headers: {
-    'Content-Type': 'application/json',
-    // Add your authorization header with the token here
-    // Replace 'YOUR_TOKEN_HERE' with your actual token
-  Authorization: `Bearer ${userInfo?.token}`,
-  }
-});
+import { config } from "../hooks/config";
+import { baseUrl } from "../shared/baseUrl";
+import {   fireAlert2 } from "./Alert";
+ 
+// @ts-ignore
+export const user = JSON.parse(localStorage.getItem("mwanga"));
 
 interface HeadersConfig {
   [key: string]: string; // This allows any string key to be used to access values
@@ -28,7 +13,13 @@ interface HeadersConfig {
 
  
  
-const createHttpService = () => {  
+const createHttpService = () => {
+   const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${user.token}`,
+      },
+    };
   const get = async (url: string) => { 
     const endpoint = baseUrl + url;
     try {
@@ -63,6 +54,12 @@ const createHttpService = () => {
   };
 
   const post = async (url: string, data: any) => {
+     const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${user.token}`,
+      },
+    };
     const endpoint = baseUrl + url;
     try {
       const responseData = await axios.post(endpoint, data, config);
@@ -74,6 +71,12 @@ const createHttpService = () => {
   };
 
   const put = async (url: string, data: any) => {
+     const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${user.token}`,
+      },
+    };
     const endpoint = baseUrl + url;
     try {
       const responseData = await axios.put(endpoint, data, config);
@@ -85,6 +88,12 @@ const createHttpService = () => {
   };
 
   const patch = async (url: string, data = {}) => {
+     const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${user.token}`,
+      },
+    };
     const endpoint = baseUrl + url;
     try {
       const responseData = await axios.patch(endpoint, data, config);
@@ -148,8 +157,8 @@ const uploadFile = (url: string, data: Record<string, any>, files: Record<string
   return query;
  };
     
- const setToken = ( ) => {
-  config.headers.Authorization =   `Bearer ${userInfo?.token}` ;
+ const setToken = (newToken: string | null) => {
+  config.headers.Authorization = newToken ? `Bearer ${newToken}` : '';
 };
 
     return { 

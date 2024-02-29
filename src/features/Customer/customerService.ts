@@ -43,22 +43,14 @@ const createResponse = async (value: any) => {
 	const { data }: any = await HttpService.post(`/api/v1/branch/responses/${customerDetailsId}`, input)  
 	return data
 }
-const createResponseID = async (id: any) => {  
-	const { data } = await axios.get(baseUrl + `/api/v1/branch/responses/${id}`, {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-            "Content-Type": "application/json", 
-          }, 
-        }); 
+const createResponseID = async (id: any) => { 
+	const HttpService = createHttpService();
+	const { data }: any = await HttpService.get(`/api/v1/branch/responses/${id}`)  
 	return data
 }
-const getAgentResponses = async () => {  
-	const { data } = await axios.get(baseUrl + "/api/v1/branch/responses/agentresponses", {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-            "Content-Type": "application/json", 
-          }, 
-        });  
+const getAgentResponses = async () => { 
+	const HttpService = createHttpService();
+	const { data }: any = await HttpService.get(`/api/v1/branch/responses/agentresponses`)  
 	return data
 }
  
@@ -67,8 +59,7 @@ const getAllResponses = async (datas: any) => {
 	const { endDate, startDate } = datas  
 const base = `/api/v1/branch/responses` 
   const url = buildDynamicURL(null,startDate, endDate, null, null,base); 
-	// const { data }: any = await HttpService.get(url)  
-	  const { data } = await axios.get(url)
+	const { data }: any = await HttpService.get(url)  
 return data
 }
 
