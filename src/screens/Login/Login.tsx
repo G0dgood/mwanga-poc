@@ -25,7 +25,6 @@ const Login = () => {
   useEffect(() => {
     if (user) {
       navigate("/dashboard");
-      // window.location.replace("/dashboard");
     }
   }, [navigate, user]);
 
