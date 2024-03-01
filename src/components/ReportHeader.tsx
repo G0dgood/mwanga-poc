@@ -1,21 +1,27 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { Nav } from "react-bootstrap";
 import { baseUrl } from "../shared/baseUrl";
 import { FaBook, FaChevronDown, FaPowerOff, FaSwatchbook, FaTachometerAlt, FaUser, FaUsers } from "react-icons/fa";
 import { getUserPrivileges } from "../hooks/auth";
-import { useAppDispatch } from "../store/useStore";
+import { useAppDispatch, useAppSelector } from "../store/useStore";
 import { logoutUserAction } from "../features/Auth/authService";
 import axios from "axios";
+import { reset, userprofile } from "../features/Auth/authSlice";
 
 
 const ReportHeader = ({ title }: any) => {
   const { isSuperAdmin, isSupervisor, isAgent } = getUserPrivileges();
   const [dropDown, setDropDown] = useState(false);
   const dispatch = useAppDispatch();
+  const { userprofiledata } = useAppSelector((state: any) => state.auth);
+  const userInfo = userprofiledata?.user
 
-  // @ts-ignore
-  const userInfo = JSON.parse(localStorage.getItem("mwangauserDetails"));
+  useEffect(() => {
+    dispatch(userprofile());
+  }, [dispatch])
+
+
   // @ts-ignore
   const user = JSON.parse(localStorage.getItem("mwanga"));
 
@@ -28,6 +34,8 @@ const ReportHeader = ({ title }: any) => {
         },
       });
     };
+
+    dispatch(reset());
     dispatch(logoutUserAction());
     loginFlag();
   };

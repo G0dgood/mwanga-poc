@@ -39,6 +39,9 @@ const RegisteredUsers = () => {
   const { dataAll, isErrorAll, messageAll, isLoadingAll } = useAppSelector((state: any) => state.reg);
 
 
+  useEffect(() => {
+    dispatch(getallReguser());
+  }, [dispatch]);
 
   // Error Handling Effect
   useEffect(() => {
@@ -54,10 +57,6 @@ const RegisteredUsers = () => {
   // Data Fetching (Conditional) Effect
   useEffect(() => {
     if (isSuccess || edituserisSuccess) {
-      // If success is true, fetch data again
-      dispatch(getallReguser());
-    } else {
-      // Fetch data when the component is mounted or dispatch changes
       dispatch(getallReguser());
     }
   }, [dispatch, edituserisSuccess, isSuccess]);

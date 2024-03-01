@@ -6,7 +6,7 @@ import { baseUrl } from "../shared/baseUrl";
 import NetworkConnetion from "./NetworkConnetion";
 import { useAppDispatch, useAppSelector } from "../store/useStore";
 import { toggleSideNav } from "../features/SideNav/navSlice";
-import { userprofile } from "../features/Auth/authSlice";
+import { reset, userprofile } from "../features/Auth/authSlice";
 import { ToastContainer } from "react-toastify";
 import { logoutUserAction } from "../features/Auth/authService";
 import { getUserPrivileges } from "../hooks/auth";
@@ -63,6 +63,7 @@ const Header = () => {
         },
       });
     };
+    dispatch(reset());
     dispatch(logoutUserAction());
     loginFlag();
   };

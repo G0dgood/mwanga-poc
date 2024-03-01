@@ -70,10 +70,11 @@ export const userRegistration = createAsyncThunk('register/userRegistration', as
     return await registrationService.userRegistration(value)
   } catch (error:any) {
     const message =
-      error.response &&
-        error.response.data ?
-        error.response.data.errors[0].message :
-        error.message  
+     (error.response && 
+        error.response.data && 
+        error.response.data.message) ||
+      error.message ||
+      error.toString() 
     return thunkAPI.rejectWithValue(message)
   }
 })
