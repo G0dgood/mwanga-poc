@@ -1,32 +1,37 @@
-import { useEffect, useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { NavLink } from "react-router-dom";
 import { Nav } from "react-bootstrap";
-
 import { baseUrl } from "../shared/baseUrl";
 import { FaBook, FaChevronDown, FaPowerOff, FaSwatchbook, FaTachometerAlt, FaUser, FaUsers } from "react-icons/fa";
-import { userInfo } from "../hooks/config";
 import { getUserPrivileges } from "../hooks/auth";
-import { logout, reset } from "../features/Auth/authSlice";
-import { useAppDispatch, useAppSelector } from "../store/useStore";
+import { useAppDispatch } from "../store/useStore";
 import { logoutUserAction } from "../features/Auth/authService";
+import axios from "axios";
+
 
 const ReportHeader = ({ title }: any) => {
   const { isSuperAdmin, isSupervisor, isAgent } = getUserPrivileges();
   const [dropDown, setDropDown] = useState(false);
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-  const { isSuccesslogout } = useAppSelector((state: any) => state.auth)
+
+  // @ts-ignore
+  const userInfo = JSON.parse(localStorage.getItem("mwangauserDetails"));
+  // @ts-ignore
+  const user = JSON.parse(localStorage.getItem("mwanga"));
+
   const handleLogout = () => {
-    dispatch(logout());
+    const loginFlag = async () => {
+      await axios.get(baseUrl + "/api/v1/auth", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
+    };
+    dispatch(logoutUserAction());
+    loginFlag();
   };
-  useEffect(() => {
-    if (isSuccesslogout) {
-      navigate("/");
-      dispatch(reset());
-      dispatch(logoutUserAction());
-      localStorage.removeItem('mwanga');
-    }
-  }, [dispatch, isSuccesslogout, navigate]);
+
 
   return (
     <div id="report-header" onMouseLeave={() => setDropDown(false)}>

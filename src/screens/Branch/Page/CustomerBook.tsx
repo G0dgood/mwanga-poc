@@ -10,17 +10,19 @@ import Search from "../../../components/Search";
 import BottomNavigation from "../../../components/BottomNavigation";
 import DispositionModal from "../components/DispositionModal";
 import { baseUrl } from "../../../shared/baseUrl";
-import { userInfo } from "../../../hooks/config";
 import TableLoader from "../../../components/TableLoader";
 
 
 const CustomerBook = () => {
-
+	// @ts-ignore
+	const userInfo = JSON.parse(localStorage.getItem("mwanga"));
 	const [phone, setPhone] = useState("");
-	const [customer, setCustomerDetails] = useState<any>({});
+	const [customer, setCustomerDetails] = useState<any>([]);
 	const [isLoading, setIsLoading] = useState(false);
 	const [errorMsg, setErrorMsg] = useState(null);
+	const [errorMsgs, setErrorMsgs] = useState<any>('');
 	const [showErrorToast, setShowErrorToast] = useState(false);
+	const [showErrorT, setShowErrorT] = useState(false);
 
 
 
@@ -38,12 +40,20 @@ const CustomerBook = () => {
 					},
 				}
 			);
-
+			// @ts-ignore
+			if (request?.data?.customer && request.data.customer?.length === 0) {
+				setErrorMsgs("customer not found!");
+				setShowErrorT(true);
+			}
+			setTimeout(() => {
+				setShowErrorT(false);
+			}, 4000);
 			// Customer found
 			setCustomerDetails(request?.data?.customer);
 			setIsLoading(false);
 			setPhone("");
 		} catch (error: any) {
+			console.log('error', error)
 			setErrorMsg(
 				error.response && error.response.data.message
 					? error.response.data.message
@@ -67,6 +77,25 @@ const CustomerBook = () => {
 						<h5>Customer Books - Loan</h5>
 					</div>
 
+					{showErrorT && (
+						<Toast
+							show={showErrorT}
+							onClose={() => setShowErrorT(false)}
+							delay={6000}
+							autohide>
+							<Toast.Body>
+								<div className="toast-crm-container">
+									<span className="toast-crm-container-sub">
+										<FaExclamationCircle />
+										<p>{errorMsgs}!</p>
+									</span>
+									<span onClick={() => setShowErrorT(false)}>
+										<FaTimes />
+									</span>
+								</div>
+							</Toast.Body>
+						</Toast>
+					)}
 					{showErrorToast && (
 						<Toast
 							show={showErrorToast}
@@ -114,46 +143,47 @@ const CustomerBook = () => {
 							<tbody>
 								{isLoading ? (
 									<TableFetch colSpan={"10"} />
-								) : Object.keys(customer)?.length === 0 ? (
-									<NoRecordFound colSpan={"10"} />
+								) : customer?.length === 0 || customer?.length === undefined ? (
+									<NoRecordFound colSpan={"10"} not={true} />
 								) : (
-									<tr  >
-										<td>
-											<DispositionModal
-												id={customer?.id}
-												amount_delinquent={customer?.amount_delinquent}
-												amount_disbursed={customer?.amount_disbursed}
-												amount_repaid={customer?.amount_repaid}
-												bank_name={customer?.bank_name}
-												campaign={customer?.campaign}
-												createdAt={customer?.createdAt}
-												createdBy={customer?.createdBy}
-												customer_name={customer?.customer_name}
-												days_delinquent={customer?.days_delinquent}
-												disbursed_date={customer?.disbursed_date}
-												discount={customer?.discount}
-												due_date={customer?.due_date}
-												email={customer?.email}
-												employer_name={customer?.employer_name}
-												employer_phone={customer?.employer_phone}
-												guarantor_name={customer?.guarantor_name}
-												guarantor_phone={customer?.guarantor_phone}
-												loanId={customer?.loanId} l
-												oan_installment_id={customer?.loan_installment_id}
-												phone1={customer?.phone1}
-												phone2={customer?.phone2}
-												virtual_account={customer?.virtual_account}
-												virtual_bank_name={customer?.virtual_bank_name} />
-										</td>
-										<td>{customer?.customer_name}</td>
-										<td>{customer?.virtual_account}</td>
-										<td>{customer?.bank_name}</td>
-										<td>{customer?.loanId}</td>
-										<td>{customer?.phone1}</td>
-										<td>{customer?.amount_disbursed}</td>
-										<td>{customer?.amount_repaid}</td>
-										<td>{moment(customer?.createdAt).format("DD-MM-YYYY")}</td>
-									</tr>
+									customer?.map((customer: any, i: any) => (
+										<tr key={i}>
+											<td>
+												<DispositionModal
+													id={customer?.id}
+													amount_delinquent={customer?.amount_delinquent}
+													amount_disbursed={customer?.amount_disbursed}
+													amount_repaid={customer?.amount_repaid}
+													bank_name={customer?.bank_name}
+													campaign={customer?.campaign}
+													createdAt={customer?.createdAt}
+													createdBy={customer?.createdBy}
+													customer_name={customer?.customer_name}
+													days_delinquent={customer?.days_delinquent}
+													disbursed_date={customer?.disbursed_date}
+													discount={customer?.discount}
+													due_date={customer?.due_date}
+													email={customer?.email}
+													employer_name={customer?.employer_name}
+													employer_phone={customer?.employer_phone}
+													guarantor_name={customer?.guarantor_name}
+													guarantor_phone={customer?.guarantor_phone}
+													loanId={customer?.loanId} l
+													oan_installment_id={customer?.loan_installment_id}
+													phone1={customer?.phone1}
+													phone2={customer?.phone2}
+													virtual_account={customer?.virtual_account}
+													virtual_bank_name={customer?.virtual_bank_name} />
+											</td>
+											<td>{customer?.customer_name}</td>
+											<td>{customer?.virtual_account}</td>
+											<td>{customer?.bank_name}</td>
+											<td>{customer?.loanId}</td>
+											<td>{customer?.phone1}</td>
+											<td>{customer?.amount_disbursed}</td>
+											<td>{customer?.amount_repaid}</td>
+											<td>{moment(customer?.createdAt).format("DD-MM-YYYY")}</td>
+										</tr>))
 								)}
 							</tbody>
 						</table>

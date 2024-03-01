@@ -2,8 +2,7 @@ import axios from "axios";
 import { baseUrl } from "../shared/baseUrl";
 import {   fireAlert2 } from "./Alert";
  
-// @ts-ignore
-export const user = JSON.parse(localStorage.getItem("mwanga"));
+
 
 interface HeadersConfig {
   [key: string]: string; // This allows any string key to be used to access values
@@ -13,6 +12,8 @@ interface HeadersConfig {
  
  
 const createHttpService = () => {
+  // @ts-ignore
+  const user = JSON.parse(localStorage.getItem("mwanga"));
    const config = {
       headers: {
         "Content-Type": "application/json",

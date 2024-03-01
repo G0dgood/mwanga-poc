@@ -112,7 +112,7 @@ const Report = () => {
 			<ReportHeader title={"Disposition Report"} />
 			<div className="report-body">
 				<div className="report-features-area">
-					<div className="filter-area">
+					<div className="page-features">
 						<div className="filter-btn"
 						>
 							<div className="btn-side-container" onClick={() => setDropFilter(!dropFilter)}>

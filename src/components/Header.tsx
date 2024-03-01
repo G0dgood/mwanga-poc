@@ -6,15 +6,15 @@ import { baseUrl } from "../shared/baseUrl";
 import NetworkConnetion from "./NetworkConnetion";
 import { useAppDispatch, useAppSelector } from "../store/useStore";
 import { toggleSideNav } from "../features/SideNav/navSlice";
-import { logout, reset, userprofile } from "../features/Auth/authSlice";
-import { ToastContainer, toast } from "react-toastify";
-import { customId } from "./TableOptions";
+import { userprofile } from "../features/Auth/authSlice";
+import { ToastContainer } from "react-toastify";
 import { logoutUserAction } from "../features/Auth/authService";
 import { getUserPrivileges } from "../hooks/auth";
 import { useSelector } from "react-redux";
 import { setLob } from "../features/Lob/LobSlice";
 import { RootState } from "../store/store";
 import { pageTitles } from "./data";
+import axios from "axios";
 
 
 const Header = () => {
@@ -32,7 +32,6 @@ const Header = () => {
 
   // @ts-ignore
   const userInfo = JSON.parse(localStorage.getItem("mwanga"));
-  const { isErrorlogout, messagelogout, isSuccesslogout } = useAppSelector((state: { auth: any; }) => state.auth)
   const { userprofiledata } = useAppSelector((state: any) => state.auth);
   // isLoadinglogout, 
 
@@ -46,53 +45,29 @@ const Header = () => {
   };
 
 
-  const handleLogout = () => {
-    dispatch(logout());
-  };
-
-  useEffect(() => {
-    if (isErrorlogout) {
-      localStorage.removeItem('mwanga');
-      toast.error(messagelogout, { toastId: customId });
-      dispatch(reset());
-      dispatch(logoutUserAction());
-    }
-  }, [dispatch, isErrorlogout, messagelogout]);
-
-  useEffect(() => {
-    if (isSuccesslogout) {
-      navigate("/");
-      dispatch(reset());
-      dispatch(logoutUserAction());
-      localStorage.removeItem('mwanga');
-    }
-  }, [dispatch, isSuccesslogout, navigate]);
-
 
 
   useEffect(() => {
     if (!userInfo || userInfo == null) {
-      localStorage.removeItem('mwanga');
-      dispatch(reset());
-      dispatch(logoutUserAction());
       navigate("/");
     }
   }, [dispatch, navigate, userInfo]);
 
 
+  const handleLogout = () => {
+    const loginFlag = async () => {
+      await axios.get(baseUrl + "/api/v1/auth", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      });
+    };
+    dispatch(logoutUserAction());
+    loginFlag();
+  };
 
-  // const handleLogoutUser = () => {
-  //   const loginFlag = async () => {
-  //     await axios.get(baseUrl + "/api/v1/auth", {
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: `Bearer ${userInfo.token}`,
-  //       },
-  //     });
-  //   };
-  //   dispatch(logoutUserAction());
-  //   loginFlag();
-  // };
+
 
   useEffect(() => {
     const path = window.location.pathname;

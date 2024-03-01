@@ -16,8 +16,14 @@ const login = async (value: any) => {
    
   // logout  
 const logout = async () => { 
-   const HttpService = createHttpService();
-  const { data } = await HttpService.get('/api/v1/auth')   
+     const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+  const { data } = await axios.get(baseUrl + "/api/v1/auth", config);    
    return data
 };
 
@@ -31,14 +37,20 @@ const userprofile = async () => {
       },
     };
 
-    const { data } = await axios.get(baseUrl + "/api/v1/auth/profile", config);   
+  const { data } = await axios.get(baseUrl + "/api/v1/auth/profile", config);   
    localStorage.setItem("mwangauserDetails", JSON.stringify(data.user));
    return data
 };
   // View user by ID
-const getUserProfileId = async (id: any) => {
-  const HttpService = createHttpService(); 
-  const { data } = await HttpService.get( `/api/v1/auth/${id}`)  
+const getUserProfileId = async (id: any) => { 
+     const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+  const { data } = await axios.get(baseUrl + `/api/v1/auth/${id}`, config);  
    return data
 };
 
@@ -81,21 +93,32 @@ const updateProfile = async (value: any) => {
 
   // Current User
 const currentUser = async () => {  
-    const HttpService = createHttpService(); 
-  const { data } = await HttpService.get( `/api/v1/auth/current-user`)  
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+  const { data } = await axios.get(baseUrl + `/api/v1/auth/current-user`, config); 
    return data
 };
   // Supervisor User
 const supervisorUser = async (id:any) => {  
-    const HttpService = createHttpService(); 
-  const { data } = await HttpService.get( `/api/v1/auth/users/supervisor/${id}`)  
+   const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+  const { data } = await axios.get(baseUrl + `/api/v1/auth/users/supervisor/${id}`, config); 
    return data
 };
 
   export const logoutUserAction = () => ( ) => {
   localStorage.removeItem("mwanga"); 
-  localStorage.removeItem("mwangaUserDetails");
-  // localStorage.removeItem("mwangaCurrentLob");  
+  localStorage.removeItem("mwangauserDetails");  
 };
 
 

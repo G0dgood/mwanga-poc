@@ -387,7 +387,7 @@ form .align-right-btn {
 @media only screen and (max-width: 1000px) {
 
  .search-entries  {
-  width: 80%;
+  /* width: 80%; */
   grid-template-columns: 1fr;
   display: block;
    }

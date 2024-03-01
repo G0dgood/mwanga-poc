@@ -71,12 +71,19 @@ const ReportDownloader = ({ data }) => {
   };
   const exportData = loopData(data);
 
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = today.getMonth() + 1;
+  const day = today.getDate();
+
+  const csvdate = "BRANCH REPORT  [" + day + "-" + month + "-" + year + "].csv";
+
   return (
     <CSVLink
       className={"btn"}
       data={exportData}
       headers={headers}
-      filename={"Disposition Report.csv"}>
+      filename={csvdate}>
       Download
     </CSVLink>
   );

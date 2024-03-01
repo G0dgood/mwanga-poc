@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Modal } from 'react-bootstrap'
-import { userInfo } from '../../hooks/config';
+
 import { useAppDispatch, useAppSelector } from '../../store/useStore';
 import { getallRoles, getsupervisors, reset, userRegistration } from '../../features/Registration/registrationSlice';
 import { toast } from 'react-toastify';
@@ -9,6 +9,8 @@ import ModalHeader from './ModalHeader';
 import { FiPlusCircle } from 'react-icons/fi';
 
 const CreateNewUserModal = () => {
+	// @ts-ignore
+	const userInfo = JSON.parse(localStorage.getItem("mwanga"));
 	const createdBy = userInfo.firstname + " (" + userInfo.role + ")";
 	const dispatch = useAppDispatch()
 

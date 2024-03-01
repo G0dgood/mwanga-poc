@@ -26,11 +26,11 @@ const TableFetch = ({ colSpan }: any) => (
     </td>
   </tr>
 );
-const NoRecordFound = ({ colSpan }: any) => (
+const NoRecordFound = ({ colSpan, not }: any) => (
   <tr>
     <td colSpan={colSpan} className="table-loader">
       <FaRegMeh size={60} />
-      <p className="mt-6">No record found</p>
+      <p className="mt-6">{not ? "Search with Phone Number to get a response" : "No record found"}</p>
     </td>
   </tr>
 );

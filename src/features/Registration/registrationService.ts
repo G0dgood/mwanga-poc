@@ -1,6 +1,8 @@
+import axios from 'axios';
 import createHttpService from '../../components/HttpService';
- 
-  
+import { baseUrl } from '../../shared/baseUrl'; 
+ 	// @ts-ignore
+  const userInfo = JSON.parse(localStorage.getItem("mwanga"));
  // Registration
 const userRegistration = async (input: any) => {  
   	const HttpService = createHttpService();
@@ -10,8 +12,14 @@ const userRegistration = async (input: any) => {
 
  // Get All Reguser
 const getallReguser = async () => {  
-  const HttpService = createHttpService();
-  const { data } = await HttpService.get( '/api/v1/users' ) 
+  const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+  const { data } = await axios.get(baseUrl + "/api/v1/users", config);    
   return data
 }
  // Get All Reguser
