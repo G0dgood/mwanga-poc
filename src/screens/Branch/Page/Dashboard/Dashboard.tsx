@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
 import SideNavBar from "../../../../components/SideNavBar";
@@ -20,8 +20,6 @@ const Dashboard = () => {
   const { isSuperAdmin, isSupervisor, isMis, isAgent } = getUserPrivileges();
   const { alldata, allisError, allmessage } = useAppSelector((state: any) => state.customer);
   const { getAgentResponsesdata } = useAppSelector((state: any) => state.customer);
-
-
 
 
 
@@ -81,7 +79,7 @@ const Dashboard = () => {
       setData(filterUserData);
     }
 
-  }, [alldata?.responses, endDate, getAgentResponsesdata.data, getAgentResponsesdata?.responses, isAgent, isMis, isSuperAdmin, isSupervisor, startDate]);
+  }, [alldata?.responses, endDate, getAgentResponsesdata?.data, getAgentResponsesdata?.responses, isAgent, isMis, isSuperAdmin, isSupervisor, startDate]);
 
 
 

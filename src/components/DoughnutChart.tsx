@@ -58,17 +58,17 @@ const DoughnutChart = ({ chartData, selectedDate, setSelectedDate }: any) => {
     );
     setThirdParam(
       chartData?.filter((obj: { disposition: string; }) => {
-        return obj.disposition === "Switched off";
+        return obj?.disposition === "Switched off";
       })
     );
     setForthChart(
       chartData?.filter((obj: { disposition: string; }) => {
-        return obj.disposition === "Unreachable";
+        return obj?.disposition === "Unreachable";
       })
     );
     setFifthChart(
       chartData?.filter((obj: { disposition: string; }) => {
-        return obj.disposition === "Hung up";
+        return obj?.disposition === "Hung up";
       })
     );
   }, [chartData, selectedDate]);
