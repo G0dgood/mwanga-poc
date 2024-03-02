@@ -22,9 +22,7 @@ const Header = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [dropDown, setDropDown] = useState(false);
-
   const newLob = useSelector((state: RootState) => state.lob.currentLob);
-
   const handleChange = (e: { target: { value: string; }; }) => {
     const selectedLob = JSON.parse(e.target.value);
     dispatch(setLob(selectedLob));
@@ -43,8 +41,6 @@ const Header = () => {
   const handleToggle = () => {
     dispatch(toggleSideNav());
   };
-
-
 
 
   useEffect(() => {

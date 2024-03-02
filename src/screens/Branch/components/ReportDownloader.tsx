@@ -1,7 +1,9 @@
 import { CSVLink } from "react-csv";
 import moment from "moment";
 
-const ReportDownloader = ({ data }) => {
+const ReportDownloader = ({ data }: any) => {
+
+
   const headers = [
     { label: "Agent ID", key: "agentId" },
     { label: "Campaign", key: "campaign" },
@@ -31,8 +33,8 @@ const ReportDownloader = ({ data }) => {
     { label: "Last Upload Date", key: "last_Upload_date" },
   ];
 
-  const loopData = (data) => {
-    const newData = [];
+  const loopData = (data: any[]) => {
+    const newData: any = [];
     data?.forEach((item) => {
       newData?.push({
         agentId: item.user?.userId,
@@ -41,9 +43,7 @@ const ReportDownloader = ({ data }) => {
         loanid: item.customer?.loanId,
         customer_name: item.customer?.customer_name,
         phoneNo: item.customer?.phone1,
-        disbursed_date: moment(item.customer?.disbursed_date).format(
-          "DD-MMM-YY"
-        ),
+        disbursed_date: moment(item.customer?.disbursed_date).format("DD-MMM-YY"),
         amount_disbursed: item.customer?.amount_disbursed,
         amount_delinquent: item.customer?.amount_delinquent,
         amountRepaid: item.customer?.amount_repaid,

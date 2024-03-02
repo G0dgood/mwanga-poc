@@ -37,6 +37,14 @@ gap: 20px;
   align-items: center;
   justify-content: space-between;
   margin-top: 1rem;
+ 
+}
+.totalResponses h3 { 
+  font-size: 15px;
+}
+
+.totalResponses span{ 
+  font-size: 15px;
 }
 
  #notispan-container{

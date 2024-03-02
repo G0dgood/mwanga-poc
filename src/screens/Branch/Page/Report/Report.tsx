@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import moment from "moment";
-import { NoRecordFound, TableFetch, customId } from "../../../../components/TableOptions";
+import { EntriesLimit, NoRecordFound, TableFetch, customId } from "../../../../components/TableOptions";
 import Search from "../../../../components/Search";
 import CustomFilter from "../../../../components/CustomFilter";
 import { FaFilter } from "react-icons/fa";
@@ -12,6 +12,7 @@ import { toast } from "react-toastify";
 import { getAllResponses } from "../../../../features/Customer/customerSlice";
 
 import ReportDownloader from "../../components/ReportDownloader";
+import RealPagination from "../../../../components/RealPagination";
 
 
 const Report = () => {
@@ -64,25 +65,29 @@ const Report = () => {
 		dispatch(getAllResponses(datas))
 		setDropFilter(false)
 	}
-	const handlePrev = () => {
-		const datas = { page: pagination.page - 1 }
-		// @ts-ignore
-		dispatch(getAllResponses(datas))
-	}
 
-	const handleNext = () => {
-		const datas = { page: pagination.page + 1 }
-		// @ts-ignore
-		dispatch(getAllResponses(datas))
-	}
+	// console.log('pagination', pagination.page)
 
-	const handleLmit = (e: { target: { value: any; }; }) => {
-		const newLimit = e.target.value;
-		setLimit(newLimit); // Update the limit state
-		const datas = { limit: newLimit };
-		// @ts-ignore
-		dispatch(getAllResponses(datas));
-	}
+
+	// const handlePrev = () => {
+	// 	const datas = { page: pagination.page - 1 }
+	// 	// @ts-ignore
+	// 	dispatch(getAllResponses(datas))
+	// }
+
+	// const handleNext = () => {
+	// 	const datas = { page: pagination.page + 1 }
+	// 	// @ts-ignore
+	// 	dispatch(getAllResponses(datas))
+	// }
+
+	// const handleLmit = (e: { target: { value: any; }; }) => {
+	// 	const newLimit = e.target.value;
+	// 	setLimit(newLimit); // Update the limit state
+	// 	const datas = { limit: newLimit };
+	// 	// @ts-ignore
+	// 	dispatch(getAllResponses(datas));
+	// }
 
 
 	useEffect(() => {
@@ -104,7 +109,31 @@ const Report = () => {
 		setResult(e.target.value);
 	};
 
-
+	const handlePagination = (type: string, data?: React.ChangeEvent<HTMLSelectElement> | undefined) => {
+		switch (type) {
+			// @ts-ignore
+			case 'prev': dispatch(getAllResponses({ page: pagination?.page - 1, limit: limit }));
+				break;
+			// @ts-ignore
+			case 'next': dispatch(getAllResponses({ page: pagination?.page + 1, limit: limit }));
+				break;
+			case 'limit':
+				if (data) {
+					setLimit(data.target.value);
+					// @ts-ignore
+					dispatch(getAllResponses({ limit: data.target.value }));
+				}
+				break;
+			default:
+				// For page numbers or any other custom actions
+				const pageNumber = parseInt(type);
+				if (!isNaN(pageNumber)) {
+					// @ts-ignore
+					dispatch(getAllResponses({ page: pageNumber, limit: limit }));
+				}
+				break;
+		}
+	}
 
 
 	return (
@@ -135,23 +164,11 @@ const Report = () => {
 							/>
 						</div>
 
-						<div className="entries-perpage">
-							{filter?.length > 1 && (
-								<>
-									<select
-										value={limit}
-										onChange={handleLmit}  >
-										<option value="5">5</option>
-										<option value="8">8</option>
-										<option value="10">10</option>
-										<option value="25">25</option>
-										<option value="50">50</option>
-										<option value="100">100</option>
-									</select>
-								</>
-							)}
-						</div>
-
+						<EntriesLimit
+							limit={limit}
+							data={data}
+							handlePagination={handlePagination}
+						/>
 
 
 						{dropFilter && (
@@ -250,12 +267,8 @@ const Report = () => {
 					</table>
 				</div>
 				{pagination?.totalResponses > 1 && <div className="totalResponses">
-					<h3>Total of {pagination?.totalResponses} Responses</h3>
-					<div id={"notificationbtn"}>
-						<button className="btn" disabled={pagination?.page === pagination?.totalPages} onClick={handlePrev}>Previous</button>
-						<div id="notispan-container">  <span>page</span> <span>{pagination?.page}</span> <span>of</span> <span>{pagination?.totalPages}</span></div>
-						<button className="btn" disabled={pagination?.page === pagination?.totalPages} onClick={handleNext} >Next</button>
-					</div>
+					<h3>Total of {pagination?.totalResponses} Response - <span>Page {pagination?.page} of {pagination?.totalPages}</span></h3>
+					<RealPagination handlePagination={handlePagination} pagination={pagination} />
 				</div>}
 
 

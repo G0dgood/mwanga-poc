@@ -89,11 +89,15 @@
 }
 .user-settings-edit .change-avatar {
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
   
 .user-settings-edit  button {
   background-color: #e2522e;
-  color: #ffff !important;
+  color: var(--white) !important;
   border-radius: 3px; 
 	padding: 10px;
   float: right;
@@ -246,13 +250,14 @@
   }
 }
 
-.file-input-wrap {
+  .file-input-wrap {
   display: flex;
   justify-content: center;
-  padding-left: 11rem;
-}
+  padding-left: 9rem;
+}  
 
-.custom-file-input {
+ 
+.custom-file-input {  
   color: transparent;
 }
 .custom-file-input::-webkit-file-upload-button {
@@ -271,7 +276,7 @@
   font-weight: 700;
   font-size: .8rem;
 }
-.custom-file-input:disabled {
+/* .custom-file-input:disabled {
   color: #fff;
 }
 .custom-file-input:active {
@@ -279,7 +284,7 @@
 }
 .custom-file-input:active::before {
   background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9); 
-}
+} */
 
 
 @media only screen and (max-width: 1000px) {

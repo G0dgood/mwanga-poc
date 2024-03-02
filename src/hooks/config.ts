@@ -10,14 +10,14 @@ export const lob = JSON.parse(localStorage.getItem("mwangaCurrentLob"));
 
 
 // Create an Axios instance with default configuration
-const axiosInstance = axios.create({ 
-  headers: {
-    'Content-Type': 'application/json', 
-  Authorization: `Bearer ${userInfo?.token}`,
-  }
-});
+// const axiosInstance = axios.create({ 
+//   headers: {
+//     'Content-Type': 'application/json', 
+//   Authorization: `Bearer ${userInfo?.token}`,
+//   }
+// });
 
-export default axiosInstance;
+// export default axiosInstance;
 
  
  

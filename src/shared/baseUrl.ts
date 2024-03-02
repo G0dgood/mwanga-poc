@@ -1,7 +1,7 @@
 
- export const baseUrl = "https://mwanga.ptlsoftwaresolutions.ng:443"
+ //export const baseUrl = "https://mwanga.ptlsoftwaresolutions.ng:443"
 
-  //  export const baseUrl = "http://localhost:5000"; 
+  export const baseUrl = "http://localhost:5000"; 
 
 
 export const buildDynamicURL = (id: any, fromDate: any, toDate: any, limit: any, page: any, base: any) => {

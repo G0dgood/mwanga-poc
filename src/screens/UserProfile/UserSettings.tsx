@@ -8,6 +8,9 @@ import { baseUrl } from "../../shared/baseUrl";
 import { reset, updatePassword, updateProfile, userprofile } from "../../features/Auth/authSlice";
 import { toast } from 'react-toastify';
 import { customId } from "../../components/TableOptions";
+import { config } from "../../hooks/config";
+import { FaUser } from "react-icons/fa";
+
 
 const UserSettings = () => {
   const dispatch = useAppDispatch();
@@ -104,7 +107,7 @@ const UserSettings = () => {
 
 
 
-  const profilesubmitHandler = (e: { preventDefault: () => void; }) => {
+  const profilesubmitHandler = (e: any) => {
     e.preventDefault();
     //Create Profile Actions
     const value = {
@@ -119,35 +122,33 @@ const UserSettings = () => {
     dispatch(updateProfile(value));
   };
 
-  const onChange = (e: any) => {
-    const file = e.target.files[0];
-    if (file) {
-      setImgLocalURL(URL.createObjectURL(file));
-      const formData = new FormData();
-      formData.append("image", file);
-      const postImg = async () => {
-        try {
-          setPreviewImgLoading(true);
-          const config = {
-            headers: {
-              "Content-Type": "multipart/form-data",
-              Authorization: `Bearer ${userInfo.token}`,
-            },
-          };
-          const { data } = await axios.post(
-            baseUrl + "/api/v1/imageupload",
-            formData,
-            config
-          );
-          setProfilePic(data.IMAGE);
-          setPreviewImgLoading(false);
-        } catch (error) {
-          setPreviewImgLoading(false);
-        }
-      };
-      postImg();
-    }
+  const onChange = (e: { target: { files: (Blob | MediaSource)[]; }; }) => {
+    const file: any = e.target.files[0];
+    const formData = new FormData();
+    formData.append("image", file);
+
+    setImgLocalURL(URL?.createObjectURL(e.target.files[0]));
+    console.log("formData", formData);
+    const postImg = async () => {
+      try {
+        setPreviewImgLoading(true);
+
+        const { data } = await axios.post(
+          baseUrl + "/api/v1/imageupload",
+          formData,
+          config
+        );
+        setProfilePic(data.IMAGE);
+        setPreviewImgLoading(false);
+      } catch (error: any) {
+        console.error(error.message);
+        setPreviewImgLoading(false);
+      }
+    };
+    postImg();
   };
+
+  console.log('profilePic', profilePic)
 
 
   return (
@@ -251,7 +252,7 @@ const UserSettings = () => {
                 <form className="change-avatar" onSubmit={profilesubmitHandler}>
                   {imgLocalURL === null ? (
                     <div className="form-ctrl preview-icon">
-                      <i className="fas fa-user fa-5x" />
+                      <  FaUser />
                     </div>
                   ) : (
                     <div className="form-ctrl preview img-container">
@@ -268,6 +269,7 @@ const UserSettings = () => {
                       accept="image/*"
                       className="custom-file-input"
                       disabled={(profileisLoading || previewImgLoading) && true}
+                      // @ts-ignore
                       onChange={onChange}
                     />
                   </div>

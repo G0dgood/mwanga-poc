@@ -18,6 +18,26 @@ const EntriesPerPage = ({ data, entriesPerPage, setEntriesPerPage }: any) => (
     )}
   </div>
 );
+const EntriesLimit = ({ data, limit, handlePagination }: any) => (
+  <div className="entries-perpage">
+    {data?.length > 1 && (
+      <>
+        <select
+          value={limit}
+          // @ts-ignore
+          onChange={(e) => handlePagination('limit', e)}  >
+          {["5", "8", "10", "25", "50", "100", "200", "500"].map((optionValue) => (
+            <option key={optionValue} value={optionValue}>
+              {optionValue}
+            </option>
+          ))}
+        </select>
+
+      </>
+    )}
+  </div>
+);
+
 const TableFetch = ({ colSpan }: any) => (
   <tr>
     <td colSpan={colSpan} className="table-loader">
@@ -37,4 +57,4 @@ const NoRecordFound = ({ colSpan, not }: any) => (
 
 const customId = "custom-id-yes";
 
-export { TableFetch, EntriesPerPage, NoRecordFound, customId };
+export { TableFetch, EntriesPerPage, NoRecordFound, customId, EntriesLimit };

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import moment from "moment";
-import { NoRecordFound, TableFetch, customId } from "../../../components/TableOptions";
+import { EntriesLimit, NoRecordFound, TableFetch, customId } from "../../../components/TableOptions";
 import Search from "../../../components/Search";
 import SideNavBar from "../../../components/SideNavBar";
 import Header from "../../../components/Header";
@@ -10,6 +10,9 @@ import { toast } from "react-toastify";
 import { useAppDispatch, useAppSelector } from "../../../store/useStore";
 import { getSetupBook } from "../../../features/Customer/customerSlice";
 import TableLoader from '../../../components/TableLoader';
+import { BsArrowRightCircleFill, BsArrowLeftCircleFill } from "react-icons/bs";
+import { AnyIfEmpty } from "react-redux";
+import RealPagination from "../../../components/RealPagination";
 
 
 
@@ -42,26 +45,36 @@ const SetupBook = () => {
     }
 
   }, [dispatch, endDate1, isSuccess, startDate1]);
-  const handlePrev = () => {
-    const datas = { page: pagination?.page - 1 }
-    // @ts-ignore
-    dispatch(getSetupBook(datas))
+
+
+
+
+  const handlePagination = (type: string, data?: React.ChangeEvent<HTMLSelectElement> | undefined) => {
+    switch (type) {
+      // @ts-ignore
+      case 'prev': dispatch(getSetupBook({ page: pagination?.page - 1, limit: limit }));
+        break;
+      // @ts-ignore
+      case 'next': dispatch(getSetupBook({ page: pagination?.page + 1, limit: limit }));
+        break;
+      case 'limit':
+        if (data) {
+          setLimit(data.target.value);
+          // @ts-ignore
+          dispatch(getSetupBook({ limit: data.target.value }));
+        }
+        break;
+      default:
+        // For page numbers or any other custom actions
+        const pageNumber = parseInt(type);
+        if (!isNaN(pageNumber)) {
+          // @ts-ignore
+          dispatch(getSetupBook({ page: pageNumber, limit: limit }));
+        }
+        break;
+    }
   }
 
-  const handleNext = () => {
-    const datas = { page: pagination?.page + 1 }
-    // @ts-ignore
-    dispatch(getSetupBook(datas))
-  }
-
-  const handleLmit = (e: { target: { value: any; }; }) => {
-    const newLimit = e.target.value;
-    setLimit(newLimit); // Update the limit state
-
-    const datas = { limit: newLimit };
-    // @ts-ignore
-    dispatch(getSetupBook(datas));
-  }
 
 
 
@@ -73,28 +86,19 @@ const SetupBook = () => {
   }, [dispatch, getSetupBookisError, getSetupBookmessage]);
 
 
-
-
-
   const [searchQuery, setSearchQuery] = useState('');
   // Handler for search input changes
-  const handleSearchInputChange = (e: { target: { value: React.SetStateAction<string>; }; }) => {
+  const handleSearchInputChange = (e: { target: { value: React.SetStateAction<string> }; }) => {
     setSearchQuery(e.target.value);
   };
 
 
 
-
-
   useEffect(() => {
     const results = getSetupBookdata?.customers?.filter(
-      (data: any) =>
-        data?.loanId?.toLowerCase()?.includes(searchQuery)
-    );
+      (data: any) => data?.loanId?.toLowerCase()?.includes(searchQuery));
     setData(results);
   }, [getSetupBookdata?.customers, searchQuery]);
-
-
 
 
   return (
@@ -112,22 +116,11 @@ const SetupBook = () => {
             placeHolder={"Search Loan ID"}
             value={searchQuery} onChange={handleSearchInputChange}
           />
-          <div className="entries-perpage">
-            {data?.length > 1 && (
-              <>
-                <select
-                  value={limit}
-                  onChange={handleLmit}  >
-                  <option value="5">5</option>
-                  <option value="8">8</option>
-                  <option value="10">10</option>
-                  <option value="25">25</option>
-                  <option value="50">50</option>
-                  <option value="100">100</option>
-                </select>
-              </>
-            )}
-          </div>
+          <EntriesLimit
+            limit={limit}
+            data={data}
+            handlePagination={handlePagination}
+          />
 
           <UploadCustomerBase />
         </div>
@@ -174,12 +167,8 @@ const SetupBook = () => {
           </table>
         </div>
         {pagination?.totalCustomers > 1 && <div className="totalResponses">
-          <h3>Total of {pagination?.totalCustomers} Customers</h3>
-          <div id={"notificationbtn"}>
-            <button className="btn" disabled={pagination?.page === pagination?.totalPages} onClick={handlePrev}>Previous</button>
-            <div id="notispan-container">  <span>page</span> <span>{pagination?.page}</span> <span>of</span> <span>{pagination?.totalPages}</span></div>
-            <button className="btn" disabled={pagination?.page === pagination?.totalPages} onClick={handleNext} >Next</button>
-          </div>
+          <h3>Total of {pagination?.totalCustomers} Customers - <span>Page {pagination?.page} of {pagination?.totalPages}</span></h3>
+          <RealPagination handlePagination={handlePagination} pagination={pagination} />
         </div>}
       </main>
     </div>
