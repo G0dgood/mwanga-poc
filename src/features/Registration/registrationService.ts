@@ -15,7 +15,7 @@ const userRegistration = async (input: any) => {
  // Get All Reguser
 const getallReguser = async () => {  
  
-  console.log(user, 'user')
+ 
   
   const config = {
       headers: {

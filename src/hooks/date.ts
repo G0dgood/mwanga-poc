@@ -9,7 +9,7 @@ export const convertToISOString =(inputDate: string) =>{
 		const dateObject = new Date(year, month, day);
 
 		// Format the Date object to ISO string
-		const isoDateString = dateObject.toISOString();
+		const isoDateString = dateObject.toISOString(); 
 
 		return isoDateString;
 	}

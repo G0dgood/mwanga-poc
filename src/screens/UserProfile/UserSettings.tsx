@@ -13,8 +13,9 @@ import { FaUser } from "react-icons/fa";
 
 
 const UserSettings = () => {
+  // @ts-ignore  
+  const user = JSON.parse(localStorage.getItem("mwanga"));
   const dispatch = useAppDispatch();
-  const userInfo = useAppSelector((state: { auth: any; }) => state.auth)
   const { userprofiledata } = useAppSelector((state: any) => state.auth);
   const { user: data } = userprofiledata;
   const { profileisLoading, profilemessage, profileisError, profileisSuccess } = useAppSelector((state: any) => state.auth);
@@ -122,17 +123,21 @@ const UserSettings = () => {
     dispatch(updateProfile(value));
   };
 
-  const onChange = (e: { target: { files: (Blob | MediaSource)[]; }; }) => {
-    const file: any = e.target.files[0];
+  const onChange = (e: any) => {
+    const file = e.target.files[0];
+    // @ts-ignore
+    setImgLocalURL(URL?.createObjectURL(e.target.files[0]));
     const formData = new FormData();
     formData.append("image", file);
-
-    setImgLocalURL(URL?.createObjectURL(e.target.files[0]));
-    console.log("formData", formData);
     const postImg = async () => {
       try {
         setPreviewImgLoading(true);
-
+        const config = {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${user.token}`,
+          },
+        };
         const { data } = await axios.post(
           baseUrl + "/api/v1/imageupload",
           formData,
@@ -148,7 +153,6 @@ const UserSettings = () => {
     postImg();
   };
 
-  console.log('profilePic', profilePic)
 
 
   return (

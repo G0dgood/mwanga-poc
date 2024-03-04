@@ -1,6 +1,7 @@
 import React from "react";
 import { FaCloudDownloadAlt, FaRegMeh } from "react-icons/fa";
 
+
 const EntriesPerPage = ({ data, entriesPerPage, setEntriesPerPage }: any) => (
   <div className="entries-perpage">
     {data?.length > 1 && (
@@ -56,5 +57,6 @@ const NoRecordFound = ({ colSpan, not }: any) => (
 );
 
 const customId = "custom-id-yes";
+
 
 export { TableFetch, EntriesPerPage, NoRecordFound, customId, EntriesLimit };

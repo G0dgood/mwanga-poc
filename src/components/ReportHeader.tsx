@@ -11,35 +11,36 @@ import { reset, userprofile } from "../features/Auth/authSlice";
 
 
 const ReportHeader = ({ title }: any) => {
+  // @ts-ignore
+  const userInfo = JSON.parse(localStorage.getItem("mwanga"));
   const { isSuperAdmin, isSupervisor, isAgent } = getUserPrivileges();
   const [dropDown, setDropDown] = useState(false);
   const dispatch = useAppDispatch();
   const { userprofiledata } = useAppSelector((state: any) => state.auth);
-  const userInfo = userprofiledata?.user
+
+
+
 
   useEffect(() => {
     dispatch(userprofile());
   }, [dispatch])
 
 
-  // @ts-ignore
-  const user = JSON.parse(localStorage.getItem("mwanga"));
+
 
   const handleLogout = () => {
     const loginFlag = async () => {
       await axios.get(baseUrl + "/api/v1/auth", {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${user.token}`,
+          Authorization: `Bearer ${userInfo.token}`,
         },
       });
     };
-
     dispatch(reset());
     dispatch(logoutUserAction());
     loginFlag();
   };
-
 
   return (
     <div id="report-header" onMouseLeave={() => setDropDown(false)}>
@@ -54,18 +55,18 @@ const ReportHeader = ({ title }: any) => {
           className="r-header-user-details"
           onClick={() => setDropDown(!dropDown)}
           onMouseEnter={() => setDropDown(true)}>
-          <div className="preview-header img-container-header">
-            {userInfo?.profilePic ? (
-              <  FaUser />
+          <div className="preview-header img-container-header">r
+            {!userprofiledata?.user?.profilePic ? (
+              < FaUser />
             ) : (
               <img
                 crossOrigin="anonymous"
-                src={`${baseUrl}/+ ${userInfo?.profilePic}`}
+                src={baseUrl + "/" + userprofiledata?.user?.profilePic}
                 alt="Profile Pic"
               />
             )}
           </div>
-          <span> {userInfo?.firstname}</span>
+          <span>{userprofiledata?.firstname || userInfo?.firstname}</span>
           <  FaChevronDown />
 
           {dropDown && (
@@ -90,15 +91,11 @@ const ReportHeader = ({ title }: any) => {
                     to="/setupbook"
                     className="drop-user-settings">
                     <FaSwatchbook />
-
                     Setup Book
                   </NavLink>}
 
-
-
                 {isSupervisor && <NavLink to="/teammembers" className="drop-user-settings">
                   <FaUsers />
-
                   Team Members
                 </NavLink>
                 }
@@ -106,7 +103,6 @@ const ReportHeader = ({ title }: any) => {
                 {isSuperAdmin &&
                   <NavLink to="/registeredusers" className="drop-user-settings">
                     <FaUsers />
-
                     Registered Users
                   </NavLink>
                 }

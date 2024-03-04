@@ -1,6 +1,6 @@
 import axios from "axios";  
 import { baseUrl } from "../shared/baseUrl";
-import {   fireAlert2 } from "./Alert";
+// import {   fireAlert2 } from "./Alert";
  
 
 

@@ -19,7 +19,7 @@ const Login = () => {
   const [userId, setUserId] = React.useState<string>('');
   const [password, setPassword] = React.useState<string>('');
   const [showPassword, setShowPassword] = useState<any>(false);
-  const { user, isLoading, isError, message } = useAppSelector((state: { auth: any; }) => state.auth)
+  const { isLoading, isError, message } = useAppSelector((state: { auth: any; }) => state.auth)
 
   // @ts-ignore
   const userInfo = JSON.parse(localStorage.getItem("mwanga"));
