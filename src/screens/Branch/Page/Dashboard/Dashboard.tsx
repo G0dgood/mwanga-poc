@@ -21,6 +21,10 @@ const Dashboard = () => {
   const { alldata, allisError, allmessage } = useAppSelector((state: any) => state.customer);
   const { getAgentResponsesdata } = useAppSelector((state: any) => state.customer);
 
+  const endDates = new Date();
+  const formattedEndDate = endDates.toISOString().split('T')[0]; // Extracting date part and removing time
+  const [startDate1] = useState(formattedEndDate);
+  const [endDate1] = useState(formattedEndDate);
 
 
   useEffect(() => {
@@ -112,7 +116,7 @@ const Dashboard = () => {
 
 
   useEffect(() => {
-    const datas = { startDates: fromDate, endDates: toDate };
+    const datas = { startDate: startDate1, endDate: endDate1 };
 
     if (isAgent) {
       dispatch(getAgentResponses());
@@ -120,7 +124,7 @@ const Dashboard = () => {
       // @ts-ignore
       dispatch(getAllResponses(datas));
     }
-  }, [dispatch, fromDate, isAgent, navigate, toDate]);
+  }, [dispatch, endDate1, fromDate, isAgent, navigate, startDate1, toDate]);
 
 
 

@@ -20,7 +20,7 @@ const AgentReport = () => {
 	const { getAgentResponsesdata, getAgentResponsesisError, getAgentResponsesmessage, getAgentResponsesisLoading } = useAppSelector((state: any) => state.customer);
 
 	const [dropFilter, setDropFilter] = useState(false);
-	const [selectedRadio, setSelectedRadio] = useState("All-time");
+	const [selectedRadio, setSelectedRadio] = useState("Today");
 
 	const [data, setData] = useState<any>([]);
 	const [filtered, setFilterd] = useState([]);
