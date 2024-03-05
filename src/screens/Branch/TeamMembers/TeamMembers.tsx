@@ -13,7 +13,6 @@ import {
 	NoRecordFound,
 } from "../../../components/TableOptions";
 import BottomNavigation from "../../../components/BottomNavigation";
-import { userInfo } from "../../../hooks/config";
 import { getUserPrivileges } from "../../../hooks/auth";
 import TableLoader from "../../../components/TableLoader";
 
@@ -54,14 +53,8 @@ const TeamMembers = () => {
 			async function fetchData() {
 				try {
 					setIsLoading(true);
-					const config = {
-						headers: {
-							"Content-Type": "application/json",
-							Authorization: `Bearer ${userInfo.token}`,
-						},
-					};
 					const res = await axios.post(
-						baseUrl + "/api/v1/auth/getteam", { id: !selectedSup ? user?.id : selectedSup }, config);
+						baseUrl + "/api/v1/auth/getteam", { id: !selectedSup ? user?.id : selectedSup });
 					setData(res?.data?.users);
 					setFilterd(res?.data?.users);
 					setIsLoading(false);
@@ -87,16 +80,8 @@ const TeamMembers = () => {
 
 	useEffect(() => {
 		async function fetchOnlySup() {
-			const config = {
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Bearer ${userInfo.token}`,
-				},
-			};
 			const res = await axios.get(
-				baseUrl + "/api/v1/auth/onlysupervisors",
-				config
-			);
+				baseUrl + "/api/v1/auth/onlysupervisors");
 			setOnlySupervisors(res?.data?.data);
 			return res;
 		}
