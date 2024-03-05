@@ -7,22 +7,23 @@ import { getUserPrivileges } from "../hooks/auth";
 import { useAppDispatch, useAppSelector } from "../store/useStore";
 import { logoutUserAction } from "../features/Auth/authService";
 import axios from "axios";
-import { reset, userprofile } from "../features/Auth/authSlice";
+import { login, reset, userprofile } from "../features/Auth/authSlice";
 
 
 const ReportHeader = ({ title }: any) => {
-  // @ts-ignore
-  const userInfo = JSON.parse(localStorage.getItem("mwanga"));
+  const { userInfo } = useAppSelector((state: { auth: any; }) => state.auth)
   const { isSuperAdmin, isSupervisor, isAgent } = getUserPrivileges();
   const [dropDown, setDropDown] = useState(false);
   const dispatch = useAppDispatch();
   const { userprofiledata } = useAppSelector((state: any) => state.auth);
-
+  // @ts-ignore
+  const user = JSON.parse(localStorage.getItem("mwangauserDetails"));
 
 
 
   useEffect(() => {
     dispatch(userprofile());
+    dispatch(login());
   }, [dispatch])
 
 
@@ -37,6 +38,7 @@ const ReportHeader = ({ title }: any) => {
         },
       });
     };
+    delete axios.defaults.headers.common['Authorization'];
     dispatch(reset());
     dispatch(logoutUserAction());
     loginFlag();
@@ -55,7 +57,7 @@ const ReportHeader = ({ title }: any) => {
           className="r-header-user-details"
           onClick={() => setDropDown(!dropDown)}
           onMouseEnter={() => setDropDown(true)}>
-          <div className="preview-header img-container-header">r
+          <div className="preview-header img-container-header">
             {!userprofiledata?.user?.profilePic ? (
               < FaUser />
             ) : (
@@ -66,7 +68,7 @@ const ReportHeader = ({ title }: any) => {
               />
             )}
           </div>
-          <span>{userprofiledata?.firstname || userInfo?.firstname}</span>
+          <span>{user?.firstname || userInfo?.firstname}</span>
           <  FaChevronDown />
 
           {dropDown && (

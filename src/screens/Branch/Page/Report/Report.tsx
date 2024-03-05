@@ -35,18 +35,12 @@ const Report = () => {
 	const [startDate1] = useState(formattedEndDate);
 	const [endDate1] = useState(formattedEndDate);
 
-
-
 	// Error Handling Effect
 	useEffect(() => {
 		if (allisError) {
 			toast.error(allmessage, { toastId: customId });
 		}
 	}, [allisError, allmessage]);
-
-
-
-
 
 
 	useEffect(() => {
@@ -66,28 +60,6 @@ const Report = () => {
 		setDropFilter(false)
 	}
 
-	// console.log('pagination', pagination.page)
-
-
-	// const handlePrev = () => {
-	// 	const datas = { page: pagination.page - 1 }
-	// 	// @ts-ignore
-	// 	dispatch(getAllResponses(datas))
-	// }
-
-	// const handleNext = () => {
-	// 	const datas = { page: pagination.page + 1 }
-	// 	// @ts-ignore
-	// 	dispatch(getAllResponses(datas))
-	// }
-
-	// const handleLmit = (e: { target: { value: any; }; }) => {
-	// 	const newLimit = e.target.value;
-	// 	setLimit(newLimit); // Update the limit state
-	// 	const datas = { limit: newLimit };
-	// 	// @ts-ignore
-	// 	dispatch(getAllResponses(datas));
-	// }
 
 
 	useEffect(() => {

@@ -4,7 +4,7 @@ import authService from './authService'
   
 const initialState = { 
 
-  user:null,
+  userInfo:null,
   isError: false,
   isSuccess: false,
   isLoading: false, 
@@ -233,8 +233,7 @@ export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    reset: (state) => {   
-      state.user = null
+    reset: (state) => {    
       state.isLoading = false
       state.isSuccess = false
       state.isError = false
@@ -309,7 +308,7 @@ export const authSlice = createSlice({
       .addCase(login.fulfilled, (state, action) => {
         state.isLoading = false
         state.isSuccess = true
-        state.user = action.payload 
+        state.userInfo = action.payload 
       }) 
       .addCase(login.rejected, (state:any, action) => {
         state.isLoading  = false

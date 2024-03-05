@@ -1,96 +1,74 @@
-import axios from 'axios';
-import createHttpService from '../../components/HttpService';
+import axios from 'axios'; 
 import { baseUrl } from '../../shared/baseUrl'; 
  
 
-  	// @ts-ignore
-  const user = JSON.parse(localStorage.getItem("mwanga"));
- // Registration
+ 
 const userRegistration = async (input: any) => {  
-  	const HttpService = createHttpService();
-  const { data } = await HttpService.post('/api/v1/users/register',input) 
+ 
+   const { data } = await axios.post(baseUrl +'/api/v1/users/register',input   ) 
   return data
 }
 
  // Get All Reguser
-const getallReguser = async () => {  
- 
- 
-  
-  const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${user?.token}`,
-      },
-    };
-
-  const { data } = await axios.get(baseUrl + "/api/v1/users", config);    
+const getallReguser = async () => {   
+  const { data } = await axios.get(baseUrl + '/api/v1/users');    
   return data
 }
  // Get All Reguser
-const getallRoles = async () => {  
-  const HttpService = createHttpService();
-  const { data } = await HttpService.get('/api/v1/roles')  
+const getallRoles = async () => {   
+   const { data } = await axios.get(baseUrl +'/api/v1/roles')  
   return data
 }
 
  // Get Login User
-const getLoginUser = async () => {  
-    const HttpService = createHttpService();
-  const { data } = await HttpService.get('/api/v1/auth/users/logged-in',  )   
+const getLoginUser = async () => {   
+   const { data } = await axios.get(baseUrl +'/api/v1/auth/users/logged-in' )   
   return data
 }
 
 
-// Get user by Agent role
-const getUserProfileById = async (id:any) => {  
-  const HttpService = createHttpService();
-  const { data } = await HttpService.get( `/api/v1/auth/${id}`) 
+// Get User Profile By Id
+const getUserProfileById = async (id:any) => {   
+   const { data } = await axios.get(baseUrl + `/api/v1/auth/${id}` ) 
   return data
 }
 
 // Get Team members
-const getTeammembers = async (id:any) => {  
-  const HttpService = createHttpService();
-  const { data } = await HttpService.post( `/api/v1/auth/getteam`,	{ id:id}) 
+const getTeammembers = async (id:any) => {   
+   const { data } = await axios.post(baseUrl + `/api/v1/auth/getteam`,	{ id:id}   ) 
   return data
 }
 
  
 // Admin Update User
-const adminUpdateUser = async (value: any) => {  
-  const HttpService = createHttpService();
+const adminUpdateUser = async (value: any) => {   
   const {id ,input} = value
-  const { data } = await HttpService.put(`/api/v1/users/${id}` ,input )  
+   const { data } = await axios.put(baseUrl +`/api/v1/users/${id}` ,input   )  
   return data
 }
 
-// Reset  password
-const adminResetPassword = async (value: any) => {  
-  const HttpService = createHttpService();
+// Admin Reset Password
+const adminResetPassword = async (value: any) => { 
   const {id ,newPassword} = value
-  const { data } = await HttpService.put(`/api/v1/auth/reset-password/${id}` ,{"password":newPassword } )  
+   const { data } = await axios.put(baseUrl +`/api/v1/auth/reset-password/${id}` ,{"password":newPassword }   )  
   return data
 }
 
 
-// Get user by Agent role
-const edituser = async (value: any) => {  
-    const HttpService = createHttpService();
-  const { data } = await HttpService.put( '/api/v1/auth/users/admin-update-user',value ) 
+// Edit user
+const edituser = async (value: any) => {   
+   const { data } = await axios.put( baseUrl +'/api/v1/auth/users/admin-update-user',value   ) 
   return data
 }
 
 // Get Supervisors
-const getsupervisors = async ( ) => {  
-    const HttpService = createHttpService(); 
-    const { data } = await HttpService.get('/api/v1/users/supervisors') 
+const getsupervisors = async ( ) => {   
+     const { data } = await axios.get(baseUrl +'/api/v1/users/supervisors'  ) 
   return data
 }
-// Get Supervisors
+// agent By LOB Action
 const agentByLOBAction = async (LOB: any ) => {  
-    const HttpService = createHttpService(); 
-    const { data } = await HttpService.get(`/api/v1/auth/lob/${LOB}`) 
+     const { data } = await axios.get(baseUrl +`/api/v1/auth/lob/${LOB}`   ) 
   return data
 }
 

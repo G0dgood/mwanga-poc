@@ -22,7 +22,8 @@ ChartJS.register(
   Legend
 );
 
-const DoughnutChart = ({ chartData, selectedDate, setSelectedDate }: any) => {
+const DoughnutChart = ({ chartData, selectedDate, setSelectedDate, handleChange }: any) => {
+
   const [firstParam, setFirstParam] = useState([]);
   const [secondParam, setSecondParam] = useState([]);
   const [thirdParam, setThirdParam] = useState([]);
@@ -94,13 +95,14 @@ const DoughnutChart = ({ chartData, selectedDate, setSelectedDate }: any) => {
     ],
   };
 
+
   return (
     <div className="doughnutchart-wrapper">
       <h5>
         Disposition Trend
         <select
           value={selectedDate}
-          onChange={(e) => setSelectedDate(e.target.value)}>
+          onChange={handleChange}>
           <option value="Today">Today</option>
           <option value="Yesterday">Yesterday</option>
           <option value="7-Days">Last 7 Days</option>

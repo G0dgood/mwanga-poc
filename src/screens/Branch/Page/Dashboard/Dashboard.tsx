@@ -1,26 +1,21 @@
 import { useState, useEffect } from "react";
 import moment from "moment";
-import { useNavigate } from "react-router-dom";
 import SideNavBar from "../../../../components/SideNavBar";
 import Header from "../../../../components/Header";
 import DoughnutChart from "../../../../components/DoughnutChart";
 import { FaPhone } from "react-icons/fa";
 import BottomNavigation from "../../../../components/BottomNavigation";
 import { useAppDispatch, useAppSelector } from "../../../../store/useStore";
-import { userprofile } from "../../../../features/Auth/authSlice";
+import { reset, userprofile } from "../../../../features/Auth/authSlice";
 import { toast } from "react-toastify";
 import { customId } from "../../../../components/TableOptions";
-import { getUserPrivileges } from "../../../../hooks/auth";
-import { getAgentResponses, getAllResponses } from "../../../../features/Customer/customerSlice";
+import { getAllResponses } from "../../../../features/Customer/customerSlice";
 
 
 const Dashboard = () => {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-  const { isSuperAdmin, isSupervisor, isMis, isAgent } = getUserPrivileges();
   const { alldata, allisError, allmessage } = useAppSelector((state: any) => state.customer);
-  const { getAgentResponsesdata } = useAppSelector((state: any) => state.customer);
-
+  const [limit, setLimit] = useState<any>(20000);
   const endDates = new Date();
   const formattedEndDate = endDates.toISOString().split('T')[0]; // Extracting date part and removing time
   const [startDate1] = useState(formattedEndDate);
@@ -39,51 +34,36 @@ const Dashboard = () => {
   const currentDate = moment().format("YYYY-MM-DD");
   const sevenDays = moment().subtract(7, "days").format("YYYY-MM-DD");
   const yesterday = moment().subtract(1, "days").format("YYYY-MM-DD");
-
   const [data, setData] = useState<any>([]);
-  const [fromDate, setFromDate] = useState("");
-  const [toDate, setToDate] = useState("");
+
 
 
 
 
   useEffect(() => {
-    if (selectedDate === "Today") {
-      setStartDate(currentDate);
-      setEndDate(currentDate);
-      setToDate("");
-      setFromDate("");
-    } else if (selectedDate === "Yesterday") {
-      setStartDate(yesterday);
-      setEndDate(yesterday);
-      setToDate(yesterday);
-      setFromDate(yesterday);
-    } else if (selectedDate === "7-Days") {
+    if (selectedDate === "7-Days") {
+      setLimit(100000)
       setStartDate(sevenDays);
       setEndDate(currentDate);
-      setToDate(sevenDays);
-      setFromDate(currentDate);
+    } else if (selectedDate === "Yesterday") {
+      setLimit(50000)
+      setStartDate(yesterday);
+      setEndDate(yesterday);
+    } else if (selectedDate === "Today") {
+      setLimit(20000)
+      setStartDate(currentDate);
+      setEndDate(currentDate);
     }
-  }, [selectedDate, currentDate, sevenDays, yesterday]);
+  }, [currentDate, selectedDate, sevenDays, yesterday]);
+
 
   useEffect(() => {
-    if (isSuperAdmin || isSupervisor || isMis) {
-      const filterAllData = alldata?.responses?.filter(
-        (obj: { createdAt: moment.MomentInput; }) =>
-          moment(obj.createdAt).format("YYYY-MM-DD") >= startDate &&
-          moment(obj.createdAt).format("YYYY-MM-DD") <= endDate);
-      setData(filterAllData);
-
-    } else if (isAgent) {
-      const filterUserData = getAgentResponsesdata?.responses?.filter(
-        (obj: { createdAt: moment.MomentInput; }) =>
-          moment(obj.createdAt).format("YYYY-MM-DD") >= startDate &&
-          moment(obj.createdAt).format("YYYY-MM-DD") <= endDate
-      );
-      setData(filterUserData);
-    }
-
-  }, [alldata?.responses, endDate, getAgentResponsesdata?.data, getAgentResponsesdata?.responses, isAgent, isMis, isSuperAdmin, isSupervisor, startDate]);
+    const filterAllData = alldata?.responses?.filter(
+      (obj: { createdAt: moment.MomentInput; }) =>
+        moment(obj.createdAt).format("YYYY-MM-DD") >= startDate &&
+        moment(obj.createdAt).format("YYYY-MM-DD") <= endDate);
+    setData(filterAllData);
+  }, [alldata?.responses, endDate, startDate]);
 
 
 
@@ -108,26 +88,28 @@ const Dashboard = () => {
     );
   }, [data]);
 
-  useEffect(() => {
-    if (allisError) {
-      toast.error(allmessage, { toastId: customId });
-    }
-  }, [dispatch, allisError, allmessage]);
+  // useEffect(() => {
+  //   if (allisError) {
+  //     toast.error(allmessage, { toastId: customId });
+  //     dispatch(reset());
+  //   }
+  // }, [dispatch, allisError, allmessage]);
 
 
   useEffect(() => {
-    const datas = { startDate: startDate1, endDate: endDate1 };
-
-    if (isAgent) {
-      dispatch(getAgentResponses());
-    } else {
-      // @ts-ignore
-      dispatch(getAllResponses(datas));
-    }
-  }, [dispatch, endDate1, fromDate, isAgent, navigate, startDate1, toDate]);
+    const datas = { startDate: startDate1, endDate: endDate1, limit: limit };
+    // @ts-ignore
+    dispatch(getAllResponses(datas));
+  }, [dispatch, endDate1, startDate1, limit]);
 
 
+  const handleChange = (e: any) => {
+    setSelectedDate(e.target.value)
+    const datas = { startDate: startDate1, endDate: endDate1, limit: limit };
+    // @ts-ignore
+    dispatch(getAllResponses(datas));
 
+  };
 
 
 
@@ -167,6 +149,7 @@ const Dashboard = () => {
               chartData={data}
               selectedDate={selectedDate}
               setSelectedDate={setSelectedDate}
+              handleChange={handleChange}
             />
           </div>
         </div>

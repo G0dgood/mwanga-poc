@@ -35,8 +35,11 @@ const Header = () => {
 
 
   useEffect(() => {
-    dispatch(userprofile());
-  }, [dispatch])
+    if (!userprofiledata) {
+      dispatch(userprofile());
+    }
+
+  }, [dispatch, userprofiledata])
 
   const handleToggle = () => {
     dispatch(toggleSideNav());
@@ -59,6 +62,7 @@ const Header = () => {
         },
       });
     };
+    delete axios.defaults.headers.common['Authorization'];
     dispatch(reset());
     dispatch(logoutUserAction());
     loginFlag();
@@ -106,8 +110,8 @@ const Header = () => {
           )}
         <div
           className="d-flex header-user-details"
-          onClick={() => setDropDown(!dropDown)}
-          onMouseEnter={() => setDropDown(true)}>
+          onClick={() => setDropDown(!dropDown)} >
+          {/* onMouseEnter={() => setDropDown(true)} */}
           <div className="preview-header img-container-header">
             {!userprofiledata?.user?.profilePic ? (
               <  FaUser />

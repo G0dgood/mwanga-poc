@@ -32,14 +32,7 @@ const CustomerBook = () => {
 		try {
 			setIsLoading(true);
 			const request = await axios.get(
-				baseUrl + `/api/v1/branch/customers/${phone}`,
-				{
-					headers: {
-						"Content-Type": "application/json",
-						Authorization: `Bearer ${userInfo.token}`,
-					},
-				}
-			);
+				baseUrl + `/api/v1/branch/customers/${phone}`);
 			// @ts-ignore
 			if (request?.data?.customer && request.data.customer?.length === 0) {
 				setErrorMsgs("customer not found!");

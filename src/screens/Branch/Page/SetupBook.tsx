@@ -11,7 +11,6 @@ import { useAppDispatch, useAppSelector } from "../../../store/useStore";
 import { getSetupBook } from "../../../features/Customer/customerSlice";
 import TableLoader from '../../../components/TableLoader';
 import { BsArrowRightCircleFill, BsArrowLeftCircleFill } from "react-icons/bs";
-import { AnyIfEmpty } from "react-redux";
 import RealPagination from "../../../components/RealPagination";
 
 
@@ -78,12 +77,12 @@ const SetupBook = () => {
 
 
 
-  // Error Handling Effect
-  useEffect(() => {
-    if (getSetupBookisError) {
-      toast.error(getSetupBookmessage, { toastId: customId });
-    }
-  }, [dispatch, getSetupBookisError, getSetupBookmessage]);
+  // // Error Handling Effect
+  // useEffect(() => {
+  //   if (getSetupBookisError) {
+  //     toast.error(getSetupBookmessage, { toastId: customId });
+  //   }
+  // }, [dispatch, getSetupBookisError, getSetupBookmessage]);
 
 
   const [searchQuery, setSearchQuery] = useState('');

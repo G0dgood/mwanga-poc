@@ -61,7 +61,6 @@ const CustomFilter = ({
         moment(item.createdAt)?.format("YYYY-MM-DD") >= startDate &&
         moment(item.createdAt)?.format("YYYY-MM-DD") <= endDate
     );
-    console.log('filteredData', filteredData)
     setData(filteredData);
     setDropFilter(false);
   };

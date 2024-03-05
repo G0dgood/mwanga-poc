@@ -10,6 +10,7 @@ import UserSettings from "./screens/UserProfile/UserSettings";
 import AdminUserSettings from "./screens/Settings/AdminUserSettings";
 import TeamMembers from "./screens/Branch/TeamMembers/TeamMembers";
 import AgentReport from "./screens/Branch/Page/Report/AgentReport";
+import DashboardHub from './screens/Branch/Page/Dashboard/DashboardHub';
 
 
 function App() {
@@ -19,7 +20,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Login />} />
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/dashboard" element={<DashboardHub />} />
           <Route path="/user/settings" element={<UserSettings />} />
           <Route path="/user/:id/settings" element={<AdminUserSettings />} />
           <Route path="/setupbook" element={<SetupBook />} />
