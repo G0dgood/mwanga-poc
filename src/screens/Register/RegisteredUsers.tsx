@@ -30,6 +30,7 @@ const RegisteredUsers = () => {
   const { isSuccess } = useAppSelector((state) => state.reg)
   const { edituserisSuccess } = useAppSelector((state: any) => state.reg);
   const [displayUsers, setDisplayUsers] = useState([]);
+  const [filtered, setFiltered] = useState([]);
   const [loadingdelete, setLoadingdelete] = useState(false);
   const [isDeleteContainerVisible, setIsDeleteContainerVisible] = useState(false);
   const [result, setResult] = useState("");
@@ -47,21 +48,20 @@ const RegisteredUsers = () => {
   useEffect(() => {
     if (isErrorAll) {
       toast.error(messageAll, { toastId: customId });
-    }
-    dispatch(reset());
-  }, [dispatch, isErrorAll, messageAll]);
-
-
-  // Data Fetching (Conditional) Effect
-  useEffect(() => {
-    if (isSuccess || edituserisSuccess) {
+    } else if (isSuccess || edituserisSuccess) {
       dispatch(getallReguser());
     }
-  }, [dispatch, edituserisSuccess, isSuccess]);
+    dispatch(reset());
+  }, [dispatch, edituserisSuccess, isErrorAll, isSuccess, messageAll]);
 
 
-  const filteredlob = dataAll?.filter((item: any) => item?.lob === lob.name);
-  const results = filteredlob.filter((data: { userId: string; }) => data.userId.toLowerCase().includes(result));
+
+
+  useEffect(() => {
+    const filteredlob = dataAll?.filter((item: any) => item?.lob === lob.name);
+    const results = filteredlob.filter((data: { userId: string; }) => data.userId.toLowerCase().includes(result));
+    setFiltered(results)
+  }, [dataAll, lob.name, result]);
   const [entriesPerPage, setEntriesPerPage] = useState(() => {
     return localStorage.getItem("reportsPerPage") || "10";
   });
@@ -223,7 +223,7 @@ const RegisteredUsers = () => {
         <footer className="main-table-footer">
           <Pagination
             setDisplayData={setDisplayUsers}
-            data={results}
+            data={filtered}
             entriesPerPage={entriesPerPage}
             Total={"Registered User"}
           />
