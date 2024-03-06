@@ -1,7 +1,16 @@
 import axios from 'axios'; 
 import { baseUrl } from '../../shared/baseUrl';
 
- 
+ // Function to initialize Axios defaults with the token from local storage
+const initializeAxiosDefaults = () => {
+  const token = localStorage.getItem('mwanga');
+  if (token) {
+    axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(token).token}`;
+  }
+};
+
+// Call the function to initialize Axios defaults
+initializeAxiosDefaults();
 
 // Login user 
 const login = async (value: any) => {   
