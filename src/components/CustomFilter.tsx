@@ -1,22 +1,16 @@
 import { useState, useEffect } from "react";
 import moment from "moment";
-import { getUserPrivileges } from "../hooks/auth";
 import ModalHeader from "./Modal/ModalHeader";
 
 const CustomFilter = ({
-  filtered,
-  setData,
   setDropFilter,
   selectedRadio,
   setSelectedRadio,
   setEndDate,
   setStartDate,
-  handleCustomFilters,
-  startDate,
-  endDate,
-  filter
+  handleCustomFilters
 }: any) => {
-  const { isAgent } = getUserPrivileges();
+
 
 
   const [dateRangeStart, setDateRangeStart] = useState("");
@@ -54,21 +48,12 @@ const CustomFilter = ({
 
 
 
-  const handleCustomFilter = (e: { preventDefault: () => void; }) => {
-    e.preventDefault();
-    const filteredData = filter?.filter(
-      (item: { createdAt: moment.MomentInput; }) =>
-        moment(item.createdAt)?.format("YYYY-MM-DD") >= startDate &&
-        moment(item.createdAt)?.format("YYYY-MM-DD") <= endDate
-    );
-    setData(filteredData);
-    setDropFilter(false);
-  };
+
 
   return (
     <div className="filter-dropdown">
       <ModalHeader headerTitle={"Filter options:"} setShow={setDropFilter} />
-      <form className="checkbox-grp" onSubmit={isAgent ? handleCustomFilter : handleCustomFilters} >
+      <form className="checkbox-grp" onSubmit={handleCustomFilters} >
         <div className="checkbox-ctrl">
           <input
             type="radio"

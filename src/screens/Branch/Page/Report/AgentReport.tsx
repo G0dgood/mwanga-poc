@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import moment from "moment";
-import { EntriesPerPage, NoRecordFound, TableFetch, customId } from "../../../../components/TableOptions";
+import { EntriesLimit, NoRecordFound, TableFetch, customId } from "../../../../components/TableOptions";
 import Search from "../../../../components/Search";
 import CustomFilter from "../../../../components/CustomFilter";
 import { FaFilter } from "react-icons/fa";
@@ -10,8 +10,8 @@ import TableLoader from "../../../../components/TableLoader";
 import { useAppDispatch, useAppSelector } from "../../../../store/useStore";
 import { toast } from "react-toastify";
 import { getAgentResponses, reset } from "../../../../features/Customer/customerSlice";
-import Pagination from "../../../../components/Pagination";
 import ReportDownloader from "../../components/ReportDownloader";
+import RealPagination from "../../../../components/RealPagination";
 
 
 const AgentReport = () => {
@@ -23,38 +23,45 @@ const AgentReport = () => {
 	const [selectedRadio, setSelectedRadio] = useState("Today");
 
 	const [data, setData] = useState<any>([]);
+	const [limit, setLimit] = useState<any>(10);
 	const [filtered, setFilterd] = useState([]);
 	const [filter, setFilter] = useState<any>([]);
 	const [result, setResult] = useState("");
+	const endDates = new Date();
+	const formattedEndDate = endDates.toISOString().split('T')[0]; // Extracting date part and removing time
 
+	const pagination = getAgentResponsesdata?.pagination
 	const [startDate, setStartDate] = useState("");
 	const [endDate, setEndDate] = useState("");
+	const [startDate1] = useState(formattedEndDate);
+	const [endDate1] = useState(formattedEndDate);
 
 
 
 
 	// Error Handling Effect
 	useEffect(() => {
-		dispatch(getAgentResponses());
+		const datas = { startDate: startDate1, endDate: endDate1 };
+		// @ts-ignore
+		dispatch(getAgentResponses(datas));
 		if (getAgentResponsesisError) {
 			toast.error(getAgentResponsesmessage, { toastId: customId });
 		}
 		dispatch(reset());
-	}, [dispatch, getAgentResponsesisError, getAgentResponsesmessage]);
-
+	}, [dispatch, endDate1, getAgentResponsesisError, getAgentResponsesmessage, startDate1]);
 
 
 	const handleCustomFilters = () => {
-		dispatch(getAgentResponses())
+		const datas = { startDate, endDate }
+		// @ts-ignore
+		dispatch(getAgentResponses(datas))
 		setDropFilter(false)
 	}
-
 
 
 	useEffect(() => {
 		setFilterd(getAgentResponsesdata?.responses);
 		setFilter(getAgentResponsesdata?.responses);
-
 	}, [getAgentResponsesdata?.responses]);
 
 	useEffect(() => {
@@ -71,18 +78,36 @@ const AgentReport = () => {
 		setResult(e.target.value);
 	};
 
-	// --- Pagination --- //
 
-	const [entriesPerPage, setEntriesPerPage] = useState(() => {
-		return localStorage.getItem("reportsPerPage") || "10";
-	});
+	const handlePagination = (type: string, data?: React.ChangeEvent<HTMLSelectElement> | undefined) => {
+		switch (type) {
+			// @ts-ignore
+			case 'prev': dispatch(getAgentResponses({ page: pagination?.page - 1, limit: limit }));
+				break;
+			// @ts-ignore
+			case 'next': dispatch(getAgentResponses({ page: pagination?.page + 1, limit: limit }));
+				break;
+			case 'limit':
+				if (data) {
+					setLimit(data.target.value);
+					// @ts-ignore
+					dispatch(getAgentResponses({ limit: data.target.value }));
+				}
+				break;
+			default:
+				// For page numbers or any other custom actions
+				const pageNumber = parseInt(type);
+				if (!isNaN(pageNumber)) {
+					// @ts-ignore
+					dispatch(getAgentResponses({ page: pageNumber, limit: limit }));
+				}
+				break;
+		}
+	}
 
-	useEffect(() => {
-		localStorage.setItem("reportsPerPage", entriesPerPage);
-	}, [entriesPerPage]);
 
 
-	const [displayUsers, setDisplayUsers] = useState([]);
+
 
 	return (
 		<div id="reports-screen-wrapper">
@@ -111,11 +136,13 @@ const AgentReport = () => {
 								placeHolder={"Search Agent ID  OR  Loan ID"}
 							/>
 						</div>
-						<EntriesPerPage
-							data={filter}
-							entriesPerPage={entriesPerPage}
-							setEntriesPerPage={setEntriesPerPage}
+						<EntriesLimit
+							limit={limit}
+							data={data}
+							handlePagination={handlePagination}
+							filterLimit={pagination?.totalResponses}
 						/>
+
 						{dropFilter && (
 							<CustomFilter
 								filtered={filtered}
@@ -176,10 +203,10 @@ const AgentReport = () => {
 						<tbody>
 							{getAgentResponsesisLoading ? (
 								<TableFetch colSpan={15} />
-							) : displayUsers?.length === 0 || displayUsers == null ? (
+							) : data?.length === 0 || data == null ? (
 								<NoRecordFound colSpan={19} />
 							) : (
-								displayUsers?.map((item: any) => (
+								data?.map((item: any) => (
 									<tr key={item._id}>
 										<td>{item?.user?.userId}</td>
 										<td>{item?.customer?.campaign}</td>
@@ -215,12 +242,10 @@ const AgentReport = () => {
 					</table>
 				</div>
 
-				<Pagination
-					setDisplayData={setDisplayUsers}
-					data={data}
-					entriesPerPage={entriesPerPage}
-					Total={"Reports"}
-				/>
+				{pagination?.totalResponses > 1 && <div className="totalResponses">
+					<h3>Total of {pagination?.totalResponses} Response - <span>Page {pagination?.page} of {pagination?.totalPages}</span></h3>
+					<RealPagination handlePagination={handlePagination} pagination={pagination} />
+				</div>}
 			</div>
 		</div>
 	);

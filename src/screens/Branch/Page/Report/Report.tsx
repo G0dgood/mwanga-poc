@@ -113,7 +113,7 @@ const Report = () => {
 			<ReportHeader title={"Disposition Report"} />
 			<div className="report-body">
 				<div className="report-features-area">
-					<div className="page-features">
+					<div className="filter-area">
 						<div className="filter-btn"
 						>
 							<div className="btn-side-container" onClick={() => setDropFilter(!dropFilter)}>
@@ -135,13 +135,12 @@ const Report = () => {
 								placeHolder={"Search Agent ID  OR  Loan ID"}
 							/>
 						</div>
-
 						<EntriesLimit
 							limit={limit}
 							data={data}
 							handlePagination={handlePagination}
+							filterLimit={pagination?.totalResponses}
 						/>
-
 
 						{dropFilter && (
 							<CustomFilter
@@ -152,7 +151,10 @@ const Report = () => {
 								setSelectedRadio={setSelectedRadio}
 								setStartDate={setStartDate}
 								setEndDate={setEndDate}
+								startDate={startDate}
+								endDate={endDate}
 								data={data}
+								filter={filter}
 								handleCustomFilters={handleCustomFilters}
 							/>
 						)}
@@ -238,13 +240,11 @@ const Report = () => {
 						</tbody>
 					</table>
 				</div>
+
 				{pagination?.totalResponses > 1 && <div className="totalResponses">
 					<h3>Total of {pagination?.totalResponses} Response - <span>Page {pagination?.page} of {pagination?.totalPages}</span></h3>
 					<RealPagination handlePagination={handlePagination} pagination={pagination} />
 				</div>}
-
-
-
 			</div>
 		</div>
 	);

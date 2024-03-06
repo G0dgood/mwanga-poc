@@ -19,10 +19,11 @@ const EntriesPerPage = ({ data, entriesPerPage, setEntriesPerPage }: any) => (
     )}
   </div>
 );
-const EntriesLimit = ({ data, limit, handlePagination }: any) => (
+const EntriesLimit = ({ data, limit, handlePagination, filterLimit }: any) => (
   <div className="entries-perpage">
     {data?.length > 1 && (
       <>
+        Entries
         <select
           value={limit}
           // @ts-ignore
@@ -32,8 +33,9 @@ const EntriesLimit = ({ data, limit, handlePagination }: any) => (
               {optionValue}
             </option>
           ))}
+          <option value={filterLimit}>Report Limit</option>
         </select>
-
+        Perpage
       </>
     )}
   </div>

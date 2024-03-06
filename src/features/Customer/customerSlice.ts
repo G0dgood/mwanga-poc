@@ -139,7 +139,7 @@ export const getAllResponses = createAsyncThunk('customer/getAllResponses', asyn
 })
 export const getAgentResponses = createAsyncThunk('customer/getAgentResponses', async (data, thunkAPI) => {
   try {
-    return await customerService.getAgentResponses()
+    return await customerService.getAgentResponses(data)
 
   } catch (error: any) {  
     const message = (error.response && 

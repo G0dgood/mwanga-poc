@@ -63,9 +63,9 @@ const Header = () => {
       });
     };
     delete axios.defaults.headers.common['Authorization'];
-    dispatch(reset());
     dispatch(logoutUserAction());
     loginFlag();
+    // dispatch(reset());
   };
 
 

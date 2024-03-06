@@ -38,8 +38,11 @@ const createResponseID = async (id: any) => {
   const { data } = await axios.get(baseUrl + `/api/v1/branch/responses/${id}` );   
 	return data
 }
-const getAgentResponses = async () => { 
-  const { data } = await axios.get(baseUrl + `/api/v1/branch/responses/agentresponses` );  
+const getAgentResponses = async (datas: any) => { 
+	const { endDate, startDate, limit, page, } = datas  
+	const base = baseUrl +`/api/v1/branch/responses/agentresponses`  
+	const url = buildDynamicURL(null, startDate, endDate, limit, page, base); 
+		const { data } = await axios.get(url)  
 	return data
 }
  

@@ -23,52 +23,20 @@ const AgentDashboard = () => {
 	const formattedEndDate = endDates.toISOString().split('T')[0]; // Extracting date part and removing time
 	const [startDate1] = useState(formattedEndDate);
 	const [endDate1] = useState(formattedEndDate);
+	const [selectedDate, setSelectedDate] = useState("");
 
-
-
-
-	const [selectedDate, setSelectedDate] = useState("Today");
-	const [startDate, setStartDate] = useState("");
-	const [endDate, setEndDate] = useState("");
 
 	const currentDate = moment().format("YYYY-MM-DD");
 	const sevenDays = moment().subtract(7, "days").format("YYYY-MM-DD");
 	const yesterday = moment().subtract(1, "days").format("YYYY-MM-DD");
-
 	const [data, setData] = useState<any>([]);
-	const [fromDate, setFromDate] = useState("");
-	const [toDate, setToDate] = useState("");
 
 
 
 
 	useEffect(() => {
-		if (selectedDate === "Today") {
-			setStartDate(currentDate);
-			setEndDate(currentDate);
-			setToDate("");
-			setFromDate("");
-		} else if (selectedDate === "Yesterday") {
-			setStartDate(yesterday);
-			setEndDate(yesterday);
-			setToDate(yesterday);
-			setFromDate(yesterday);
-		} else if (selectedDate === "7-Days") {
-			setStartDate(sevenDays);
-			setEndDate(currentDate);
-			setToDate(sevenDays);
-			setFromDate(currentDate);
-		}
-	}, [selectedDate, currentDate, sevenDays, yesterday]);
-
-	useEffect(() => {
-		const filterUserData = getAgentResponsesdata?.responses?.filter(
-			(obj: { createdAt: moment.MomentInput; }) =>
-				moment(obj.createdAt).format("YYYY-MM-DD") >= startDate &&
-				moment(obj.createdAt).format("YYYY-MM-DD") <= endDate
-		);
-		setData(filterUserData);
-	}, [endDate, getAgentResponsesdata?.responses, startDate]);
+		setData(getAgentResponsesdata?.responses);
+	}, [getAgentResponsesdata?.responses]);
 
 
 
@@ -93,17 +61,36 @@ const AgentDashboard = () => {
 	}, [data]);
 
 
-	// useEffect(() => {
-	// 	if (getAgentResponsesisError) {
-	// 		toast.error(getAgentResponsesmessage, { toastId: customId });
-	// 	}
-	// }, [dispatch, getAgentResponsesisError, getAgentResponsesmessage]);
+	useEffect(() => {
+		if (getAgentResponsesisError) {
+			toast.error(getAgentResponsesmessage, { toastId: customId });
+		}
+	}, [dispatch, getAgentResponsesisError, getAgentResponsesmessage]);
 
 
 	useEffect(() => {
-		dispatch(getAgentResponses());
-	}, [dispatch]);
+		const datas = { startDate: startDate1, endDate: endDate1, limit: 500 };
+		// @ts-ignore
+		dispatch(getAgentResponses(datas));
+	}, [dispatch, endDate1, startDate1]);
 
+	const handleChange = (e: any) => {
+		setSelectedDate(e.target.value);
+
+		if (e.target.value === "7-Days") {
+			const datas = { startDate: sevenDays, endDate: currentDate, limit: 5000 };
+			// @ts-ignore
+			dispatch(getAgentResponses(datas));
+		} else if (e.target.value === "Yesterday") {
+			const datas = { startDate: yesterday, endDate: yesterday, limit: 1000 };
+			// @ts-ignore
+			dispatch(getAgentResponses(datas));
+		} else if (e.target.value === "Today") {
+			const datas = { startDate: currentDate, endDate: currentDate, limit: 500 };
+			// @ts-ignore
+			dispatch(getAgentResponses(datas));
+		}
+	};
 
 
 	return (
@@ -141,6 +128,7 @@ const AgentDashboard = () => {
 							chartData={data}
 							selectedDate={selectedDate}
 							setSelectedDate={setSelectedDate}
+							handleChange={handleChange}
 						/>
 					</div>
 				</div>
