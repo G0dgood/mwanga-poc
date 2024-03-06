@@ -9,7 +9,7 @@ import ReportHeader from "../../../../components/ReportHeader";
 import TableLoader from "../../../../components/TableLoader";
 import { useAppDispatch, useAppSelector } from "../../../../store/useStore";
 import { toast } from "react-toastify";
-import { getAgentResponses } from "../../../../features/Customer/customerSlice";
+import { getAgentResponses, reset } from "../../../../features/Customer/customerSlice";
 import Pagination from "../../../../components/Pagination";
 import ReportDownloader from "../../components/ReportDownloader";
 
@@ -41,6 +41,7 @@ const AgentReport = () => {
 		if (getAgentResponsesisError) {
 			toast.error(getAgentResponsesmessage, { toastId: customId });
 		}
+		dispatch(reset());
 	}, [dispatch, getAgentResponsesisError, getAgentResponsesmessage]);
 
 

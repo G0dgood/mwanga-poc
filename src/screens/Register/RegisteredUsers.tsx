@@ -47,10 +47,8 @@ const RegisteredUsers = () => {
   useEffect(() => {
     if (isErrorAll) {
       toast.error(messageAll, { toastId: customId });
-      setTimeout(() => {
-        dispatch(reset());
-      }, 6000);
     }
+    dispatch(reset());
   }, [dispatch, isErrorAll, messageAll]);
 
 
