@@ -15,7 +15,7 @@ import TableLoader from "../../../components/TableLoader";
 
 const CustomerBook = () => {
 	// @ts-ignore
-	const userInfo = JSON.parse(localStorage.getItem("mwanga"));
+	// const userInfo = JSON.parse(localStorage.getItem("mwanga"));
 	const [phone, setPhone] = useState("");
 	const [customer, setCustomerDetails] = useState<any>([]);
 	const [isLoading, setIsLoading] = useState(false);
