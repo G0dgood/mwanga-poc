@@ -15,7 +15,7 @@ import { getAllResponses } from "../../../../features/Customer/customerSlice";
 const Dashboard = () => {
   const dispatch = useAppDispatch();
   const { alldata, allisError, allmessage } = useAppSelector((state: any) => state.customer);
-  const [limit, setLimit] = useState<any>(20000);
+
   const endDates = new Date();
   const formattedEndDate = endDates.toISOString().split('T')[0]; // Extracting date part and removing time
   const [startDate1] = useState(formattedEndDate);
@@ -27,10 +27,7 @@ const Dashboard = () => {
   }, [dispatch])
 
 
-  const [selectedDate, setSelectedDate] = useState("Today");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-
+  const [selectedDate, setSelectedDate] = useState("");
   const currentDate = moment().format("YYYY-MM-DD");
   const sevenDays = moment().subtract(7, "days").format("YYYY-MM-DD");
   const yesterday = moment().subtract(1, "days").format("YYYY-MM-DD");
@@ -39,31 +36,9 @@ const Dashboard = () => {
 
 
 
-
   useEffect(() => {
-    if (selectedDate === "7-Days") {
-      setLimit(100000)
-      setStartDate(sevenDays);
-      setEndDate(currentDate);
-    } else if (selectedDate === "Yesterday") {
-      setLimit(50000)
-      setStartDate(yesterday);
-      setEndDate(yesterday);
-    } else if (selectedDate === "Today") {
-      setLimit(20000)
-      setStartDate(currentDate);
-      setEndDate(currentDate);
-    }
-  }, [currentDate, selectedDate, sevenDays, yesterday]);
-
-
-  useEffect(() => {
-    const filterAllData = alldata?.responses?.filter(
-      (obj: { createdAt: moment.MomentInput; }) =>
-        moment(obj.createdAt).format("YYYY-MM-DD") >= startDate &&
-        moment(obj.createdAt).format("YYYY-MM-DD") <= endDate);
-    setData(filterAllData);
-  }, [alldata?.responses, endDate, startDate]);
+    setData(alldata?.responses);
+  }, [alldata?.responses]);
 
 
 
@@ -88,27 +63,39 @@ const Dashboard = () => {
     );
   }, [data]);
 
-  // useEffect(() => {
-  //   if (allisError) {
-  //     toast.error(allmessage, { toastId: customId });
-  //     dispatch(reset());
-  //   }
-  // }, [dispatch, allisError, allmessage]);
+  useEffect(() => {
+    if (allisError) {
+      toast.error(allmessage, { toastId: customId });
+      dispatch(reset());
+    }
+  }, [dispatch, allisError, allmessage]);
 
 
   useEffect(() => {
-    const datas = { startDate: startDate1, endDate: endDate1, limit: limit };
+    const datas = { startDate: startDate1, endDate: endDate1, limit: 20000 };
     // @ts-ignore
     dispatch(getAllResponses(datas));
-  }, [dispatch, endDate1, startDate1, limit]);
+  }, [dispatch, endDate1, startDate1]);
+
+
 
 
   const handleChange = (e: any) => {
-    setSelectedDate(e.target.value)
-    const datas = { startDate: startDate1, endDate: endDate1, limit: limit };
-    // @ts-ignore
-    dispatch(getAllResponses(datas));
+    setSelectedDate(e.target.value);
 
+    if (e.target.value === "7-Days") {
+      const datas = { startDate: sevenDays, endDate: currentDate, limit: 100000 };
+      // @ts-ignore
+      dispatch(getAllResponses(datas));
+    } else if (e.target.value === "Yesterday") {
+      const datas = { startDate: yesterday, endDate: yesterday, limit: 50000 };
+      // @ts-ignore
+      dispatch(getAllResponses(datas));
+    } else if (e.target.value === "Today") {
+      const datas = { startDate: currentDate, endDate: currentDate, limit: 20000 };
+      // @ts-ignore
+      dispatch(getAllResponses(datas));
+    }
   };
 
 

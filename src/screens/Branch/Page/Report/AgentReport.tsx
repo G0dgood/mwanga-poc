@@ -27,8 +27,6 @@ const AgentReport = () => {
 	const [filter, setFilter] = useState<any>([]);
 	const [result, setResult] = useState("");
 
-
-
 	const [startDate, setStartDate] = useState("");
 	const [endDate, setEndDate] = useState("");
 

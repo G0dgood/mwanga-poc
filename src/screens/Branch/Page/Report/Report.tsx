@@ -9,8 +9,7 @@ import ReportHeader from "../../../../components/ReportHeader";
 import TableLoader from "../../../../components/TableLoader";
 import { useAppDispatch, useAppSelector } from "../../../../store/useStore";
 import { toast } from "react-toastify";
-import { getAllResponses } from "../../../../features/Customer/customerSlice";
-
+import { getAllResponses, reset } from "../../../../features/Customer/customerSlice";
 import ReportDownloader from "../../components/ReportDownloader";
 import RealPagination from "../../../../components/RealPagination";
 
@@ -40,7 +39,8 @@ const Report = () => {
 		if (allisError) {
 			toast.error(allmessage, { toastId: customId });
 		}
-	}, [allisError, allmessage]);
+		dispatch(reset());
+	}, [allisError, allmessage, dispatch]);
 
 
 	useEffect(() => {
